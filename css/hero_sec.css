@@ -1,0 +1,16 @@
+:root {
+  --body-color: rgb(236, 236, 236);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+.hero {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--body-color, white);
+}/*# sourceMappingURL=hero_sec.css.map */
