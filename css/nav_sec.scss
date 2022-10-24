@@ -1,0 +1,95 @@
+:root {
+	--body-color: rgb(236, 236, 236);
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.nav-container {
+	font-family: "Source Code Pro", monospace;
+	width: 50vw;
+	height: 10vh;
+
+	overflow: hidden;
+
+	background-color: transparent;
+
+	a {
+		text-decoration: none;
+		color: rgb(49, 49, 49);
+	}
+
+	.name {
+		position: relative;
+		padding: 2rem;
+		padding-left: 2rem;
+		font-size: 1.2em;
+
+		background-color: transparent;
+
+		z-index: 1;
+		a {
+			position: relative;
+			padding: 1rem;
+			padding-right: 0.1rem;
+
+			background-color: transparent;
+			span {
+				position: relative;
+				display: block;
+				width: 4.25rem;
+				height: 0.1rem;
+				margin-left: 1rem;
+				background-color: aquamarine;
+				transition: all 0.2s ease-in-out;
+			}
+			&:hover {
+				span {
+					width: 7.25rem;
+				}
+			}
+		}
+	}
+
+	.contacts {
+		position: fixed;
+		top: 25%;
+		left: 0%;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 2em;
+
+		z-index: 8;
+
+		section {
+			background-color: var(--body-color);
+			display: flex;
+			a {
+				writing-mode: vertical-rl;
+				text-orientation: mixed;
+
+				padding: 0.7rem;
+				transition: all 0.2s ease-in-out;
+				span {
+					position: relative;
+					display: block;
+					width: 0.05rem;
+					height: 100%;
+					background-color: rgb(49, 49, 49);
+
+					clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+					transition: all 0.2s ease-in-out;
+				}
+				&:hover {
+					span {
+						clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+					}
+				}
+			}
+		}
+	}
+}

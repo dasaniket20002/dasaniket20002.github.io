@@ -1,6 +1,6 @@
 var intro = document.querySelectorAll(".intro h1");
 var time = 150;
-const num_languages = 21;
+const num_languages = intro.length;
 
 var i = 0;
 
