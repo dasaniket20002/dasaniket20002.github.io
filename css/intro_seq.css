@@ -19,7 +19,6 @@
       -ms-user-select: none;
           user-select: none;
   overflow: hidden;
-  display: none;
 }
 .intro-container .intro {
   position: absolute;

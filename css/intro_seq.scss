@@ -16,7 +16,7 @@
 
 	user-select: none;
 	overflow: hidden;
-	display: none;
+	// display: none;
 
 	.intro {
 		position: absolute;
@@ -27,7 +27,6 @@
 		place-content: center;
 
 		background-color: var(--body-color, white);
-		// background-color: red;
 
 		h1 {
 			font-size: 5em;
