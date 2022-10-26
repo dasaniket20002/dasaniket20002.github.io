@@ -10,6 +10,7 @@
 }
 
 .hero-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -38,8 +39,9 @@
 }
 .hero-container .hero section {
   z-index: 7;
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: difference;
   transition: all 0.1s ease-out;
+  padding: 5rem;
 }
 .hero-container .hero section a {
   text-decoration: none;
@@ -48,6 +50,7 @@
 .hero-container .hero .line1 {
   font-size: 7em;
   font-weight: 500;
+  padding: 1rem;
   grid-column: 2/4;
   grid-row: 1/2;
   margin-top: -40vh;
@@ -62,8 +65,10 @@
   cursor: pointer;
 }
 .hero-container .hero .line2_1:hover {
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.2rem;
   font-weight: 400;
+  -webkit-animation: text-anim 10s linear infinite;
+          animation: text-anim 10s linear infinite;
 }
 .hero-container .hero .line2_2 {
   font-size: 5em;
@@ -75,6 +80,66 @@
   cursor: pointer;
 }
 .hero-container .hero .line2_2:hover {
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.2rem;
   font-weight: 400;
+  -webkit-animation: text-anim 10s linear infinite;
+          animation: text-anim 10s linear infinite;
+}
+@-webkit-keyframes text-anim {
+  0% {
+    font-style: normal;
+  }
+  14% {
+    font-style: normal;
+  }
+  15% {
+    font-style: italic;
+  }
+  15.5% {
+    font-style: normal;
+  }
+  69% {
+    font-style: normal;
+  }
+  70% {
+    font-style: bold;
+  }
+  70.5% {
+    font-style: italic;
+  }
+  70.8% {
+    font-style: normal;
+  }
+  100% {
+    font-style: normal;
+  }
+}
+@keyframes text-anim {
+  0% {
+    font-style: normal;
+  }
+  14% {
+    font-style: normal;
+  }
+  15% {
+    font-style: italic;
+  }
+  15.5% {
+    font-style: normal;
+  }
+  69% {
+    font-style: normal;
+  }
+  70% {
+    font-style: bold;
+  }
+  70.5% {
+    font-style: italic;
+  }
+  70.8% {
+    font-style: normal;
+  }
+  100% {
+    font-style: normal;
+  }
 }/*# sourceMappingURL=hero_sec.css.map */

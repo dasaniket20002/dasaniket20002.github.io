@@ -25,7 +25,7 @@
   padding-left: 2rem;
   font-size: 1.2em;
   background-color: transparent;
-  z-index: 1;
+  z-index: 90;
 }
 .nav-container .name a {
   position: relative;
@@ -54,7 +54,7 @@
   justify-content: center;
   align-items: center;
   gap: 2em;
-  z-index: 8;
+  z-index: 90;
 }
 .nav-container .contacts section {
   background-color: var(--body-color);
@@ -78,6 +78,35 @@
   transition: all 0.2s ease-in-out;
 }
 .nav-container .contacts section a:hover span {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.nav-container .explore {
+  position: absolute;
+  top: calc(100% - (1em + 1.4rem));
+  left: 70%;
+  z-index: 8;
+}
+.nav-container .explore section {
+  background-color: var(--body-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-container .explore section a {
+  padding: 0.7rem;
+}
+.nav-container .explore section a span {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0.05rem;
+  background-color: rgb(49, 49, 49);
+  -webkit-clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+  transition: all 0.2s ease-in-out;
+}
+.nav-container .explore section a:hover span {
   -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
           clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 }/*# sourceMappingURL=nav_sec.css.map */

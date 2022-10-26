@@ -1,4 +1,4 @@
-var intro = document.querySelectorAll(".intro h1");
+var intro = document.querySelectorAll(".intro-container .intro h1");
 var time = 150;
 const num_languages = intro.length;
 
@@ -27,3 +27,19 @@ function intro_play() {
 	}
 }
 setTimeout(intro_play, time);
+
+var skill_list = document.querySelectorAll(
+	".about-container .about .skills ul li"
+);
+for (let i = 0; i < skill_list.length; i++) {
+	skill_list[i].addEventListener("click", (event) => {
+		skill_list[i].classList.add("active");
+		skill_list[i].style.fontSize = "3.5vh";
+		for (let j = 0; j < skill_list.length; j++) {
+			if (i != j) {
+				skill_list[j].classList.remove("active");
+				skill_list[j].style.fontSize = "1.75vh";
+			}
+		}
+	});
+}

@@ -8,6 +8,7 @@
 	box-sizing: border-box;
 }
 .hero-container {
+	position: relative;
 	width: 100vw;
 	height: 100vh;
 
@@ -40,8 +41,10 @@
 
 		section {
 			z-index: 7;
-			mix-blend-mode: color-dodge;
+			mix-blend-mode: difference;
 			transition: all 0.1s ease-out;
+
+			padding: 5rem;
 
 			a {
 				text-decoration: none;
@@ -52,6 +55,8 @@
 		.line1 {
 			font-size: 7em;
 			font-weight: 500;
+
+			padding: 1rem;
 
 			grid-column: 2/4;
 			grid-row: 1/2;
@@ -69,8 +74,9 @@
 			cursor: pointer;
 
 			&:hover {
-				letter-spacing: 0.5rem;
+				letter-spacing: 0.2rem;
 				font-weight: 400;
+				animation: text-anim 10s linear infinite;
 			}
 		}
 		.line2_2 {
@@ -85,8 +91,39 @@
 			cursor: pointer;
 
 			&:hover {
-				letter-spacing: 0.5rem;
+				letter-spacing: 0.2rem;
 				font-weight: 400;
+				animation: text-anim 10s linear infinite;
+			}
+		}
+
+		@keyframes text-anim {
+			0% {
+				font-style: normal;
+			}
+			14% {
+				font-style: normal;
+			}
+			15% {
+				font-style: italic;
+			}
+			15.5% {
+				font-style: normal;
+			}
+			69% {
+				font-style: normal;
+			}
+			70% {
+				font-style: bold;
+			}
+			70.5% {
+				font-style: italic;
+			}
+			70.8% {
+				font-style: normal;
+			}
+			100% {
+				font-style: normal;
 			}
 		}
 	}
