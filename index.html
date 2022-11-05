@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="css/nav_sec.css" />
 		<link rel="stylesheet" href="css/hero_sec.css" />
 		<link rel="stylesheet" href="css/about-sec.css" />
+		<link rel="stylesheet" href="css/contact-sec.css" />
 
 		<title>Portfolio Website</title>
 
@@ -103,6 +104,7 @@
 				<p class="marquee">opengl</p>
 			</div>
 		</div>
+		<!-- Navigation Section -->
 		<div class="nav-container">
 			<div class="name">
 				<a href="#">aniket das<span></span></a>
@@ -131,6 +133,7 @@
 				</section>
 			</div>
 		</div>
+		<!-- Hero Section -->
 		<div class="hero-container">
 			<div class="hero">
 				<img src="/assets/IMG_7886@0,5x.png" alt="me" />
@@ -151,16 +154,25 @@
 				</section>
 			</div>
 		</div>
+		<!-- About Section -->
 		<div class="about-container">
 			<div class="transition"></div>
 			<div class="about">
+				<div class="backdrop1">HI</div>
+				<div class="backdrop2">SKILLS</div>
 				<section class="meet-me">
-					<h1>Hi. I am Aniket.</h1>
+					<h1>
+						I can
+						<span>
+							solve your problems
+							<section class="underline"></section>
+						</span>
+						with the help of a keyboard.
+					</h1>
+					<p><span>&ldquo;H</span>i. I am Aniket. <br /></p>
 					<p>
-						&ldquo;I am a freelance graphics designer and game
-						developer, specializing in 3D environment design, logic
-						design and art. Check out my work on my socials, and
-						feel free to get in touch if you want to work with me.
+						Check out my work on my socials, and feel free to get in
+						touch if you want to work with me. <br />
 					</p>
 					<section>
 						<a href="#">
@@ -203,7 +215,7 @@
 							<p>
 								Enough solving compititive programming
 								questions, I needed refreshment, a fresh
-								palette. Thats where i got my mind in LWJGL
+								palette. Thats where I got my mind in LWJGL
 								(LightWeight Java Game Library), since Java was
 								the language of my choice.
 							</p>
@@ -212,7 +224,7 @@
 							<section>Javascript</section>
 							<p>
 								I had enough of the plain old animations and
-								transitions available in th CSS language. So i
+								transitions available in th CSS language. So I
 								started learning JS to refine the presentations
 								of the website. But eventually I have extended
 								my knowledge to data structures and algorithms.
@@ -273,16 +285,133 @@
 					</ul>
 				</section>
 				<section class="img01">
-					<img src="assets/Clouds test_03.png" alt="" />
+					<span></span>
+					<main><img src="assets/Clouds test_03.png" alt="" /></main>
 				</section>
 				<section class="img02">
-					<img
-						src="assets/aniket-das-t010-16bit-uncompressed.jpg"
-						alt=""
-					/>
+					<span></span>
+					<main>
+						<img
+							src="assets/aniket-das-t010-16bit-uncompressed.jpg"
+							alt=""
+						/>
+					</main>
 				</section>
 			</div>
 		</div>
+		<div class="contact-container">
+			<!-- Contact Section -->
+			<div class="form-container">
+				<div class="map-img"></div>
+				<div class="backdrop1">CONTACT</div>
+				<form name="contact_form" action="" method="post">
+					<span class="dot-bg"></span>
+					<section id="header">
+						<h1 class="glitch">
+							<span> GET IN TOUCH </span>
+						</h1>
+						<!-- Let me know your thoughts -->
+						<p>Email me regarding any questions</p>
+					</section>
+					<section>
+						<input
+							type="text"
+							name="_name"
+							id="name"
+							class="form_input"
+							placeholder=" "
+							autocomplete="off"
+							required
+						/>
+						<label for="name" id="name_l" class="form_label">
+							Name
+						</label>
+						<div></div>
+					</section>
+					<section>
+						<input
+							type="email"
+							name="_email"
+							id="email"
+							class="form_input"
+							placeholder=" "
+							autocomplete="off"
+							required
+						/>
+						<label for="email" id="email_l" class="form_label">
+							Email
+						</label>
+						<div></div>
+					</section>
+					<section>
+						<input
+							type="number"
+							name="_phn"
+							id="phone"
+							class="form_input"
+							autocomplete="off"
+							placeholder=" "
+						/>
+						<label for="phone" id="phone_l" class="form_label">
+							Phone
+						</label>
+						<div></div>
+					</section>
+					<section id="textarea-sec">
+						<textarea
+							name="_message"
+							id="message"
+							class="form_input"
+							placeholder=" "
+							autocomplete="off"
+							required
+						></textarea>
+						<label for="message" id="message_l" class="form_label">
+							Message
+						</label>
+						<div></div>
+					</section>
+					<section id="button">
+						<input name="_btn" type="submit" value=">_ Send" />
+						<!-- todo: sent successfully notification -->
+						<div></div>
+					</section>
+				</form>
+			</div>
+			<!-- Footer Section -->
+			<div class="footer-container">
+				<section id="tag1">Socials</section>
+				<ul>
+					<li>
+						<a href="#"><i class="fa-brands fa-facebook"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-instagram"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-twitter"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-linkedin"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-github"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-artstation"></i></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa-brands fa-discord"></i></a>
+					</li>
+				</ul>
+				<section id="tag2">
+					<span>aniket das</span>
+					<span id="set_year"></span>
+					<span>All Rights Reserved</span>
+				</section>
+			</div>
+		</div>
+
 		<script src="js/index.js"></script>
 	</body>
 </html>

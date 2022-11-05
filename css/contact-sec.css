@@ -1,0 +1,301 @@
+:root {
+  --body-color: rgb(236, 236, 236);
+  --text-color: rgb(49, 49, 49);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.contact-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+.contact-container .form-container {
+  position: relative;
+  width: 100%;
+  height: 55%;
+  background-color: var(--body-color);
+  z-index: 0;
+}
+.contact-container .form-container .map-img {
+  position: absolute;
+  top: 6rem;
+  left: 30%;
+  width: 50%;
+  height: 100%;
+  background-image: url(/assets/map.png);
+  background-size: cover;
+  -webkit-mask-image: linear-gradient(to right bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0) 85%);
+          mask-image: linear-gradient(to right bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0) 85%);
+  filter: grayscale(100%);
+  z-index: -1;
+}
+.contact-container .form-container .backdrop1 {
+  position: absolute;
+  grid-row: 1/5;
+  grid-column: 1/2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  left: 5%;
+  top: -10vh;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+  font-size: 20vw;
+  background-color: transparent;
+  color: var(--text-color);
+  opacity: 0.03;
+  z-index: -2;
+}
+.contact-container .form-container form {
+  position: absolute;
+  width: 35em;
+  padding: 2% 4rem;
+  top: 5rem;
+  left: 15vw;
+  background-color: rgb(192, 192, 192);
+  border-radius: 3px;
+  border: 1rem solid rgb(128, 128, 128);
+  display: grid;
+  grid-template-rows: 2fr 1fr 1fr 1fr 3fr 1fr;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  font-size: min(1vw, 1em);
+}
+.contact-container .form-container form span.dot-bg {
+  position: absolute;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  top: 2.5rem;
+  right: -2rem;
+  z-index: -1;
+  background-image: radial-gradient(rgba(49, 49, 49, 0.7) 1px, transparent 1px);
+  background-size: 10px 10px;
+}
+.contact-container .form-container form section {
+  font-family: "Source Code Pro", monospace;
+  position: relative;
+  width: 100%;
+}
+.contact-container .form-container form section div {
+  position: absolute;
+  display: block;
+  bottom: 50%;
+  width: 100%;
+  height: 0.05rem;
+  background-color: rgb(90, 90, 90);
+  -webkit-clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+  transition: all 0.1s ease-in-out;
+}
+.contact-container .form-container form section label {
+  font-family: "Source Code Pro", monospace;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: text;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: transparent;
+  transition: all 0.1s ease;
+}
+.contact-container .form-container form section #name_l:after,
+.contact-container .form-container form section #email_l:after,
+.contact-container .form-container form section #message_l:after {
+  content: "*";
+  font-size: 0.7rem;
+  position: relative;
+  bottom: 0.5rem;
+}
+.contact-container .form-container form section input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  font-size: 1rem;
+}
+.contact-container .form-container form section input[type=number]::-webkit-inner-spin-button, .contact-container .form-container form section input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+.contact-container .form-container form section input,
+.contact-container .form-container form section textarea {
+  font-family: "Roboto Mono", monospace;
+  background-color: rgb(219, 219, 219);
+  border: none;
+  border-radius: 2px;
+  padding: 0.5rem 1rem;
+}
+.contact-container .form-container form section input:focus,
+.contact-container .form-container form section textarea:focus {
+  outline: none;
+}
+.contact-container .form-container form section input:focus ~ div,
+.contact-container .form-container form section textarea:focus ~ div {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.contact-container .form-container form section .form_input:hover.form_input:not(:focus) ~ div {
+  background-color: rgb(131, 131, 131);
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.contact-container .form-container form section .form_input:not(:-moz-placeholder-shown).form_input:not(:focus) ~ .form_label {
+  top: -1.5rem;
+  font-size: 0.9rem;
+  background-color: rgb(219, 219, 219);
+  text-decoration: underline;
+  color: rgba(49, 49, 49, 0.8);
+}
+.contact-container .form-container form section .form_input:not(:-ms-input-placeholder).form_input:not(:focus) ~ .form_label {
+  top: -1.5rem;
+  font-size: 0.9rem;
+  background-color: rgb(219, 219, 219);
+  text-decoration: underline;
+  color: rgba(49, 49, 49, 0.8);
+}
+.contact-container .form-container form section .form_input:focus ~ .form_label,
+.contact-container .form-container form section .form_input:not(:placeholder-shown).form_input:not(:focus) ~ .form_label {
+  top: -1.5rem;
+  font-size: 0.9rem;
+  background-color: rgb(219, 219, 219);
+  text-decoration: underline;
+  color: rgba(49, 49, 49, 0.8);
+}
+.contact-container .form-container form section#textarea-sec {
+  height: 10rem;
+}
+.contact-container .form-container form section#textarea-sec textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  resize: none;
+}
+.contact-container .form-container form section#textarea-sec div {
+  bottom: 0;
+}
+.contact-container .form-container form section#header {
+  height: 100%;
+  color: var(--text-color);
+}
+.contact-container .form-container form section#header h1 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+}
+.contact-container .form-container form section#header p {
+  margin: 0.5rem 0;
+  text-align: center;
+  text-transform: lowercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.6rem;
+}
+.contact-container .form-container form section#button {
+  height: 4rem;
+}
+.contact-container .form-container form section#button input {
+  font-family: "Roboto Mono", monospace;
+  height: 4rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.contact-container .form-container form section#button input:hover {
+  filter: drop-shadow(10px 10px 20px rgba(94, 94, 94, 0.2666666667));
+  letter-spacing: 0.35rem;
+}
+.contact-container .form-container form section#button input:hover ~ span {
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+          clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+.contact-container .footer-container {
+  position: absolute;
+  width: 40%;
+  height: 40%;
+  bottom: 2%;
+  right: 0;
+  background-color: var(--text-color);
+  color: var(--body-color);
+  display: grid;
+  grid-template-rows: 1fr 3fr 2fr;
+  grid-template-columns: 1fr;
+}
+.contact-container .footer-container section {
+  position: relative;
+  font-family: "Source Code Pro", monospace;
+  letter-spacing: 0.5rem;
+  margin: auto;
+}
+.contact-container .footer-container section#tag1 {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  grid-row: 1/2;
+}
+.contact-container .footer-container section#tag2 {
+  grid-row: 3/4;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.contact-container .footer-container section#tag2 span {
+  font-size: 0.9rem;
+  text-transform: none;
+}
+.contact-container .footer-container section#tag2 span:nth-child(1) {
+  opacity: 0.8;
+}
+.contact-container .footer-container section#tag2 span:nth-child(2) {
+  opacity: 0.5;
+}
+.contact-container .footer-container section#tag2 span:nth-child(3) {
+  font-size: 0.7rem;
+  opacity: 0.3;
+}
+.contact-container .footer-container ul {
+  position: relative;
+  width: 100%;
+  padding: 1em 5em;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  grid-row: 2/3;
+}
+.contact-container .footer-container ul li {
+  border-radius: 50%;
+  padding: 1rem;
+  transition: all 0.15s ease-in-out;
+}
+.contact-container .footer-container ul li a {
+  text-decoration: none;
+  color: var(--body-color);
+}
+.contact-container .footer-container ul li a i {
+  font-size: 1.5rem;
+  transition: all 0.15s ease-in-out;
+}
+.contact-container .footer-container ul li:hover {
+  box-shadow: -5px -5px 5px rgba(143, 143, 143, 0.637), 5px 5px 5px rgb(39, 39, 39);
+}
+.contact-container .footer-container ul li:hover i {
+  font-size: 1.6rem;
+}/*# sourceMappingURL=contact-sec.css.map */

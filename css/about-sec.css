@@ -29,6 +29,37 @@
   grid-template-rows: repeat(4, 1fr);
   gap: 1px;
 }
+.about-container .about .backdrop1 {
+  position: absolute;
+  grid-row: 1/5;
+  grid-column: 1/2;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+  font-size: 40vw;
+  color: var(--text-color);
+  opacity: 0.1;
+  z-index: -1;
+}
+.about-container .about .backdrop2 {
+  position: absolute;
+  grid-row: 2/5;
+  grid-column: 2/3;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -ms-writing-mode: tb-rl;
+      writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-align: end;
+  font-family: "Roboto Mono", monospace;
+  font-weight: 600;
+  font-size: 10vw;
+  opacity: 0.05;
+  z-index: -1;
+}
 .about-container .about .meet-me {
   grid-column: 1/2;
   grid-row: 1/3;
@@ -40,20 +71,42 @@
 }
 .about-container .about .meet-me h1 {
   font-family: "Source Code Pro", monospace;
-  font-size: 1.8rem;
+  font-size: 2.1rem;
   color: var(--text-color);
+  position: relative;
   padding: 1rem;
+}
+.about-container .about .meet-me h1 span {
+  position: relative;
+}
+.about-container .about .meet-me h1 span .underline {
+  background-color: aquamarine;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 1px;
 }
 .about-container .about .meet-me p {
   font-family: "Roboto Mono", monospace;
   color: var(--text-color);
   line-height: 1.3rem;
   padding: 1rem;
-  padding-top: 0;
 }
-.about-container .about .meet-me p::first-letter {
-  font-size: 1.5rem;
+.about-container .about .meet-me p span {
+  font-size: 1.6rem;
   font-weight: 400;
+}
+.about-container .about .meet-me p:first-child {
+  font-family: "Roboto Mono", monospace;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  line-height: 1.3rem;
+  padding: 1rem;
+  padding-top: 0;
 }
 .about-container .about .meet-me section {
   background-color: var(--body-color);
@@ -64,7 +117,6 @@
   width: -moz-fit-content;
   width: fit-content;
   margin: 1rem;
-  margin-top: 0;
   font-family: "Roboto Mono", monospace;
   color: var(--text-color);
 }
@@ -111,7 +163,6 @@
   grid-column: 2/3;
   grid-row: 2/5;
   padding: 2em;
-  background-color: rgba(247, 247, 247, 0.5);
 }
 .about-container .about .skills ul {
   list-style: none;
@@ -120,7 +171,8 @@
   justify-content: center;
   gap: 1rem;
   font-weight: 600;
-  font-size: 3.25vh;
+  font-size: 2.75vh;
+  text-align: end;
   cursor: pointer;
 }
 .about-container .about .skills ul li {
@@ -132,10 +184,10 @@
 .about-container .about .skills ul li section {
   font-family: "Source Code Pro", monospace;
   transition: all 0.1s ease-in-out;
-  color: rgba(49, 49, 49, 0.4);
+  color: rgba(49, 49, 49, 0.6);
 }
 .about-container .about .skills ul li section:hover {
-  color: rgba(49, 49, 49, 0.5);
+  color: rgba(49, 49, 49, 0.7);
 }
 .about-container .about .skills ul li p {
   font-family: "Roboto Mono", monospace;
@@ -147,18 +199,30 @@
   height: 0;
   transition: all 0.1s ease-in-out;
 }
+.about-container .about .skills ul li.active {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.about-container .about .skills ul li.active section {
+  color: rgba(49, 49, 49, 0.8);
+}
+.about-container .about .skills ul li.active section:hover {
+  color: rgba(49, 49, 49, 0.8);
+}
 .about-container .about .skills ul li.active section::after {
   content: "_";
   -webkit-animation: cursor-blink-anim 1s infinite;
           animation: cursor-blink-anim 1s infinite;
 }
 .about-container .about .skills ul li.active p {
+  padding-top: 1rem;
   -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
           clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   opacity: 1;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  color: rgba(49, 49, 49, 0.6);
 }
 @-webkit-keyframes cursor-blink-anim {
   0% {
@@ -191,26 +255,39 @@
 .about-container .about .img01 {
   grid-column: 2/4;
   grid-row: 1/2;
-  overflow: hidden;
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-.about-container .about .img01 img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 .about-container .about .img02 {
   grid-column: 3/4;
   grid-row: 3/5;
-  overflow: hidden;
+}
+.about-container .about .img01,
+.about-container .about .img02 {
+  position: relative;
   padding-left: 2rem;
   padding-right: 2rem;
 }
-.about-container .about .img02 img {
+.about-container .about .img01 main,
+.about-container .about .img02 main {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+.about-container .about .img01 main img,
+.about-container .about .img02 main img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.about-container .about .img01 span,
+.about-container .about .img02 span {
+  position: absolute;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  top: 1rem;
+  right: -3rem;
+  background-image: radial-gradient(rgba(49, 49, 49, 0.7) 1px, transparent 1px);
+  background-size: 10px 10px;
 }/*# sourceMappingURL=about-sec.css.map */
