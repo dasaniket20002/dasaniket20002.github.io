@@ -5,6 +5,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	scroll-behavior: smooth;
 }
 .intro-container {
 	font-family: "Open Sans", sans-serif;
@@ -16,6 +17,7 @@
 
 	user-select: none;
 	overflow: hidden;
+	display: none;
 
 	.intro {
 		position: absolute;
@@ -74,38 +76,23 @@
 			2% {
 				opacity: 1;
 			}
-			7% {
-				opacity: 1;
-			}
-			8% {
-				opacity: 0.5;
-			}
-			9% {
-				opacity: 1;
-			}
-			12% {
-				opacity: 0.5;
-			}
 			20% {
 				opacity: 1;
 			}
 			25% {
-				opacity: 0.7;
+				opacity: 0.9;
 			}
 			30% {
 				opacity: 1;
 			}
-			87% {
+			90% {
 				opacity: 1;
 			}
-			90% {
-				opacity: 0.7;
-			}
 			92% {
-				opacity: 0.8;
+				opacity: 0.9;
 			}
 			97% {
-				opacity: 0.9;
+				opacity: 1;
 			}
 			100% {
 				opacity: 0.9;

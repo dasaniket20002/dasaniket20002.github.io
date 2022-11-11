@@ -6,12 +6,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 .nav-container {
   font-family: "Source Code Pro", monospace;
-  width: 50vw;
-  height: 10vh;
+  min-width: 50%;
+  min-height: 10vh;
   overflow: hidden;
   background-color: transparent;
 }
@@ -23,7 +24,7 @@
   position: relative;
   padding: 2rem;
   padding-left: 2rem;
-  font-size: 1.2em;
+  font-size: 1.2rem;
   background-color: transparent;
   z-index: 90;
 }
@@ -47,7 +48,7 @@
 }
 .nav-container .contacts {
   position: fixed;
-  top: 25%;
+  top: 18%;
   left: 0%;
   display: flex;
   flex-direction: column;
@@ -83,8 +84,8 @@
 }
 .nav-container .explore {
   position: absolute;
-  top: calc(100% - (1em + 1.4rem));
-  left: 70%;
+  bottom: 0;
+  right: 20%;
   z-index: 8;
 }
 .nav-container .explore section {
@@ -109,4 +110,13 @@
 .nav-container .explore section a:hover span {
   -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
           clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+@media (max-width: 1000px) {
+  .contacts {
+    font-size: 0.75em;
+  }
+  .explore {
+    font-size: 0.75em;
+  }
 }/*# sourceMappingURL=nav_sec.css.map */

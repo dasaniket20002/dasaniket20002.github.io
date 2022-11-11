@@ -17,7 +17,7 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,700;0,800;1,300;1,400;1,500;1,700;1,800&family=Roboto+Mono:ital,wght@0,200;0,300;0,400;0,500;0,700;1,300;1,400;1,700&family=Shalimar&family=Source+Code+Pro:wght@200;300;400&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,700;0,800;1,300;1,400;1,500;1,700;1,800&family=Roboto+Mono:ital,wght@0,200;0,300;0,400;0,500;0,700;1,300;1,400;1,700&family=Source+Code+Pro:wght@200;300;400&display=swap"
 			rel="stylesheet"
 		/>
 
@@ -31,7 +31,7 @@
 	</head>
 	<body>
 		<!-- Intro Section -->
-		<div class="intro-container">
+		<div class="intro-container" id="intro-container">
 			<div class="intro">
 				<h1 class="glitch layers active" data-text="hola">
 					<span>hola</span>
@@ -105,27 +105,51 @@
 			</div>
 		</div>
 		<!-- Navigation Section -->
-		<div class="nav-container">
+		<div class="nav-container" id="nav-container">
 			<div class="name">
-				<a href="#">aniket das<span></span></a>
+				<a href="#">aniket&nbsp;das<span></span></a>
 			</div>
 			<div class="contacts">
 				<section>
-					<a href="#">instagram<span></span></a>
+					<a
+						href="https://www.instagram.com/___ripjaws___/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						instagram<span></span>
+					</a>
 				</section>
 				<section>
-					<a href="#">github<span></span></a>
+					<a
+						href="https://github.com/dasaniket20002"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						github<span></span>
+					</a>
 				</section>
 				<section>
-					<a href="#">linkedin<span></span></a>
+					<a
+						href="https://www.linkedin.com/in/aniket-das-aa8b4323b/"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						linkedin<span></span>
+					</a>
 				</section>
 				<section>
-					<a href="#">artstation<span></span></a>
+					<a
+						href="https://www.artstation.com/aniketdas"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						artstation<span></span>
+					</a>
 				</section>
 			</div>
 			<div class="explore">
 				<section>
-					<a href="#">
+					<a href="#about">
 						explore more&nbsp;
 						<i class="fa-sharp fa-solid fa-arrow-down"></i>
 						<span></span>
@@ -134,12 +158,11 @@
 			</div>
 		</div>
 		<!-- Hero Section -->
-		<div class="hero-container">
+		<div class="hero-container" id="hero-container">
 			<div class="hero">
-				<img src="/assets/IMG_7886@0,5x.png" alt="me" />
-
+				<div class="hero-img"></div>
 				<section class="line1 glitch layers" data-text="I'm a">
-					<span>I'm a</span>
+					<span>I'm&nbsp;a</span>
 				</section>
 				<section class="line2_1 glitch layers" data-text="<developer>">
 					<span><a href="#">&lt;developer&gt;</a></span>
@@ -149,15 +172,15 @@
 					data-text="<digital artist>"
 				>
 					<span>
-						<a href="#">&lt;digital<br />artist&gt;</a>
+						<a href="#">&lt;digital artist&gt;</a>
 					</span>
 				</section>
 			</div>
 		</div>
 		<!-- About Section -->
-		<div class="about-container">
+		<div class="about-container" id="about-container">
 			<div class="transition"></div>
-			<div class="about">
+			<div class="about" id="about">
 				<div class="backdrop1">HI</div>
 				<div class="backdrop2">SKILLS</div>
 				<section class="meet-me">
@@ -165,7 +188,7 @@
 						I can
 						<span>
 							solve your problems
-							<section class="underline"></section>
+							<!-- <section class="underline"></section> -->
 						</span>
 						with the help of a keyboard.
 					</h1>
@@ -175,7 +198,7 @@
 						touch if you want to work with me. <br />
 					</p>
 					<section>
-						<a href="#">
+						<a href="#contact-container">
 							Get in touch
 							<span></span>
 						</a>
@@ -299,11 +322,13 @@
 				</section>
 			</div>
 		</div>
-		<div class="contact-container">
+		<!-- Contact Section -->
+		<div class="contact-container" id="contact-container">
+			<div class="map-img"></div>
+			<div class="backdrop1">CONTACT</div>
+			<div class="contact-bg"></div>
 			<!-- Contact Section -->
 			<div class="form-container">
-				<div class="map-img"></div>
-				<div class="backdrop1">CONTACT</div>
 				<form name="contact_form" action="" method="post">
 					<span class="dot-bg"></span>
 					<section id="header">
@@ -383,29 +408,71 @@
 				<section id="tag1">Socials</section>
 				<ul>
 					<li>
-						<a href="#"><i class="fa-brands fa-facebook"></i></a>
+						<a
+							href="https://www.facebook.com/aniket.das.75436/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-facebook"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-instagram"></i></a>
+						<a
+							href="https://www.instagram.com/___ripjaws___/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-instagram"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-twitter"></i></a>
+						<a
+							href="https://twitter.com/__ripjaws__"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-twitter"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-linkedin"></i></a>
+						<a
+							href="https://www.linkedin.com/in/aniket-das-aa8b4323b/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-linkedin"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-github"></i></a>
+						<a
+							href="https://github.com/dasaniket20002"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-github"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-artstation"></i></a>
+						<a
+							href="https://www.artstation.com/aniketdas"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-artstation"></i>
+						</a>
 					</li>
 					<li>
-						<a href="#"><i class="fa-brands fa-discord"></i></a>
+						<a
+							href="https://discordapp.com/users/674615599225110559"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<i class="fa-brands fa-discord"></i>
+						</a>
 					</li>
 				</ul>
 				<section id="tag2">
-					<span>aniket das</span>
+					<span><a href="#">aniket das</a></span>
 					<span id="set_year"></span>
 					<span>All Rights Reserved</span>
 				</section>

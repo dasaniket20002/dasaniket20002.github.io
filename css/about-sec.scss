@@ -6,6 +6,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	scroll-behavior: smooth;
 }
 .about-container {
 	background: linear-gradient(
@@ -14,8 +15,8 @@
 		var(--body-color) 100%
 	);
 	position: relative;
-	width: 100vw;
-	height: 110vh;
+	width: 100%;
+	min-height: 110vh;
 
 	margin-top: -10vh;
 	overflow: hidden;
@@ -25,7 +26,7 @@
 	.about {
 		position: relative;
 
-		height: 80vh;
+		min-height: 80vh;
 
 		margin-left: 10vw;
 		margin-right: 10vw;
@@ -33,7 +34,8 @@
 
 		display: grid;
 		grid-template-columns: 2fr 1.5fr 1fr;
-		grid-template-rows: repeat(4, 1fr);
+		// grid-template-rows: repeat(4, 1fr);
+		grid-template-rows: repeat(4, auto);
 		gap: 1px;
 
 		.backdrop1 {
@@ -69,7 +71,7 @@
 
 			font-family: "Roboto Mono", monospace;
 			font-weight: 600;
-			font-size: 10vw;
+			font-size: 15vh;
 
 			opacity: 0.05;
 
@@ -78,7 +80,7 @@
 
 		.meet-me {
 			grid-column: 1/2;
-			grid-row: 1/3;
+			grid-row: 1/2;
 
 			padding: 2em;
 
@@ -95,20 +97,8 @@
 				position: relative;
 
 				padding: 1rem;
-
 				span {
-					position: relative;
-					.underline {
-						background-color: aquamarine;
-						position: absolute;
-						bottom: 0;
-						left: 0;
-						margin: 0;
-						padding: 0;
-						height: 2px;
-						width: 100%;
-						border-radius: 1px;
-					}
+					text-decoration: underline;
 				}
 			}
 			p {
@@ -131,10 +121,6 @@
 				padding: 1rem;
 				padding-top: 0;
 			}
-			// p:first-child::first-letter {
-			// 	font-size: 1.6rem;
-			// 	font-weight: 400;
-			// }
 			section {
 				background-color: var(--body-color);
 				display: flex;
@@ -176,7 +162,7 @@
 		}
 		.about-me {
 			grid-column: 1/2;
-			grid-row: 3/5;
+			grid-row: 2/5;
 
 			padding: 2em;
 			background-color: rgba(247, 247, 247, 0.7);
@@ -200,7 +186,7 @@
 		}
 		.skills {
 			grid-column: 2/3;
-			grid-row: 2/5;
+			grid-row: 3/5;
 
 			padding: 2em;
 
@@ -280,6 +266,7 @@
 		.img01 {
 			grid-column: 2/4;
 			grid-row: 1/2;
+			height: 70%;
 		}
 		.img02 {
 			grid-column: 3/4;
@@ -314,6 +301,41 @@
 					transparent 1px
 				);
 				background-size: 10px 10px;
+			}
+		}
+
+		@media (max-width: 1000px) {
+			.meet-me {
+				grid-column: 1/4;
+				grid-row: 1/3;
+			}
+			.about-me {
+				grid-column: 1/4;
+				grid-row: 3/4;
+			}
+			.skills {
+				grid-column: 1/4;
+				grid-row: 4/5;
+				ul {
+					// min-width: 60vw;
+					text-align: start;
+				}
+			}
+
+			.img01 {
+				display: none;
+			}
+			.img02 {
+				display: none;
+			}
+
+			.backdrop1 {
+				grid-column: 1/4;
+				grid-row: 1/3;
+			}
+			.backdrop2 {
+				grid-column: 1/4;
+				grid-row: 4/5;
 			}
 		}
 	}
