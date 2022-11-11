@@ -329,7 +329,22 @@
 			<div class="contact-bg"></div>
 			<!-- Contact Section -->
 			<div class="form-container">
-				<form name="contact_form" action="" method="post">
+				<form
+					name="contact_form"
+					action="https://formsubmit.co/aniket.das.cse24@heritageit.edu.in"
+					method="post"
+				>
+					<input
+						type="hidden"
+						name="_subject"
+						value="Submission from Website"
+					/>
+					<input type="hidden" name="_captcha" value="false" />
+					<input
+						type="hidden"
+						name="_next"
+						value="https://dasaniket20002.github.io/#contact-container"
+					/>
 					<span class="dot-bg"></span>
 					<section id="header">
 						<h1 class="glitch">
@@ -341,7 +356,7 @@
 					<section>
 						<input
 							type="text"
-							name="_name"
+							name="name"
 							id="name"
 							class="form_input"
 							placeholder=" "
@@ -356,7 +371,7 @@
 					<section>
 						<input
 							type="email"
-							name="_email"
+							name="email"
 							id="email"
 							class="form_input"
 							placeholder=" "
@@ -371,7 +386,7 @@
 					<section>
 						<input
 							type="number"
-							name="_phn"
+							name="phone"
 							id="phone"
 							class="form_input"
 							autocomplete="off"
@@ -384,7 +399,7 @@
 					</section>
 					<section id="textarea-sec">
 						<textarea
-							name="_message"
+							name="message"
 							id="message"
 							class="form_input"
 							placeholder=" "
@@ -398,9 +413,9 @@
 					</section>
 					<section id="button">
 						<input name="_btn" type="submit" value=">_ Send" />
-						<!-- todo: sent successfully notification -->
 						<div></div>
 					</section>
+					<!-- todo: sent successfully notification -->
 				</form>
 			</div>
 			<!-- Footer Section -->
