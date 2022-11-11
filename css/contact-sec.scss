@@ -21,6 +21,8 @@
 
 	place-items: center;
 
+	overflow: hidden;
+
 	.contact-bg {
 		position: absolute;
 		top: 0;
@@ -39,9 +41,9 @@
 
 		overflow: hidden;
 
-		font-family: "Roboto Mono", monospace;
-		font-weight: 600;
-		font-size: 20vw;
+		font-family: "Source Code Pro", monospace;
+		font-weight: 500;
+		font-size: 60vh;
 
 		background-color: transparent;
 		color: var(--text-color);
