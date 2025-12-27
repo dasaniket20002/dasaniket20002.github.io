@@ -38,7 +38,7 @@ export default function Key({
   return (
     <button
       className={cn(
-        "text-4xl font-think-loved size-24 relative perspective-normal",
+        "text-4xl font-think-loved size-24 relative perspective-normal flex-none",
         className
       )}
       onMouseDown={() => setPressed(true)}

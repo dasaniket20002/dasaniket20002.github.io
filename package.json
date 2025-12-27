@@ -14,12 +14,16 @@
   },
   "peerDependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "p5": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@p5-wrapper/react": "^5.0.2",
+    "@tabler/icons-react": "^3.36.0",
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^24.10.1",
+    "@types/p5": "^1.7.7",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
