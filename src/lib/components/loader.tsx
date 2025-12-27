@@ -4,6 +4,7 @@ import { animate, AnimatePresence, motion, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
 import { randomRange, wait } from "../utils";
 import Key from "./key";
+import LogoName from "./logo-name";
 
 const LOADING_MESSAGES = [
   "Aligning pixels...",
@@ -39,50 +40,39 @@ function sketch(p5: P5CanvasInstance) {
   };
 }
 
-const LoadingSketch = () => {
+function LoadingSketch() {
   return (
     <section className="w-1/3 h-96 place-content-center place-items-center flex-none">
       <IconLoader2 className="animate-spin stroke-2 size-4 stroke-light-2" />
     </section>
   );
-};
+}
 
-export default function Loader({ onComplete }: { onComplete: () => void }) {
+function Counter({ onComplete }: { onComplete: () => void }) {
   const count = useMotionValue(0);
   const [display, setDisplay] = useState(0);
 
-  const [message, setMessage] = useState<string>("");
-
   useEffect(() => {
     const sequence = async () => {
-      setMessage("");
       await wait(1500);
 
-      const r1 = randomRange(0, LOADING_MESSAGES.length - 1);
-      setMessage(LOADING_MESSAGES[r1]);
-
       await animate(count, randomRange(30, 40), {
-        duration: 1.2,
-        ease: "easeInOut",
-      });
-      await wait(400);
-      const r2 = randomRange(0, LOADING_MESSAGES.length - 1, [r1]);
-      setMessage(LOADING_MESSAGES[r2]);
-
-      await animate(count, randomRange(50, 70), {
         duration: 1.5,
         ease: "easeInOut",
       });
+      await wait(400);
+
+      await animate(count, randomRange(50, 70), {
+        duration: 1.2,
+        ease: "easeInOut",
+      });
       await wait(500);
-      const r3 = randomRange(0, LOADING_MESSAGES.length - 1, [r1, r2]);
-      setMessage(LOADING_MESSAGES[r3]);
 
       await animate(count, 100, { duration: 1, ease: "easeInOut" });
-
       await wait(500);
+
       onComplete();
     };
-
     sequence();
   }, [count, onComplete]);
 
@@ -91,6 +81,49 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
   });
 
   return (
+    <p className="w-full font-think-loved text-5xl text-center text-light-2">
+      {display}
+    </p>
+  );
+}
+
+function Message() {
+  const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    const rs: Array<number> = [];
+    const generateMessage = () => {
+      const r = randomRange(0, LOADING_MESSAGES.length - 1, rs);
+      rs.push(r);
+      if (rs.length === LOADING_MESSAGES.length) rs.splice(0, rs.length - 2);
+      setMessage(LOADING_MESSAGES[r]);
+    };
+    generateMessage();
+    const interval = setInterval(() => generateMessage(), 3000);
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.p
+        initial={{ scaleY: 0, opacity: 0 }}
+        animate={{ scaleY: 1, opacity: 1 }}
+        exit={{ scaleY: 1, opacity: 0 }}
+        key={message}
+        className="text-center font-helvetica font-light text-light-2 h-4 origin-top"
+        layout
+      >
+        {message}
+      </motion.p>
+    </AnimatePresence>
+  );
+}
+
+export default function Loader({ onComplete }: { onComplete: () => void }) {
+  return (
     <motion.div
       className="relative h-screen z-9998 overflow-y-hidden grid grid-rows-3 py-8"
       initial={{ opacity: 1 }}
@@ -98,7 +131,7 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
       transition={{ delay: 1 }}
     >
       <motion.div
-        className="w-full font-think-loved text-2xl flex gap-2 items-start justify-center text-dark-1"
+        className="w-full place-items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -109,18 +142,14 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
           delay: 0.7,
         }}
       >
-        <section className="flex items-center gap-2">
-          <span>A</span>
-          <span className="h-1 w-[2ch] flex-none bg-dark-1" />
-          <span>D</span>
-        </section>
+        <LogoName className="text-2xl" />
       </motion.div>
 
       <motion.div
         className="flex gap-8 items-center justify-center w-full"
-        initial={{ opacity: 0, translateY: "10%" }}
-        animate={{ opacity: 1, translateY: "0%" }}
-        exit={{ opacity: 0, translateY: "-10%" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -24 }}
         transition={{
           duration: 0.75,
           type: "spring",
@@ -145,21 +174,8 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
           delay: 0.9,
         }}
       >
-        <p className="w-full font-think-loved text-5xl text-center text-light-2">
-          {display}
-        </p>
-        <AnimatePresence mode="wait">
-          <motion.p
-            initial={{ scaleY: 0, opacity: 0 }}
-            animate={{ scaleY: 1, opacity: 1 }}
-            exit={{ scaleY: 1, opacity: 0 }}
-            key={message}
-            className="text-center font-helvetica font-light text-light-2 h-4 origin-top"
-            layout
-          >
-            {message}
-          </motion.p>
-        </AnimatePresence>
+        <Counter onComplete={onComplete} />
+        <Message />
       </motion.div>
     </motion.div>
   );
