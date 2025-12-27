@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import Key from "./lib/components/key";
+import NoiseOverlay from "./lib/components/noise-overlay";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [a, seta] = useState(false);
 
+  useEffect(() => {
+    const t = () => seta((p) => !p);
+
+    const i = setInterval(() => {
+      t();
+    }, 1000);
+    return clearInterval(i);
+  }, []);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="relative min-h-screen w-full">
+      <NoiseOverlay />
+      <div className="h-screen flex items-center justify-center gap-24">
+        <Key pressedState={[a, seta]}>a</Key>
+        <Key>d</Key>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
