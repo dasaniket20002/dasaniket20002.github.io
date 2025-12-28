@@ -1,29 +1,12 @@
-import NoiseOverlay from "./lib/components/noise-overlay";
-import Loader from "./lib/components/loader";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "motion/react";
 import Header from "./lib/components/header";
+import Loader from "./lib/components/loader";
+import NoiseOverlay from "./lib/components/noise-overlay";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [hideHeader, setHideHeader] = useState(false);
 
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-
-    if (latest > previous && latest > 80) {
-      setHideHeader(true);
-    } else if (latest < previous) {
-      setHideHeader(false);
-    }
-  });
   return (
     <>
       <NoiseOverlay />
@@ -31,19 +14,19 @@ function App() {
         {isLoading ? (
           <Loader key="loader" onComplete={() => setIsLoading(false)} />
         ) : (
-          <motion.div
+          <motion.main
             key="content"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ ease: "easeOut" }}
-            className="relative min-h-screen h-full w-full bg-light-1 flex flex-col"
+            transition={{ ease: "easeIn" }}
+            className="relative min-h-screen h-full w-full bg-light-1"
           >
-            <Header className="sticky top-0" hidden={hideHeader} />
-            <main className="h-page place-items-center place-content-center">
+            <Header className="w-full sticky top-0" />
+            <div className="h-[200vh] place-items-center place-content-center">
               <p>TODO Main Content here</p>
-            </main>
-          </motion.div>
+            </div>
+          </motion.main>
         )}
       </AnimatePresence>
     </>

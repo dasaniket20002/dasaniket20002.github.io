@@ -81,9 +81,7 @@ function Counter({ onComplete }: { onComplete: () => void }) {
   });
 
   return (
-    <p className="w-full font-think-loved text-5xl text-center text-light-2">
-      {display}
-    </p>
+    <p className="w-full font-think-loved text-5xl text-center">{display}</p>
   );
 }
 
@@ -113,7 +111,7 @@ function Message() {
         animate={{ scaleY: 1, opacity: 1 }}
         exit={{ scaleY: 1, opacity: 0 }}
         key={message}
-        className="text-center font-helvetica font-light text-light-2 h-4 origin-top"
+        className="text-center font-helvetica font-light h-4 origin-top"
         layout
       >
         {message}
@@ -128,32 +126,32 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
       className="relative h-screen z-9998 overflow-y-hidden grid grid-rows-3 py-8"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ delay: 1 }}
+      transition={{ delay: 1, ease: "easeInOut" }}
     >
       <motion.div
         className="w-full place-items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0, y: -24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -24 }}
         transition={{
-          duration: 0.75,
+          duration: 1.2,
           type: "spring",
-          ease: "easeIn",
-          delay: 0.7,
+          ease: "backOut",
+          delay: 0.9,
         }}
       >
-        <LogoName className="text-2xl" />
+        <LogoName className="text-2xl text-light-2" />
       </motion.div>
 
       <motion.div
         className="flex gap-8 items-center justify-center w-full"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -24 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         transition={{
-          duration: 0.75,
+          duration: 1,
           type: "spring",
-          ease: "easeIn",
+          ease: "backOut",
           delay: 0.5,
         }}
       >
@@ -163,14 +161,14 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
       </motion.div>
 
       <motion.div
-        className="w-full px-8 py-4 space-y-1 place-self-end"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        className="w-full px-8 py-4 space-y-1 place-self-end text-light-2"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 24 }}
         transition={{
-          duration: 0.75,
+          duration: 1.2,
           type: "spring",
-          ease: "easeIn",
+          ease: "backOut",
           delay: 0.9,
         }}
       >

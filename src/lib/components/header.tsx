@@ -1,7 +1,14 @@
-import { AnimatePresence, motion, type Variants } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  type Variants,
+} from "motion/react";
 import { cn } from "../utils";
 import Link from "./link";
 import LogoName from "./logo-name";
+import { useEffect, useState } from "react";
 
 const linkVariants: Variants = {
   hidden: { y: -24, opacity: 0 },
@@ -22,13 +29,31 @@ const NAV_LINKS = [
   { name: "Contact", href: "#" },
 ];
 
-export default function Header({
-  className,
-  hidden,
-}: {
-  className?: string;
-  hidden: boolean;
-}) {
+export default function Header({ className }: { className?: string }) {
+  const [hidden, setHidden] = useState(true);
+
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+
+    if (latest > previous && latest > 80) {
+      setHidden(true);
+    } else if (latest < previous) {
+      setHidden(false);
+    }
+  });
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setHidden(false);
+    }, 1000);
+
+    return () => {
+      if (t) clearTimeout(t);
+    };
+  }, []);
+
   return (
     <header
       className={cn(
