@@ -37,6 +37,14 @@ body {
   @apply bg-light-1;
 }
 
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @utility trim-text-caps {
   text-box: trim-both cap alphabetic;
 }
@@ -45,6 +53,6 @@ body {
   height: calc(var(--spacing) * 10) /* 2.5rem = 40px */;
 }
 
-@utility h-page {
-  height: calc(100vh - (var(--spacing) * 10));
+@utility p-page {
+  padding-top: calc(var(--spacing) * 10);
 }
