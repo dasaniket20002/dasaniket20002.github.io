@@ -9,7 +9,7 @@ export default function NoiseOverlay() {
   );
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-9999">
+    <div className="fixed inset-0 pointer-events-none z-9999">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="size-full"

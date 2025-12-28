@@ -1,21 +1,21 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import { useState } from "react";
 import { cn } from "../utils";
 
 const letterVariants = {
   hidden: {
-    opacity: 0,
-    scaleY: 0,
+    opacity: 0.5,
+    scale: 0,
     width: 0,
   },
   visible: {
     opacity: 1,
-    scaleY: 1,
+    scale: 1,
     width: "auto",
   },
   exit: {
-    opacity: 0,
-    scaleY: 0,
+    opacity: 0.5,
+    scale: 0,
     width: 0,
   },
 };
@@ -32,16 +32,22 @@ const containerVariants = {
   },
 };
 
-export default function LogoName({ className }: { className?: string }) {
+export default function LogoName({
+  className,
+  ...motionProps
+}: {
+  className?: string;
+} & HTMLMotionProps<"section">) {
   const [hovered, setHovered] = useState(false);
 
   const name1 = "niket".split("");
   const name2 = "as".split("");
 
   return (
-    <section
+    <motion.section
+      {...motionProps}
       className={cn(
-        "flex items-center gap-[0.25em] text-2xl font-think-loved select-none text-dark-1",
+        "flex items-center gap-[0.25em] p-[0.5em] text-2xl font-think-loved select-none text-dark-1",
         className
       )}
       onMouseEnter={() => setHovered(true)}
@@ -65,8 +71,8 @@ export default function LogoName({ className }: { className?: string }) {
                   layout
                   key={i}
                   variants={letterVariants}
-                  transition={{ ease: "easeOut" }}
-                  className="origin-bottom! -mx-[0.025em] trim-text-caps h-min"
+                  transition={{ ease: "backOut" }}
+                  className="origin-bottom-left! -mx-[0.025em] trim-text-caps h-min"
                 >
                   {char}
                 </motion.span>
@@ -108,7 +114,7 @@ export default function LogoName({ className }: { className?: string }) {
                   key={i}
                   variants={letterVariants}
                   transition={{ ease: "easeOut" }}
-                  className="origin-bottom! -mx-[0.025em] trim-text-caps h-min"
+                  className="origin-bottom-left! -mx-[0.025em] trim-text-caps h-min"
                 >
                   {char}
                 </motion.span>
@@ -117,6 +123,6 @@ export default function LogoName({ className }: { className?: string }) {
           )}
         </AnimatePresence>
       </div>
-    </section>
+    </motion.section>
   );
 }
