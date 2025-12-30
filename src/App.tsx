@@ -6,7 +6,7 @@ import NoiseOverlay from "./lib/components/noise-overlay";
 import Hero from "./lib/pages/hero";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>

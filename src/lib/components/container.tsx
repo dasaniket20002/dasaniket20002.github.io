@@ -1,16 +1,17 @@
 import { forwardRef } from "react";
 import { cn } from "../utils";
+import { motion, type HTMLMotionProps } from "motion/react";
 
 type ContainerProps = {
   dataBGTheme?: "light" | "dark";
   className?: string;
   children?: React.ReactNode;
-};
+} & HTMLMotionProps<"div">;
 
 const Container = forwardRef<HTMLDivElement, ContainerProps>(
-  ({ dataBGTheme = "light", className, children }, ref) => {
+  ({ dataBGTheme = "light", className, children, ...motionProps }, ref) => {
     return (
-      <div
+      <motion.div
         ref={ref}
         data-bg-theme={dataBGTheme}
         className={cn(
@@ -18,9 +19,10 @@ const Container = forwardRef<HTMLDivElement, ContainerProps>(
           dataBGTheme === "light" ? "bg-light-1" : "bg-dark-2",
           className
         )}
+        {...motionProps}
       >
         {children}
-      </div>
+      </motion.div>
     );
   }
 );

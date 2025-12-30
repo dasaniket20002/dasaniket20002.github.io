@@ -2,23 +2,25 @@ import {
   AnimatePresence,
   motion,
   useAnimationFrame,
+  useMotionValueEvent,
+  useScroll,
   type Variants,
 } from "motion/react";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { cn } from "../utils";
 import Link from "./link";
 import LogoName from "./logo-name";
 
-const linkVariants: Variants = {
+type HeaderProps = { className?: string };
+
+const LINK_VARIANTS: Variants = {
   hidden: { y: -24, opacity: 0 },
   visible: { y: 0, opacity: 1 },
-  exit: { y: -24, opacity: 0 },
 };
 
-const containerVariants: Variants = {
+const CONTAINER_VARIANTS: Variants = {
   hidden: { transition: { staggerChildren: 0.05, staggerDirection: 1 } },
   visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
-  exit: { transition: { staggerChildren: 0.05, staggerDirection: 1 } },
 };
 
 const NAV_LINKS = [
@@ -30,16 +32,16 @@ const NAV_LINKS = [
 
 const HEADER_INITIAL_DELAY = 1500;
 
-export default function Header({ className }: { className?: string }) {
+const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const [hidden, setHidden] = useState(true);
   const [bgTheme, setBGTheme] = useState<"light" | "dark">("dark");
-  // const { scrollY } = useScroll();
+  const { scrollY } = useScroll();
 
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   const previous = scrollY.getPrevious() ?? 0;
-  //   if (latest - previous > 10) setHidden(true);
-  //   if (previous - latest > 5) setHidden(false);
-  // });
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest - previous > 10) setHidden(true);
+    if (previous - latest > 5) setHidden(false);
+  });
 
   useAnimationFrame(() => {
     const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
@@ -77,6 +79,7 @@ export default function Header({ className }: { className?: string }) {
 
   return (
     <header
+      ref={ref}
       id="header"
       className={cn(
         "px-4 md:px-16 h-header flex gap-4 md:gap-8 justify-between items-center z-9998",
@@ -100,17 +103,17 @@ export default function Header({ className }: { className?: string }) {
       <AnimatePresence mode="wait">
         {!hidden && (
           <motion.nav
-            variants={containerVariants}
+            variants={CONTAINER_VARIANTS}
             initial="hidden"
             animate="visible"
-            exit="exit"
+            exit="hidden"
             className={cn(
               "flex gap-4 md:gap-8 items-center text-sm tracking-wide font-light transition-colors",
               bgTheme === "light" ? "text-dark-1" : "text-light-2"
             )}
           >
             {NAV_LINKS.map((l, i) => (
-              <motion.section key={i} variants={linkVariants}>
+              <motion.section key={i} variants={LINK_VARIANTS}>
                 <Link href={l.href}>{l.name}</Link>
               </motion.section>
             ))}
@@ -119,4 +122,6 @@ export default function Header({ className }: { className?: string }) {
       </AnimatePresence>
     </header>
   );
-}
+});
+
+export default Header;
