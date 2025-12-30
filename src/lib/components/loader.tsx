@@ -111,7 +111,7 @@ function Message() {
         animate={{ scaleY: 1, opacity: 1 }}
         exit={{ scaleY: 1, opacity: 0 }}
         key={message}
-        className="text-center font-helvetica font-light h-4 origin-top"
+        className="text-center font-light h-4 origin-top"
         layout
       >
         {message}

@@ -3,9 +3,10 @@ import { useState } from "react";
 import Header from "./lib/components/header";
 import Loader from "./lib/components/loader";
 import NoiseOverlay from "./lib/components/noise-overlay";
+import Hero from "./lib/pages/hero";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -20,21 +21,10 @@ function App() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ ease: "easeIn" }}
-            className="relative min-h-screen h-full w-full bg-light-1"
+            className="relative h-full bg-light-1"
           >
             <Header className="w-full fixed top-0" />
-            <section
-              data-bg-theme="dark"
-              className="bg-dark-2 h-screen p-page snap-start"
-            ></section>
-            <section
-              data-bg-theme="light"
-              className="bg-light-1 h-screen p-page snap-start"
-            ></section>
-            <section
-              data-bg-theme="dark"
-              className="bg-dark-2 h-screen p-page snap-start"
-            ></section>
+            <Hero />
           </motion.main>
         )}
       </AnimatePresence>

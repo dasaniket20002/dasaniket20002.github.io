@@ -9,10 +9,10 @@ export default function NoiseOverlay() {
   );
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-9999">
+    <div className="fixed inset-0 pointer-events-none z-9999 mix-blend-screen">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="size-full"
+        className="size-full bg-black"
         viewBox={`0 0 ${vb.w} ${vb.h}`}
         preserveAspectRatio="none"
       >
@@ -25,7 +25,7 @@ export default function NoiseOverlay() {
           />
         </filter>
 
-        <rect width="100%" height="100%" filter="url(#noise)" opacity="0.4" />
+        <rect width="100%" height="100%" filter="url(#noise)" opacity="0.25" />
       </svg>
     </div>
   );

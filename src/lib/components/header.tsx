@@ -2,8 +2,6 @@ import {
   AnimatePresence,
   motion,
   useAnimationFrame,
-  useMotionValueEvent,
-  useScroll,
   type Variants,
 } from "motion/react";
 import { useEffect, useState } from "react";
@@ -35,13 +33,13 @@ const HEADER_INITIAL_DELAY = 1500;
 export default function Header({ className }: { className?: string }) {
   const [hidden, setHidden] = useState(true);
   const [bgTheme, setBGTheme] = useState<"light" | "dark">("dark");
-  const { scrollY } = useScroll();
+  // const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    if (latest - previous > 10) setHidden(true);
-    if (previous - latest > 5) setHidden(false);
-  });
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   const previous = scrollY.getPrevious() ?? 0;
+  //   if (latest - previous > 10) setHidden(true);
+  //   if (previous - latest > 5) setHidden(false);
+  // });
 
   useAnimationFrame(() => {
     const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
@@ -81,7 +79,7 @@ export default function Header({ className }: { className?: string }) {
     <header
       id="header"
       className={cn(
-        "px-4 md:px-8 h-header flex gap-4 md:gap-8 justify-between items-center",
+        "px-4 md:px-16 h-header flex gap-4 md:gap-8 justify-between items-center z-9998",
         className
       )}
     >
@@ -107,14 +105,14 @@ export default function Header({ className }: { className?: string }) {
             animate="visible"
             exit="exit"
             className={cn(
-              "flex gap-4 md:gap-8 items-center text-sm md:text-base font-helvetica font-light transition-colors",
+              "flex gap-4 md:gap-8 items-center text-sm tracking-wide font-light transition-colors",
               bgTheme === "light" ? "text-dark-1" : "text-light-2"
             )}
           >
             {NAV_LINKS.map((l, i) => (
-              <Link href={l.href} key={i} variants={linkVariants}>
-                {l.name}
-              </Link>
+              <motion.section key={i} variants={linkVariants}>
+                <Link href={l.href}>{l.name}</Link>
+              </motion.section>
             ))}
           </motion.nav>
         )}

@@ -7,6 +7,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 
   --light-1: oklch(0.9454 0.0231 93.33);
   --light-2: oklch(0.861 0.0322 91.05);
@@ -34,7 +35,7 @@
 }
 
 body {
-  @apply bg-light-1;
+  @apply bg-light-1 scroll-smooth font-helvetica antialiased;
 }
 
 * {
@@ -53,6 +54,10 @@ body {
   height: calc(var(--spacing) * 10) /* 2.5rem = 40px */;
 }
 
-@utility p-page {
-  padding-top: calc(var(--spacing) * 10);
+@utility h-page {
+  height: calc(100vh - var(--spacing) * 10);
+}
+
+@utility m-page {
+  margin-top: calc(var(--spacing) * 10);
 }
