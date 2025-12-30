@@ -1,9 +1,8 @@
-import { IconArrowRight } from "@tabler/icons-react";
+import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
 import Button from "../components/button";
 import Container from "../components/container";
 import QuarterSpark from "../components/quarter-spark";
 import SVGText from "../components/svg-text";
-import TextRoll from "../components/text-roll";
 import { cn } from "../utils";
 
 export default function Hero({ className }: { className?: string }) {
@@ -58,8 +57,18 @@ export default function Hero({ className }: { className?: string }) {
           DEVELOPER
         </SVGText>
         <div className="w-full flex justify-between items-center">
-          <Button text="Know More" />
-          <Button text="Let's Connect" icon={<IconArrowRight />} />
+          <Button
+            variant="light"
+            text="Know More"
+            icon={<IconArrowDown className="stroke-2 [stroke-linecap:round]" />}
+          />
+          <Button
+            variant="dark"
+            text="Let's Connect"
+            icon={
+              <IconArrowRight className="stroke-2 [stroke-linecap:round]" />
+            }
+          />
         </div>
       </div>
     </Container>

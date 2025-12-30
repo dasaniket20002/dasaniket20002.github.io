@@ -3,84 +3,86 @@ import {
   useAnimationControls,
   type HTMLMotionProps,
 } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { forwardRef, useCallback, useEffect, useRef } from "react";
 import { cn } from "../utils";
 
-export default function TextRoll({
-  children,
-  className,
-  hovered,
-  ...motionProps
-}: {
+type TextRollProps = {
   children?: string;
   className?: string;
   hovered?: boolean;
-} & HTMLMotionProps<"span">) {
-  const isAnimating = useRef(false);
-  const controls = useAnimationControls();
-  const characters = children?.split("") || [];
+} & HTMLMotionProps<"span">;
 
-  const handleHover = useCallback(async () => {
-    if (isAnimating.current) return;
-    isAnimating.current = true;
+const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
+  ({ children, className, hovered, ...motionProps }, ref) => {
+    const isAnimating = useRef(false);
+    const controls = useAnimationControls();
+    const characters = children?.split("") || [];
 
-    await controls.start((i) => ({
-      y: "-100%",
-      transition: { delay: i / 100, ease: "backOut" },
-    }));
-    controls.set({ y: "0%" });
+    const handleHover = useCallback(async () => {
+      if (isAnimating.current) return;
+      isAnimating.current = true;
 
-    isAnimating.current = false;
-  }, [controls]);
+      await controls.start((i) => ({
+        y: "-100%",
+        transition: { delay: i / 100, ease: "backOut" },
+      }));
+      controls.set({ y: "0%" });
 
-  useEffect(() => {
-    if (hovered === undefined) return;
-    handleHover();
-  }, [hovered, handleHover]);
+      isAnimating.current = false;
+    }, [controls]);
 
-  return (
-    <motion.span
-      onMouseEnter={() => {
-        if (hovered === undefined) handleHover();
-      }}
-      onMouseLeave={() => {
-        if (hovered === undefined) handleHover();
-      }}
-      className={cn(
-        "relative flex flex-col h-[1em] overflow-hidden",
-        className
-      )}
-      {...motionProps}
-    >
-      {/* Row 1: The Original Text */}
-      <span className="flex h-[1em] leading-[1em]">
-        {characters.map((char, i) => (
-          <motion.span
-            key={`char1-${i}`}
-            custom={i}
-            animate={controls}
-            initial={{ y: "0%" }}
-            className="inline-block"
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
-      </span>
+    useEffect(() => {
+      if (hovered === undefined) return;
+      handleHover();
+    }, [hovered, handleHover]);
 
-      {/* Row 2: The Coming-from-bottom Text */}
-      <span className="flex h-[1em] leading-[1em]">
-        {characters.map((char, i) => (
-          <motion.span
-            key={`char2-${i}`}
-            custom={i}
-            animate={controls}
-            initial={{ y: "0%" }}
-            className="inline-block"
-          >
-            {char === " " ? "\u00A0" : char}
-          </motion.span>
-        ))}
-      </span>
-    </motion.span>
-  );
-}
+    return (
+      <motion.span
+        ref={ref}
+        onMouseEnter={() => {
+          if (hovered === undefined) handleHover();
+        }}
+        onMouseLeave={() => {
+          if (hovered === undefined) handleHover();
+        }}
+        className={cn(
+          "relative flex flex-col h-[1em] overflow-hidden",
+          className
+        )}
+        {...motionProps}
+      >
+        {/* Row 1: The Original Text */}
+        <span className="flex h-[1em] leading-[1em]">
+          {characters.map((char, i) => (
+            <motion.span
+              key={`char1-${i}`}
+              custom={i}
+              animate={controls}
+              initial={{ y: "0%" }}
+              className="inline-block"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
+        </span>
+
+        {/* Row 2: The Coming-from-bottom Text */}
+        <span className="flex h-[1em] leading-[1em]">
+          {characters.map((char, i) => (
+            <motion.span
+              key={`char2-${i}`}
+              custom={i}
+              animate={controls}
+              initial={{ y: "0%" }}
+              className="inline-block"
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
+        </span>
+      </motion.span>
+    );
+  }
+);
+
+export default TextRoll;
