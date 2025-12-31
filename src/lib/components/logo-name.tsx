@@ -1,6 +1,7 @@
 import {
   AnimatePresence,
   motion,
+  stagger,
   type HTMLMotionProps,
   type Variants,
 } from "motion/react";
@@ -22,10 +23,10 @@ const LETTER_VARIANTS: Variants = {
 
 const CONTAINER_VARIANTS: Variants = {
   hidden: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: { delayChildren: stagger(0.025, { from: -1 }) },
   },
   visible: {
-    transition: { staggerChildren: 0.05, delayChildren: 0.1 },
+    transition: { delayChildren: stagger(0.025) },
   },
 };
 

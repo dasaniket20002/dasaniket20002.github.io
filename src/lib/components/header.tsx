@@ -114,7 +114,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
           >
             {NAV_LINKS.map((l, i) => (
               <motion.section key={i} variants={LINK_VARIANTS}>
-                <Link href={l.href}>{l.name}</Link>
+                <Link href={l.href} text={l.name} />
               </motion.section>
             ))}
           </motion.nav>
