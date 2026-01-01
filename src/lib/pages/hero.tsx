@@ -101,7 +101,7 @@ export default function Hero({ className }: { className?: string }) {
       <div className="absolute bottom-0 w-full">
         <ScrollVelocity
           texts={[
-            <span className="text-sm font-helvetica font-light px-6 py-2 space-x-12">
+            <span className="px-6 py-2 space-x-12">
               <span className="tracking-wide">
                 Available for collaboration at&nbsp;
                 <a href="#" className="font-normal">
@@ -110,13 +110,14 @@ export default function Hero({ className }: { className?: string }) {
               </span>
               <span>\</span>
             </span>,
-            <span className="text-sm font-helvetica font-light px-6 py-2 space-x-12">
+            <span className="px-6 py-2 space-x-12">
               <span className="tracking-wide">Scroll Down</span>
               <span>\</span>
             </span>,
           ]}
           velocity={60}
           numCopies={10}
+          className="text-sm font-helvetica font-light text-dark-1"
         />
       </div>
     </div>
