@@ -35,6 +35,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        initial={{ scale: 1 }}
+        whileTap={{ scale: 0.8 }}
       >
         <AnimatePresence mode="popLayout">
           <TextRoll key="text" hovered={hovered} layout>

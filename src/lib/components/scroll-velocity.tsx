@@ -9,7 +9,7 @@ import {
   useVelocity,
 } from "motion/react";
 import React, { useRef } from "react";
-import { useElementSize } from "../hooks/useElementSize";
+import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 
 interface VelocityMapping {

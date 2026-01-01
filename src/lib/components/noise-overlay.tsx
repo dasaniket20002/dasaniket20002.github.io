@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useWindowSize } from "../hooks/useWindowSize";
+import { useWindowSize } from "../hooks/use-window-size";
 
 export default function NoiseOverlay() {
   const { width, height } = useWindowSize();
