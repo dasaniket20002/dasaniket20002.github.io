@@ -7,7 +7,7 @@ import Hero from "./lib/pages/hero";
 import Work from "./lib/pages/work";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>
