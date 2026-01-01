@@ -4,9 +4,10 @@ import Header from "./lib/components/header";
 import Loader from "./lib/components/loader";
 import NoiseOverlay from "./lib/components/noise-overlay";
 import Hero from "./lib/pages/hero";
+import Work from "./lib/pages/work";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -23,8 +24,9 @@ function App() {
             transition={{ ease: "easeIn" }}
             className="relative h-full bg-light-1"
           >
-            <Header className="w-full fixed top-0" />
+            <Header className="w-full sticky top-0" />
             <Hero />
+            <Work />
           </motion.main>
         )}
       </AnimatePresence>

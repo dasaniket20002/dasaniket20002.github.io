@@ -1,13 +1,13 @@
-import { motion, type SVGMotionProps } from "motion/react";
+import { motion, type HTMLMotionProps } from "motion/react";
 import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils";
 
 type SVGTextProps = {
   children?: string;
   className?: string;
-} & SVGMotionProps<SVGSVGElement>;
+} & HTMLMotionProps<"span">;
 
-const SVGText = forwardRef<SVGSVGElement, SVGTextProps>(
+const SVGText = forwardRef<HTMLSpanElement, SVGTextProps>(
   ({ children, className, ...motionProps }, ref) => {
     const textRef = useRef<SVGTextElement>(null);
     const [boxDimm, setBoxDimm] = useState({ x: 0, y: 0, w: 0, h: 0 });
@@ -44,26 +44,30 @@ const SVGText = forwardRef<SVGSVGElement, SVGTextProps>(
     }, [children, className]);
 
     return (
-      <motion.svg
+      <motion.span
         ref={ref}
-        viewBox={`${boxDimm.x} ${boxDimm.y} ${boxDimm.w} ${boxDimm.h}`}
-        width={boxDimm.w}
-        height={boxDimm.h}
-        className={cn("relative overflow-visible", className)}
+        className={cn("relative", className)}
         {...motionProps}
       >
-        <text
-          ref={textRef}
-          x="0"
-          y="0"
-          dominantBaseline="hanging"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-          paintOrder="stroke"
+        <motion.svg
+          viewBox={`${boxDimm.x} ${boxDimm.y} ${boxDimm.w} ${boxDimm.h}`}
+          width={boxDimm.w}
+          height={boxDimm.h}
+          className="overflow-visible"
         >
-          {children}
-        </text>
-      </motion.svg>
+          <text
+            ref={textRef}
+            x="0"
+            y="0"
+            dominantBaseline="hanging"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            paintOrder="stroke"
+          >
+            {children}
+          </text>
+        </motion.svg>
+      </motion.span>
     );
   }
 );
