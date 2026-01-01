@@ -25,7 +25,7 @@ export default function Hero({ className }: { className?: string }) {
       ref={containerRef}
       data-bg-theme="light"
       className={cn(
-        "h-page w-full text-dark-1 -space-y-4 relative",
+        "min-h-page pt-[5vh] w-full text-dark-1 -space-y-4 relative flex flex-col",
         "bg-light-1 place-content-center place-items-center",
         className
       )}
@@ -168,20 +168,12 @@ export default function Hero({ className }: { className?: string }) {
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 initial={{ clipPath: "inset(50% 50% 50% 50%)" }}
                 animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.6,
-                  ease: "anticipate",
-                }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "anticipate" }}
               />
               <motion.section
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.75,
-                  ease: "anticipate",
-                }}
+                transition={{ duration: 0.8, delay: 0.75, ease: "anticipate" }}
                 className="absolute size-[50%] md:size-[60%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-8 md:border-[0.25vw] border-amber-400 outline-16 md:outline-[0.5vw] outline-amber-400 outline-offset-4"
               />
               <motion.img
@@ -190,11 +182,7 @@ export default function Hero({ className }: { className?: string }) {
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                 initial={{ clipPath: "inset(50% 50% 50% 50%)" }}
                 animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.6,
-                  ease: "anticipate",
-                }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "anticipate" }}
               />
             </motion.div>
             <section className="text-start self-center uppercase tracking-wide leading-10 font-extralight text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap">
@@ -224,7 +212,7 @@ export default function Hero({ className }: { className?: string }) {
         )}
       </AnimatePresence>
 
-      <motion.div layout className="relative flex flex-col gap-2">
+      <motion.div layout className="relative flex flex-col gap-2 m-0">
         <AnimatePresence mode="popLayout">
           {revealContent && (
             <motion.section
@@ -305,7 +293,7 @@ export default function Hero({ className }: { className?: string }) {
       {revealContent && (
         <motion.div
           layout
-          className="absolute bottom-0 w-full"
+          className="w-full h-12 mt-auto place-self-end"
           initial={{ opacity: 0, clipPath: "inset(0 50% 0 50%)" }}
           animate={{ opacity: 1, clipPath: "inset(0 0% 0 0%)" }}
           transition={{ delay: 1.1, ease: "easeInOut" }}

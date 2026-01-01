@@ -58,6 +58,10 @@ body {
   height: calc(100vh - var(--spacing) * 10);
 }
 
+@utility min-h-page {
+  min-height: calc(100vh - var(--spacing) * 10);
+}
+
 @utility mt-page {
   margin-top: calc(var(--spacing) * 10);
 }
