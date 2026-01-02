@@ -32,6 +32,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --header-height: calc(var(--spacing) * 10) /* 2.5rem = 40px */;
 }
 
 body {
@@ -51,21 +53,21 @@ body {
 }
 
 @utility h-header {
-  height: calc(var(--spacing) * 10) /* 2.5rem = 40px */;
+  height: var(--header-height);
 }
 
 @utility h-page {
-  height: calc(100vh - var(--spacing) * 10);
+  height: calc(100vh - var(--header-height));
 }
 
 @utility min-h-page {
-  min-height: calc(100vh - var(--spacing) * 10);
+  min-height: calc(100vh - var(--header-height));
 }
 
 @utility mt-page {
-  margin-top: calc(var(--spacing) * 10);
+  margin-top: var(--header-height);
 }
 
 @utility pt-page {
-  padding-top: calc(var(--spacing) * 10);
+  padding-top: var(--header-height);
 }

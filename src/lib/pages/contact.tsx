@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { cn } from "../utils";
 import { useElementSize } from "../hooks/use-element-size";
 
-export default function Work({ className }: { className?: string }) {
+export default function Contact({ className }: { className?: string }) {
   const headRef = useRef<HTMLDivElement>(null);
   const { height: headHeight } = useElementSize(headRef);
   return (
@@ -12,8 +12,8 @@ export default function Work({ className }: { className?: string }) {
         data-bg-theme="light"
         className="bg-light-1 flex justify-between items-end px-4 md:px-16 font-think-loved sticky top-0 pt-page"
       >
-        <h2 className="text-light-2 text-5xl trim-text-caps">dg/01</h2>
-        <h1 className="text-dark-2 text-8xl trim-text-caps">work</h1>
+        <h2 className="text-light-2 text-5xl trim-text-caps">dg/04</h2>
+        <h1 className="text-dark-2 text-8xl trim-text-caps">contact</h1>
       </div>
       <div
         className="bg-dark-2 h-[calc(100vh-var(--head-height))]"

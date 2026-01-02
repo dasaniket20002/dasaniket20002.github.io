@@ -2,8 +2,8 @@ import {
   AnimatePresence,
   motion,
   useAnimationFrame,
-  useMotionValueEvent,
-  useScroll,
+  // useMotionValueEvent,
+  // useScroll,
   type Variants,
 } from "motion/react";
 import { forwardRef, useEffect, useState } from "react";
@@ -35,13 +35,13 @@ const HEADER_INITIAL_DELAY = 1500;
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const [hidden, setHidden] = useState(true);
   const [bgTheme, setBGTheme] = useState<"light" | "dark">("dark");
-  const { scrollY } = useScroll();
+  // const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    if (latest - previous > 10) setHidden(true);
-    if (previous - latest > 5) setHidden(false);
-  });
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   const previous = scrollY.getPrevious() ?? 0;
+  //   if (latest - previous > 10) setHidden(true);
+  //   if (previous - latest > 5) setHidden(false);
+  // });
 
   useAnimationFrame(() => {
     const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
