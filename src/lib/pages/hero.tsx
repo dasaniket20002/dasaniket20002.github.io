@@ -139,12 +139,13 @@ export default function Hero({ className }: { className?: string }) {
                 animate={{ clipPath: "inset(0 0% 0 0)" }}
                 transition={{ duration: 0.8, delay: 0.7, ease: "easeInOut" }}
               >
-                LET'S BUILD YOUR FIRST
+                LET'S BUILD YOUR
               </motion.p>
               <motion.p
                 initial={{ clipPath: "inset(0 100% 0 0)" }}
                 animate={{ clipPath: "inset(0 0% 0 0)" }}
                 transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
+                className="italic font-light"
               >
                 BUSINESS WEBSITE
               </motion.p>
@@ -191,21 +192,24 @@ export default function Hero({ className }: { className?: string }) {
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.7, ease: "easeInOut" }}
               >
-                \ WEB DESIGN (UI/UX)
+                <span className="font-light">\</span>
+                &nbsp;WEB&nbsp;DESIGN&nbsp;(UI/UX)
               </motion.p>
               <motion.p
                 initial={{ clipPath: "inset(0 0 0 100%)" }}
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
               >
-                \ WEB DEVELOPER
+                <span className="font-light">\</span>
+                &nbsp;WEB&nbsp;DEVELOPER
               </motion.p>
               <motion.p
                 initial={{ clipPath: "inset(0 0 0 100%)" }}
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.8, ease: "easeInOut" }}
               >
-                \ CREATIVE DESIGN
+                <span className="font-light">\</span>
+                &nbsp;CREATIVE&nbsp;DESIGN
               </motion.p>
             </section>
           </motion.div>
@@ -293,7 +297,7 @@ export default function Hero({ className }: { className?: string }) {
       {revealContent && (
         <motion.div
           layout
-          className="w-full h-12 mt-auto place-self-end"
+          className="w-full mt-auto place-self-end justify-self-end self-end"
           initial={{ opacity: 0, clipPath: "inset(0 50% 0 50%)" }}
           animate={{ opacity: 1, clipPath: "inset(0 0% 0 0%)" }}
           transition={{ delay: 1.1, ease: "easeInOut" }}
@@ -310,13 +314,16 @@ export default function Hero({ className }: { className?: string }) {
                 <span>\</span>
               </span>,
               <span className="px-6 py-2 space-x-12">
-                <span className="tracking-wide">Scroll Down</span>
+                <span className="tracking-wider font-extralight">
+                  Scroll Down
+                </span>
                 <span>\</span>
               </span>,
             ]}
-            velocity={60}
+            velocity={30}
             numCopies={12}
             className="text-sm font-helvetica font-light text-dark-1"
+            containerClassName="pt-4 pb-1"
           />
         </motion.div>
       )}

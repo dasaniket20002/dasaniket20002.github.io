@@ -20,8 +20,8 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         {...motionProps}
         className={cn(
           "relative md:p-1 py-1 flex transition-colors",
-          theme === "light" && (hovered ? "text-light-2" : "text-dark-1"),
-          theme === "dark" && (hovered ? "text-dark-1" : "text-light-2"),
+          theme === "light" && "text-dark-1",
+          theme === "dark" && "text-light-2",
           className
         )}
         onMouseEnter={() => setHovered(true)}
@@ -35,7 +35,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               exit={{ clipPath: "inset(0 100% 0 0)" }}
               transition={{ ease: "backOut" }}
               className={cn(
-                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 top-0",
+                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-px mask-l-from-0",
                 theme === "light" && "bg-dark-1",
                 theme === "dark" && "bg-light-1"
               )}

@@ -86,11 +86,21 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         className
       )}
     >
+      <motion.span
+        className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
+        initial={false}
+        animate={{
+          "--header-bg":
+            bgTheme === "light"
+              ? "var(--color-light-1)"
+              : "var(--color-dark-2)",
+        }}
+      />
       <AnimatePresence mode="wait">
         {!hidden && (
           <LogoName
             className={cn(
-              "text-lg md:text-xl cursor-pointer transition-colors",
+              "text-lg md:text-xl cursor-pointer transition-colors z-9998",
               bgTheme === "light" ? "text-dark-1" : "text-light-2"
             )}
             initial={{ y: -24, opacity: 0 }}
