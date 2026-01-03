@@ -10,6 +10,8 @@ import { forwardRef, useEffect, useState } from "react";
 import { cn } from "../utils";
 import Link from "./link";
 import LogoName from "./logo-name";
+import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useLenis } from "lenis/react";
 
 type HeaderProps = { className?: string };
 
@@ -42,6 +44,9 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   //   if (latest - previous > 10) setHidden(true);
   //   if (previous - latest > 5) setHidden(false);
   // });
+
+  const { lockSnap, unlockSnap } = useStickySnap();
+  const lenis = useLenis();
 
   useAnimationFrame(() => {
     const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
@@ -106,6 +111,11 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             initial={{ y: -24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -24, opacity: 0 }}
+            onClick={(e) => {
+              e.preventDefault();
+              lockSnap();
+              lenis?.scrollTo("#top", { onComplete: unlockSnap });
+            }}
           />
         )}
       </AnimatePresence>

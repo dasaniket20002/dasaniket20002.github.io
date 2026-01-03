@@ -34,6 +34,7 @@ function App() {
             <Loader key="loader" onComplete={() => setIsLoading(false)} />
           ) : (
             <motion.main
+              id="top"
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
