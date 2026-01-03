@@ -2,6 +2,8 @@ import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
 import { forwardRef, useState } from "react";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
+import { useLenis } from "lenis/react";
+import { useStickySnap } from "../hooks/use-sticky-snap";
 
 type LinkProps = {
   href: string;
@@ -13,6 +15,9 @@ type LinkProps = {
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ href, text, className, theme = "light", ...motionProps }, ref) => {
     const [hovered, setHovered] = useState(false);
+    const lenis = useLenis();
+    const { lockSnap, unlockSnap } = useStickySnap();
+
     return (
       <motion.a
         ref={ref}
@@ -26,18 +31,38 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         )}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={(e) => {
+          e.preventDefault();
+          lockSnap();
+          lenis?.scrollTo(href, { onComplete: unlockSnap });
+        }}
       >
         <AnimatePresence mode="popLayout">
           {hovered && (
             <motion.span
+              key="underline"
               initial={{ clipPath: "inset(0 100% 0 0)" }}
               animate={{ clipPath: "inset(0 0% 0 0)" }}
               exit={{ clipPath: "inset(0 100% 0 0)" }}
               transition={{ ease: "backOut" }}
               className={cn(
                 "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-px mask-l-from-0",
-                theme === "light" && "bg-dark-1",
+                theme === "light" && "bg-dark-2",
                 theme === "dark" && "bg-light-1"
+              )}
+            />
+          )}
+          {hovered && (
+            <motion.span
+              key="background"
+              initial={{ clipPath: "inset(0 100% 0 0)" }}
+              animate={{ clipPath: "inset(0 0% 0 0)" }}
+              exit={{ clipPath: "inset(0 100% 0 0)" }}
+              transition={{ ease: "backOut" }}
+              className={cn(
+                "absolute left-0 md:left-1 right-0 md:right-1 bottom-px top-0",
+                theme === "light" && "bg-light-1",
+                theme === "dark" && "bg-dark-2"
               )}
             />
           )}

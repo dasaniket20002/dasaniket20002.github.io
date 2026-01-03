@@ -24,10 +24,10 @@ const CONTAINER_VARIANTS: Variants = {
 };
 
 const NAV_LINKS = [
-  { name: "Work", href: "#" },
-  { name: "Services", href: "#" },
-  { name: "About", href: "#" },
-  { name: "Contact", href: "#" },
+  { name: "Work", href: "#work" },
+  { name: "Services", href: "#services" },
+  { name: "About", href: "#about" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const HEADER_INITIAL_DELAY = 1500;

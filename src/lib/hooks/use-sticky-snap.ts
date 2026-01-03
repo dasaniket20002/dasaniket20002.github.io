@@ -1,89 +1,135 @@
-import { useLenis } from "lenis/react";
-import { easeOut, useMotionValue } from "motion/react";
-import { useEffect, useRef } from "react";
+// import { useLenis } from "lenis/react";
+// import { easeOut, useMotionValue } from "motion/react";
+// import { useEffect, useRef } from "react";
 
-interface StickySnapOptions {
-  headerRef: React.RefObject<HTMLElement | null>;
-  snapOffset?: number;
-  duration?: number;
-  snapTopBottom?: boolean;
-}
+import type { MotionValue } from "motion/react";
+import { createContext, useContext } from "react";
 
-export function useStickySnap({
-  headerRef,
-  snapOffset = 100,
-  duration = 0.8,
-  snapTopBottom = true,
-}: StickySnapOptions) {
-  const lenis = useLenis();
+// interface StickySnapOptions {
+//   headerRef: React.RefObject<HTMLElement | null>;
+//   snapOffset?: number;
+//   duration?: number;
+//   snapTopBottom?: boolean;
+// }
 
-  const sectionsRef = useRef<HTMLElement[]>([]);
-  const snappingRef = useRef(false);
-  const lastScrollRef = useRef(0);
+// export function useStickySnap({
+//   headerRef,
+//   snapOffset = 100,
+//   duration = 0.8,
+//   snapTopBottom = true,
+// }: StickySnapOptions) {
+//   const lenis = useLenis();
 
-  const activeIndex = useMotionValue(0);
-  const isSnapping = useMotionValue(0); // 0 or 1
+//   const sectionsRef = useRef<HTMLElement[]>([]);
+//   const snappingRef = useRef(false);
+//   const lastScrollRef = useRef(0);
 
-  const registerSection = (el: HTMLElement | null) => {
-    if (el && !sectionsRef.current.includes(el)) {
-      sectionsRef.current.push(el);
-    }
-  };
+//   const activeIndex = useMotionValue(0);
+//   const isSnapping = useMotionValue(0); // 0 or 1
 
-  useEffect(() => {
-    if (!lenis || !headerRef.current) return;
+//   const programmaticScrollRef = useRef(false);
 
-    const headerHeight = headerRef.current.offsetHeight;
+//   const lockSnap = () => {
+//     programmaticScrollRef.current = true;
+//   };
 
-    const onScroll = ({ scroll }: { scroll: number }) => {
-      if (snappingRef.current) return;
+//   const unlockSnap = () => {
+//     programmaticScrollRef.current = false;
+//   };
 
-      const scrollingDown = scroll > lastScrollRef.current;
-      lastScrollRef.current = scroll;
+//   const registerSection = (el: HTMLElement | null) => {
+//     if (el && !sectionsRef.current.includes(el)) {
+//       sectionsRef.current.push(el);
+//     }
+//   };
 
-      if (!scrollingDown && !snapTopBottom) return;
+//   useEffect(() => {
+//     if (!lenis || !headerRef.current) return;
 
-      for (let i = 0; i < sectionsRef.current.length; i++) {
-        const section = sectionsRef.current[i];
-        const rect = section.getBoundingClientRect();
-        const targetY = scroll + rect.top - headerHeight;
-        const distance = Math.abs(scroll - targetY);
+//     const headerHeight = headerRef.current.offsetHeight;
 
-        if (distance < snapOffset) {
-          snappingRef.current = true;
+//     const onScroll = ({ scroll }: { scroll: number }) => {
+//       if (snappingRef.current) return;
+//       if (programmaticScrollRef.current) return;
 
-          // sync Motion
-          activeIndex.set(i);
-          isSnapping.set(1);
+//       const scrollingDown = scroll > lastScrollRef.current;
+//       lastScrollRef.current = scroll;
 
-          lenis.scrollTo(targetY, { duration, easing: easeOut });
+//       if (!scrollingDown && !snapTopBottom) return;
 
-          // unlock after animation
-          setTimeout(() => {
-            snappingRef.current = false;
-            isSnapping.set(0);
-          }, duration * 1000 + 80);
+//       for (let i = 0; i < sectionsRef.current.length; i++) {
+//         const section = sectionsRef.current[i];
+//         const rect = section.getBoundingClientRect();
+//         const targetY = scroll + rect.top - headerHeight;
+//         const distance = Math.abs(scroll - targetY);
 
-          break;
-        }
-      }
-    };
+//         if (distance < snapOffset) {
+//           snappingRef.current = true;
 
-    lenis.on("scroll", onScroll);
-    return () => lenis.off("scroll", onScroll);
-  }, [
-    lenis,
-    headerRef,
-    snapOffset,
-    duration,
-    activeIndex,
-    isSnapping,
-    snapTopBottom,
-  ]);
+//           // sync Motion
+//           activeIndex.set(i);
+//           isSnapping.set(1);
 
-  return {
-    registerSection,
-    activeIndex, // MotionValue<number>
-    isSnapping, // MotionValue<0 | 1>
-  };
+//           lenis.scrollTo(targetY, { duration, easing: easeOut });
+
+//           // unlock after animation
+//           setTimeout(() => {
+//             snappingRef.current = false;
+//             isSnapping.set(0);
+//           }, duration * 1000 + 80);
+
+//           break;
+//         }
+//       }
+//     };
+
+//     lenis.on("scroll", onScroll);
+//     return () => lenis.off("scroll", onScroll);
+//   }, [
+//     lenis,
+//     headerRef,
+//     snapOffset,
+//     duration,
+//     activeIndex,
+//     isSnapping,
+//     snapTopBottom,
+//   ]);
+
+//   return {
+//     registerSection,
+//     activeIndex,
+//     isSnapping,
+//     lockSnap,
+//     unlockSnap,
+//   };
+// }
+
+export type SnapSection = {
+  el: HTMLElement;
+  offset: number;
+};
+
+export type StickySnapContextValue = {
+  registerSection: (
+    el: HTMLElement | null,
+    options?: { offset?: number }
+  ) => void;
+  lockSnap: () => void;
+  unlockSnap: () => void;
+  activeIndex: MotionValue<number>;
+  isSnapping: MotionValue<0 | 1>;
+  sectionsRef: React.RefObject<SnapSection[]>;
+  activeElement: React.RefObject<HTMLElement | null>;
+};
+
+export const StickySnapContext = createContext<StickySnapContextValue | null>(
+  null
+);
+
+export function useStickySnap() {
+  const ctx = useContext(StickySnapContext);
+  if (!ctx) {
+    throw new Error("useStickySnap must be used within StickySnapProvider");
+  }
+  return ctx;
 }
