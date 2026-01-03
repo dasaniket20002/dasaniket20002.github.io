@@ -10,6 +10,8 @@ import { forwardRef, useEffect, useState } from "react";
 import { cn } from "../utils";
 import Link from "./link";
 import LogoName from "./logo-name";
+import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useLenis } from "lenis/react";
 
 type HeaderProps = { className?: string };
 
@@ -24,10 +26,10 @@ const CONTAINER_VARIANTS: Variants = {
 };
 
 const NAV_LINKS = [
-  { name: "Work", href: "#" },
-  { name: "Services", href: "#" },
-  { name: "About", href: "#" },
-  { name: "Contact", href: "#" },
+  { name: "Work", href: "#work" },
+  { name: "Services", href: "#services" },
+  { name: "About", href: "#about" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const HEADER_INITIAL_DELAY = 1500;
@@ -42,6 +44,9 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   //   if (latest - previous > 10) setHidden(true);
   //   if (previous - latest > 5) setHidden(false);
   // });
+
+  const { lockSnap, unlockSnap } = useStickySnap();
+  const lenis = useLenis();
 
   useAnimationFrame(() => {
     const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
@@ -86,16 +91,31 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         className
       )}
     >
+      <motion.span
+        className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
+        initial={false}
+        animate={{
+          "--header-bg":
+            bgTheme === "light"
+              ? "var(--color-light-1)"
+              : "var(--color-dark-2)",
+        }}
+      />
       <AnimatePresence mode="wait">
         {!hidden && (
           <LogoName
             className={cn(
-              "text-lg md:text-xl cursor-pointer transition-colors",
+              "text-lg md:text-xl cursor-pointer transition-colors z-9998",
               bgTheme === "light" ? "text-dark-1" : "text-light-2"
             )}
             initial={{ y: -24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -24, opacity: 0 }}
+            onClick={(e) => {
+              e.preventDefault();
+              lockSnap();
+              lenis?.scrollTo("#top", { onComplete: unlockSnap });
+            }}
           />
         )}
       </AnimatePresence>

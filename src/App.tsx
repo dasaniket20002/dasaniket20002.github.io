@@ -9,6 +9,7 @@ import Hero from "./lib/pages/hero";
 import Services from "./lib/pages/services";
 import Work from "./lib/pages/work";
 import { ReactLenis, type LenisRef } from "lenis/react";
+import { StickySnapProvider } from "./lib/contexts/sticky-snap-provider";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,28 +27,31 @@ function App() {
 
   return (
     <ReactLenis root options={{ autoRaf: false }} ref={lenisRef}>
-      <NoiseOverlay />
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <Loader key="loader" onComplete={() => setIsLoading(false)} />
-        ) : (
-          <motion.main
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ ease: "easeIn" }}
-            className="relative h-full bg-light-1"
-          >
-            <Header className="w-full sticky top-0" />
-            <Hero />
-            <Work />
-            <Services />
-            <About />
-            <Contact />
-          </motion.main>
-        )}
-      </AnimatePresence>
+      <StickySnapProvider>
+        <NoiseOverlay />
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <Loader key="loader" onComplete={() => setIsLoading(false)} />
+          ) : (
+            <motion.main
+              id="top"
+              key="content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeIn" }}
+              className="relative h-full bg-light-1"
+            >
+              <Header className="w-full sticky top-0" />
+              <Hero />
+              <Work />
+              <Services />
+              <About />
+              <Contact />
+            </motion.main>
+          )}
+        </AnimatePresence>
+      </StickySnapProvider>
     </ReactLenis>
   );
 }

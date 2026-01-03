@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { cn } from "../utils";
 import { useElementSize } from "../hooks/use-element-size";
 import { useStickySnap } from "../hooks/use-sticky-snap";
@@ -7,10 +7,20 @@ import { motion } from "motion/react";
 export default function Contact({ className }: { className?: string }) {
   const headRef = useRef<HTMLDivElement>(null);
   const { height: headHeight } = useElementSize(headRef);
-  const { registerSection } = useStickySnap({ headerRef: headRef });
+
+  const section1 = useRef<HTMLElement>(null);
+  const section2 = useRef<HTMLElement>(null);
+  const { registerSection } = useStickySnap();
+  useLayoutEffect(() => {
+    if (!section1.current || !section2.current || !headHeight) return;
+
+    registerSection(section1.current, { offset: headHeight });
+    registerSection(section2.current, { offset: headHeight });
+  }, [registerSection, headHeight]);
 
   return (
     <div
+      id="contact"
       className={cn("min-h-screen w-full relative", className)}
       style={{ "--head-height": `${headHeight}px` } as React.CSSProperties}
     >
@@ -24,7 +34,7 @@ export default function Contact({ className }: { className?: string }) {
       </section>
       <section
         className="bg-dark-2 h-[calc(100vh-var(--head-height))] place-content-center place-items-center"
-        ref={registerSection}
+        ref={section1}
       >
         <motion.p
           initial={{ opacity: 0 }}
@@ -38,7 +48,7 @@ export default function Contact({ className }: { className?: string }) {
       </section>
       <section
         className="bg-dark-2 h-[calc(100vh-var(--head-height))] place-content-center place-items-center"
-        ref={registerSection}
+        ref={section2}
       >
         <motion.p
           initial={{ opacity: 0 }}
