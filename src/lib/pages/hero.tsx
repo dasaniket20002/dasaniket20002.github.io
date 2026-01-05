@@ -7,6 +7,7 @@ import { ScrollVelocity } from "../components/scroll-velocity";
 import SVGText from "../components/svg-text";
 import { useScreenShake } from "../hooks/use-screen-shake";
 import { cn } from "../utils";
+import TextRoll from "../components/text-roll";
 
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +37,7 @@ export default function Hero({ className }: { className?: string }) {
           {revealContent && (
             <motion.section
               layout
-              className="w-full uppercase font-extralight text-4xl flex items-center justify-between px-4"
+              className="w-full uppercase font-light text-4xl flex items-center justify-between px-4"
               initial={{ clipPath: "inset(0 50% 0 50%)" }}
               animate={{ clipPath: "inset(0 0% 0 0%)" }}
               transition={{ delay: 0.5, ease: "easeInOut" }}
@@ -48,7 +49,7 @@ export default function Hero({ className }: { className?: string }) {
         </AnimatePresence>
         <motion.section
           layout
-          className="relative -space-x-2 flex select-none cursor-pointer"
+          className="relative -space-x-2 flex select-none"
           initial={{ scale: 1.2, opacity: 0.3 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ ease: "backOut" }}
@@ -69,9 +70,10 @@ export default function Hero({ className }: { className?: string }) {
                 filter:
                   "drop-shadow(0px 0px 7px color-mix(in oklch, var(--color-dark-1) 50%, transparent))",
                 zIndex: 9998,
+                cursor: "grabbing",
               }}
               transition={{ filter: { ease: "easeOut" } }}
-              className="font-think-loved trim-text-caps text-[clamp(4rem,23cqw,16rem)] stroke-light-1 stroke-16 fill-dark-1"
+              className="font-think-loved trim-text-caps text-[clamp(4rem,23cqw,16rem)] stroke-light-1 stroke-16 fill-dark-1 cursor-grab"
               data-screen-shakable={true}
             >
               {c}
@@ -133,7 +135,7 @@ export default function Hero({ className }: { className?: string }) {
                 </svg>
               </motion.section>
             </motion.button>
-            <section className="text-end self-center uppercase tracking-wide leading-8 font-extralight text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap flex flex-col">
+            <section className="text-end self-center uppercase tracking-wide leading-8 font-light text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap flex flex-col">
               <motion.p
                 initial={{ clipPath: "inset(0 100% 0 0)" }}
                 animate={{ clipPath: "inset(0 0% 0 0)" }}
@@ -145,7 +147,7 @@ export default function Hero({ className }: { className?: string }) {
                 initial={{ clipPath: "inset(0 100% 0 0)" }}
                 animate={{ clipPath: "inset(0 0% 0 0)" }}
                 transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
-                className="italic font-light"
+                className="italic font-normal"
               >
                 BUSINESS WEBSITE
               </motion.p>
@@ -186,30 +188,33 @@ export default function Hero({ className }: { className?: string }) {
                 transition={{ duration: 0.8, delay: 0.6, ease: "anticipate" }}
               />
             </motion.div>
-            <section className="text-start self-center uppercase tracking-wide leading-10 font-extralight text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap">
+            <section className="text-start self-center uppercase tracking-wide leading-10 space-y-3 font-light text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap">
               <motion.p
                 initial={{ clipPath: "inset(0 0 0 100%)" }}
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.7, ease: "easeInOut" }}
               >
-                <span className="font-light">\</span>
-                &nbsp;WEB&nbsp;DESIGN&nbsp;(UI/UX)
+                <TextRoll className="w-min px-2 py-1">
+                  \&nbsp;WEB&nbsp;DESIGN&nbsp;(UI/UX)
+                </TextRoll>
               </motion.p>
               <motion.p
                 initial={{ clipPath: "inset(0 0 0 100%)" }}
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
               >
-                <span className="font-light">\</span>
-                &nbsp;WEB&nbsp;DEVELOPER
+                <TextRoll className="w-min px-2 py-1">
+                  \&nbsp;WEB&nbsp;DEVELOPER
+                </TextRoll>
               </motion.p>
               <motion.p
                 initial={{ clipPath: "inset(0 0 0 100%)" }}
                 animate={{ clipPath: "inset(0 0 0 0%)" }}
                 transition={{ duration: 0.8, delay: 0.8, ease: "easeInOut" }}
               >
-                <span className="font-light">\</span>
-                &nbsp;CREATIVE&nbsp;DESIGN
+                <TextRoll className="w-min px-2 py-1">
+                  \&nbsp;CREATIVE&nbsp;DESIGN
+                </TextRoll>
               </motion.p>
             </section>
           </motion.div>
@@ -236,7 +241,7 @@ export default function Hero({ className }: { className?: string }) {
         </AnimatePresence>
         <motion.section
           layout
-          className="relative -space-x-2 flex select-none cursor-pointer"
+          className="relative -space-x-2 flex select-none"
           initial={{ scale: 1.2, opacity: 0.3 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ ease: "backOut" }}
@@ -257,9 +262,10 @@ export default function Hero({ className }: { className?: string }) {
                 filter:
                   "drop-shadow(0px 0px 7px color-mix(in oklch, var(--color-dark-1) 50%, transparent))",
                 zIndex: 9998,
+                cursor: "grabbing",
               }}
               transition={{ filter: { ease: "easeOut" } }}
-              className="font-think-loved trim-text-caps text-[clamp(3rem,18cqw,14rem)] stroke-light-1 stroke-16 fill-dark-1 z-2"
+              className="font-think-loved trim-text-caps text-[clamp(3rem,18cqw,14rem)] stroke-light-1 stroke-16 fill-dark-1 z-2 cursor-grab"
               data-screen-shakable={true}
             >
               {c}

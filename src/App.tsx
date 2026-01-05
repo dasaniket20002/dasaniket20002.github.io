@@ -12,7 +12,7 @@ import { ReactLenis, type LenisRef } from "lenis/react";
 import { StickySnapProvider } from "./lib/contexts/sticky-snap-provider";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
     function update(data: { timestamp: number }) {
