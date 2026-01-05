@@ -46,7 +46,7 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
           if (hovered === undefined) handleHover();
         }}
         className={cn(
-          "relative flex flex-col h-[1em] overflow-hidden",
+          "relative flex flex-col h-[1em] overflow-hidden select-none",
           className
         )}
         {...motionProps}

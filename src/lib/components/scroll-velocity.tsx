@@ -45,6 +45,7 @@ interface ScrollVelocityProps {
   scrollerClassName?: string;
   parallaxStyle?: React.CSSProperties;
   scrollerStyle?: React.CSSProperties;
+  containerClassName?: string;
 }
 
 export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
@@ -60,6 +61,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   scrollerClassName,
   parallaxStyle,
   scrollerStyle,
+  containerClassName,
 }) => {
   function VelocityText({
     children,
@@ -161,7 +163,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   }
 
   return (
-    <section>
+    <section className={containerClassName}>
       {texts.map((text, index) => (
         <VelocityText
           key={index}
