@@ -2,9 +2,9 @@ import { P5Canvas, type P5CanvasInstance } from "@p5-wrapper/react";
 import { IconLoader2 } from "@tabler/icons-react";
 import { animate, AnimatePresence, motion, useMotionValue } from "motion/react";
 import { forwardRef, useEffect, useState } from "react";
-import { randomRange, wait } from "../utils";
-import Key from "./key";
-import LogoName from "./logo-name";
+import { randomRange, wait } from "../../utils";
+import LogoName from "../../components/logo-name";
+import Key from "../../components/key";
 
 const LOADING_MESSAGES = [
   "Aligning pixels...",

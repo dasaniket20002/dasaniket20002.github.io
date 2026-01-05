@@ -1,13 +1,13 @@
 import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import Button from "../components/button";
-import QuarterSpark from "../components/quarter-spark";
-import { ScrollVelocity } from "../components/scroll-velocity";
-import SVGText from "../components/svg-text";
-import { useScreenShake } from "../hooks/use-screen-shake";
-import { cn } from "../utils";
-import TextRoll from "../components/text-roll";
+import Button from "../../components/button";
+import QuarterSpark from "../../components/quarter-spark";
+import { ScrollVelocity } from "../../components/scroll-velocity";
+import SVGText from "../../components/svg-text";
+import { useScreenShake } from "../../hooks/use-screen-shake";
+import { cn } from "../../utils";
+import TextRoll from "../../components/text-roll";
 
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);

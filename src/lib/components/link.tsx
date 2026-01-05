@@ -41,14 +41,22 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           {hovered && (
             <motion.span
               key="underline"
-              initial={{ clipPath: "inset(0 100% 0 0)" }}
-              animate={{ clipPath: "inset(0 0% 0 0)" }}
-              exit={{ clipPath: "inset(0 100% 0 0)" }}
-              transition={{ ease: "backOut" }}
+              initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
+              animate={{
+                clipPath: ["inset(0% 0% 0% 0%)", "inset(0% 0% 0% 100%)"],
+              }}
+              exit={{
+                clipPath: [
+                  "inset(0% 0% 0% 100%)",
+                  "inset(0% 0% 0% 0%)",
+                  "inset(0% 100% 0% 0%)",
+                ],
+              }}
+              transition={{ ease: "backOut", duration: 0.5 }}
               className={cn(
-                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-px mask-l-from-0",
-                theme === "light" && "bg-dark-2",
-                theme === "dark" && "bg-light-1"
+                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-px opacity-75",
+                theme === "light" && "bg-dark-1",
+                theme === "dark" && "bg-light-2"
               )}
             />
           )}
