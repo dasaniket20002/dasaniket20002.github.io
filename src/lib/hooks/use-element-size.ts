@@ -1,22 +1,39 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useElementSize<T extends HTMLElement>(
   ref: React.RefObject<T | null>
 ): { width: number; height: number } {
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-  useLayoutEffect(() => {
-    function updateSize() {
-      if (ref.current) {
-        setWidth(ref.current.offsetWidth);
-        setHeight(ref.current.offsetHeight);
-      }
-    }
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => window.removeEventListener("resize", updateSize);
+  useEffect(() => {
+    const getSize = () => {
+      if (!ref.current) return { width: 0, height: 0 };
+      return {
+        width: ref.current.clientWidth,
+        height: ref.current.clientHeight,
+      };
+    };
+
+    let frame = 0;
+
+    const handleResize = () => {
+      // Throttle updates to the next animation frame
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setContainerSize(getSize()));
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+
+    // Initialize size
+    handleResize();
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
   }, [ref]);
 
-  return { width, height };
+  return containerSize;
 }

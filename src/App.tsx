@@ -12,7 +12,7 @@ import About from "./lib/pages/04_about/about";
 import Contact from "./lib/pages/05_contact/contact";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
     function update(data: { timestamp: number }) {

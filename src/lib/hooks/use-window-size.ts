@@ -28,7 +28,6 @@ export function useWindowSize() {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
     };
-    // Intentionally run effect only once on mount
   }, []);
 
   return windowSize;

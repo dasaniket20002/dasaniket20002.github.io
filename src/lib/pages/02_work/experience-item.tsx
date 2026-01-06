@@ -42,12 +42,12 @@ const ExperienceItem = forwardRef<
           scale: 1.02,
           transition: { delay: 0, ease: "anticipate" },
         }}
-        onHoverStart={() =>
+        onMouseEnter={() =>
           color.set(
             "color-mix(in oklch, var(--color-light-2) 80%, transparent)"
           )
         }
-        onHoverEnd={() => color.set("var(--color-dark-1)")}
+        onMouseLeave={() => color.set("var(--color-dark-1)")}
       >
         <motion.div
           className={cn(

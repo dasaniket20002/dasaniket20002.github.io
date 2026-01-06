@@ -1,7 +1,7 @@
 import { animate, useAnimation } from "motion/react";
 import { useCallback } from "react";
 
-type ShakeOptions = {
+export type ShakeOptions = {
   strength?: number; // px
   duration?: number; // seconds
 };

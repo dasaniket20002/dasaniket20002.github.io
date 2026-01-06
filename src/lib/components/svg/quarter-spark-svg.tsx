@@ -1,4 +1,4 @@
-export default function QuarterSpark({ className }: { className?: string }) {
+export default function QuarterSparkSVG({ className }: { className?: string }) {
   return (
     <svg
       width="60"
