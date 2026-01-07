@@ -5,6 +5,8 @@ import { cn } from "../utils";
 import { infiniteMenuSketch } from "./sketches/infinite-menu-sketch";
 import fragShader from "../components/shaders/infinite-menu-fs.glsl?raw";
 import vertShader from "../components/shaders/infinite-menu-vs.glsl?raw";
+import SVGText from "./svg-text";
+import { IconArrowUpRight } from "@tabler/icons-react";
 
 export type MenuItem = {
   image: string;
@@ -21,10 +23,10 @@ export type InfiniteMenuProps = {
 
 const defaultItems: MenuItem[] = [
   {
-    image: "https://picsum.photos/900/900?grayscale",
+    image: `${window.location.origin}/assets/illustrations/undraw_under-construction_hdrn.svg`,
     link: "https://google.com/",
-    title: "Default Item",
-    description: "Pass items array to show more",
+    title: "WIP. Literally.",
+    description: "Your project can live here.",
   },
 ];
 
@@ -64,8 +66,8 @@ const InfiniteMenu: React.FC<InfiniteMenuProps> = ({
   const pointerEvents = useTransform(isMoving, [0, 1], ["auto", "none"]);
   const transitionDuration = useTransform(isMoving, [0, 1], ["500ms", "100ms"]);
 
-  const titleX = useTransform(isMoving, [0, 1], ["0%", "-20%"]);
-  const descriptionX = useTransform(isMoving, [0, 1], ["-90%", "-60%"]);
+  const titleX = useTransform(isMoving, [0, 1], ["0%", "-4rem"]);
+  const descriptionX = useTransform(isMoving, [0, 1], ["-4rem", "0rem"]);
   const buttonBottom = useTransform(isMoving, [0, 1], ["3rem", "-5rem"]);
   const buttonScale = useTransform(isMoving, [0, 1], [1, 0]);
 
@@ -82,8 +84,8 @@ const InfiniteMenu: React.FC<InfiniteMenuProps> = ({
       />
       {activeItem && (
         <div className="absolute inset-0 pointer-events-none">
-          <motion.h2
-            className="select-none absolute font-black text-4xl md:text-[4rem] left-4 md:left-[1.6em] top-1/2 transform -translate-y-1/2 text-white"
+          <SVGText
+            className="select-none absolute font-think-loved text-4xl md:text-[4rem] left-4 md:left-[1.6em] top-1/2 -translate-y-1/2 fill-light-2 stroke-dark-2 stroke-8"
             style={{
               opacity,
               pointerEvents,
@@ -92,10 +94,13 @@ const InfiniteMenu: React.FC<InfiniteMenuProps> = ({
             }}
           >
             {activeItem.title}
-          </motion.h2>
+          </SVGText>
 
           <motion.p
-            className="select-none absolute max-w-[10ch] text-lg md:text-[1.5rem] top-1/2 right-4 md:right-[1%] text-white/80 text-right"
+            className={cn(
+              "select-none max-w-32 md:max-w-64 absolute text-lg md:text-[1.5rem] top-1/2 -translate-y-1/2 right-4 md:right-[1.6em] text-light-2 text-right",
+              "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2"
+            )}
             style={{
               opacity,
               pointerEvents,
@@ -108,8 +113,8 @@ const InfiniteMenu: React.FC<InfiniteMenuProps> = ({
 
           <motion.div
             onClick={handleButtonClick}
-            className="absolute left-1/2 z-10 w-14 h-14 grid place-items-center bg-cyan-400 border-4 border-black rounded-full cursor-pointer"
-            whileHover={{ scale: 1.1 }}
+            className="absolute left-1/2 -translate-x-1/2 z-10 size-14 grid place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
+            whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
             style={{
               opacity,
               pointerEvents,
@@ -118,9 +123,7 @@ const InfiniteMenu: React.FC<InfiniteMenuProps> = ({
               scale: buttonScale,
             }}
           >
-            <span className="select-none relative text-black top-0.5 text-2xl font-bold">
-              ↗
-            </span>
+            <IconArrowUpRight className="stroke-2 stroke-light-2" />
           </motion.div>
         </div>
       )}
