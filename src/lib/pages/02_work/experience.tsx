@@ -17,7 +17,6 @@ const Experience = forwardRef<
     [cubesContainerSize]
   );
   const cellGap = useMemo(() => cubeSize / 2, [cubeSize]);
-  console.log(cubesContainerSize);
 
   return (
     <motion.section
