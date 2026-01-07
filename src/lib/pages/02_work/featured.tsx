@@ -1,5 +1,10 @@
-import { motion, type HTMLMotionProps } from "motion/react";
-import { forwardRef } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  type HTMLMotionProps,
+} from "motion/react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import InfiniteMenuP5 from "../../components/infinite-menu-p5";
 import { cn } from "../../utils";
 
@@ -57,18 +62,32 @@ import { cn } from "../../utils";
 const Featured = forwardRef<
   HTMLElement,
   { className?: string } & HTMLMotionProps<"section">
->(({ className, ...motionProps }, forwardedRef) => {
+>(({ className, ...motionProps }, ref) => {
+  const containerRef = useRef<HTMLElement>(null);
+  useImperativeHandle(ref, () => containerRef.current as HTMLElement);
+
+  const inView = useInView(containerRef, {
+    margin: "-50% 0% -50% 0%",
+  });
+
   return (
     <motion.section
-      ref={forwardedRef}
+      ref={containerRef}
       {...motionProps}
       className={cn("relative h-[calc(100vh-var(--head-height))]", className)}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ ease: "backOut", delay: 0.25, duration: 1 }}
-      viewport={{ once: true, margin: "0% 0% -30% 0%" }}
     >
-      <InfiniteMenuP5 scale={0.75} />
+      <AnimatePresence mode="popLayout">
+        {inView && (
+          <InfiniteMenuP5
+            scale={0.75}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ ease: "easeIn", duration: 1 }}
+            className="mask-b-from-128 mask-t-from-128"
+          />
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 });
