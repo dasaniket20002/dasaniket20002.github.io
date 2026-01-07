@@ -23,8 +23,8 @@ export type InfiniteMenuProps = {
 
 const defaultItems: MenuItem[] = [
   {
-    image: `${window.location.origin}/assets/illustrations/undraw_under-construction_hdrn.svg`,
-    link: "https://google.com/",
+    image: `${window.location.origin}/assets/illustrations/undraw_under-construction_hdrn.png`,
+    link: "https://google.com/", // TODO: Literally download my resume
     title: "WIP. Literally.",
     description: "Your project can live here.",
   },
