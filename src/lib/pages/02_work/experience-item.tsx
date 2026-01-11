@@ -38,10 +38,6 @@ const ExperienceItem = forwardRef<
           "grid grid-cols-subgrid col-span-full size-min p-4 rounded-lg hover:bg-dark-1/10 cursor-pointer",
           className
         )}
-        whileHover={{
-          scale: 1.02,
-          transition: { delay: 0, ease: "anticipate" },
-        }}
         onMouseEnter={() =>
           color.set(
             "color-mix(in oklch, var(--color-light-2) 80%, transparent)"

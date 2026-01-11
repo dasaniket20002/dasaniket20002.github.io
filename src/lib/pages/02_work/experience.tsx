@@ -1,6 +1,5 @@
 import { motion, type HTMLMotionProps } from "motion/react";
-import { forwardRef, useMemo, useRef } from "react";
-import Cubes from "../../components/cubes";
+import { forwardRef, useRef } from "react";
 import HorizontalDivider from "../../components/horizontal-divider";
 import { useElementSize } from "../../hooks/use-element-size";
 import { cn } from "../../utils";
@@ -12,12 +11,6 @@ const Experience = forwardRef<
 >(({ className, ...motionProps }, ref) => {
   const cubesContainerRef = useRef<HTMLDivElement>(null);
   const cubesContainerSize = useElementSize(cubesContainerRef);
-  const cubeSize = useMemo(
-    () => Math.min(cubesContainerSize.width, cubesContainerSize.height) * 0.2,
-    [cubesContainerSize]
-  );
-  const cellGap = useMemo(() => cubeSize / 2, [cubeSize]);
-
   return (
     <motion.section
       className={cn(
@@ -56,15 +49,6 @@ const Experience = forwardRef<
             className="size-full aspect-auto"
           />
         </motion.section>
-        {/* <motion.div
-          initial={{ scale: 1.05, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          transition={{ ease: "backOut", delay: 0.25, duration: 1 }}
-          viewport={{ once: true, margin: "0% 0% -30% 0%" }}
-          className="h-[20vh] lg:h-[40vh] lg:py-12 aspect-square"
-        >
-          <ExperienceSVG className="size-full fill-light-2" />
-        </motion.div> */}
 
         <section className="py-12 grid grid-cols-[1fr_5fr_3fr] auto-rows-min gap-x-4 gap-y-3 self-center flex-1">
           <HorizontalDivider
@@ -83,11 +67,13 @@ const Experience = forwardRef<
             location={"Chennai, India (On-Site)"}
             period={"Jul/2024 - Sep/2025"}
             initial={{ y: 24, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ ease: "backOut", delay: 0.25, duration: 0.5 }}
+            whileInView={{ y: 0, opacity: 1, transition: { delay: 0.25 } }}
+            whileHover={{
+              scale: 1.02,
+              transition: { delay: 0, ease: "anticipate" },
+            }}
+            transition={{ ease: "backOut", duration: 0.5 }}
             viewport={{ once: true, margin: "0% 0% -30% 0%" }}
-            // drag
-            // dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
           />
 
           <HorizontalDivider
@@ -107,11 +93,13 @@ const Experience = forwardRef<
             location={"Mumbai, India (Remote)"}
             period={"Jun/2023 - Oct/2023"}
             initial={{ y: 24, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ ease: "backOut", delay: 0.25, duration: 0.5 }}
+            whileInView={{ y: 0, opacity: 1, transition: { delay: 0.25 } }}
+            whileHover={{
+              scale: 1.02,
+              transition: { delay: 0, ease: "anticipate" },
+            }}
+            transition={{ ease: "backOut", duration: 0.5 }}
             viewport={{ once: true, margin: "0% 0% -30% 0%" }}
-            // drag
-            // dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
           />
 
           <HorizontalDivider
@@ -128,19 +116,43 @@ const Experience = forwardRef<
         initial={{ scale: 1.05, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         transition={{ ease: "backOut", delay: 0.25, duration: 1 }}
-        viewport={{ once: true, margin: "0% 0% -20% 0%" }}
+        viewport={{ once: false, margin: "0% 0% -20% 0%" }}
         ref={cubesContainerRef}
-        className="relative flex-1"
+        className="relative flex-1 mb-8 flex flex-col gap-2 items-center justify-end"
       >
         {cubesContainerSize.height >= 128 && (
-          <Cubes
-            layout="responsive"
-            parentContainerRef={cubesContainerRef}
-            cubeSize={cubeSize}
-            cellGap={cellGap}
-            className="size-full"
-            shadow
-          />
+          <>
+            <div className="relative w-px bg-dark-1 h-16 opacity-60">
+              <motion.span
+                initial={{ y: "4px" }}
+                animate={{
+                  y: [
+                    "4px",
+                    "48px",
+                    "40px",
+                    "48px",
+                    "44px",
+                    "48px",
+                    "48px",
+                    "32px",
+                    "24px",
+                    "16px",
+                    "8px",
+                    "4px",
+                  ],
+                }}
+                transition={{
+                  ease: "linear",
+                  duration: 1,
+                  delay: 1,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  repeatDelay: 2,
+                }}
+                className="rounded-full bg-dark-2 border border-dark-1 size-3 absolute left-1/2 -translate-x-1/2 hover:animate-pulse"
+              />
+            </div>
+          </>
         )}
       </motion.div>
     </motion.section>

@@ -74,7 +74,10 @@ const Featured = forwardRef<
     <motion.section
       ref={containerRef}
       {...motionProps}
-      className={cn("relative h-[calc(100vh-var(--head-height))]", className)}
+      className={cn(
+        "relative h-[calc(100vh-var(--head-height))] cursor-grab active:cursor-grabbing",
+        className
+      )}
     >
       <AnimatePresence mode="popLayout">
         {inView && (
@@ -84,7 +87,7 @@ const Featured = forwardRef<
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ ease: "easeIn", duration: 1 }}
-            className="mask-b-from-128 mask-t-from-128"
+            className="mask-b-from-172 mask-t-from-128"
           />
         )}
       </AnimatePresence>
