@@ -1,5 +1,5 @@
-import { motion, type HTMLMotionProps } from "motion/react";
-import { forwardRef } from "react";
+import { motion, useInView, type HTMLMotionProps } from "motion/react";
+import { forwardRef, useRef } from "react";
 import { cn } from "../../utils";
 import ExperienceItem from "./experience-item";
 
@@ -7,6 +7,12 @@ const Experience = forwardRef<
   HTMLElement,
   { className?: string } & HTMLMotionProps<"section">
 >(({ className, ...motionProps }, ref) => {
+  const inViewContainer = useRef<HTMLDivElement>(null);
+  const isInView = useInView(inViewContainer, {
+    once: false,
+    margin: "-25% 0% -75% 0%",
+  });
+
   return (
     <motion.section
       ref={ref}
@@ -23,64 +29,123 @@ const Experience = forwardRef<
           "lg:aspect-34/21 lg:grid-cols-[21fr_3fr_1fr_1fr_8fr] lg:grid-rows-[5fr_1fr_2fr_13fr]"
         )}
       >
-        {/* <div className="grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid">
-          <span
+        <div
+          ref={inViewContainer}
+          className="pointer-events-none grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1"
+        >
+          <motion.span
             className={cn(
-              "bg-red-300",
+              "bg-dark-2 origin-bottom outline outline-dark-1/10",
               "row-start-5 col-start-1 row-end-6 col-end-5",
               "lg:row-start-1 lg:col-start-1 lg:row-end-5 lg:col-end-2"
             )}
-          />
-          <span
+            animate={{
+              scaleY: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.5, delay: 0, ease: "easeInOut" }}
+          >
+            <span className="rounded-bl-full inline-block border-b border-l border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-orange-300",
+              "bg-dark-2 origin-right outline outline-dark-1/10",
               "row-start-1 col-start-4 row-end-5 col-end-5",
               "lg:row-start-4 lg:col-start-2 lg:row-end-5 lg:col-end-6"
             )}
-          />
-          <span
+            animate={{
+              scaleX: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.309, delay: 0.5, ease: "easeInOut" }}
+          >
+            <span className="rounded-br-full inline-block border-b border-r border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-teal-300",
+              "bg-dark-2 origin-top outline outline-dark-1/10",
               "row-start-1 col-start-1 row-end-2 col-end-4",
               "lg:row-start-1 lg:col-start-5 lg:row-end-4 lg:col-end-6"
             )}
-          />
-          <span
+            animate={{
+              scaleY: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.1909, delay: 0.809, ease: "easeInOut" }}
+          >
+            <span className="rounded-tr-full inline-block border-t border-r border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-green-300",
+              "bg-dark-2 origin-left outline outline-dark-1/10",
               "row-start-2 col-start-1 row-end-5 col-end-2",
               "lg:row-start-1 lg:col-start-2 lg:row-end-2 lg:col-end-5"
             )}
-          />
-          <span
+            animate={{
+              scaleX: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.1179, delay: 0.9999, ease: "easeInOut" }}
+          >
+            <span className="rounded-tl-full inline-block border-t border-l border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-cyan-300",
+              "bg-dark-2 origin-bottom outline outline-dark-1/10",
               "row-start-4 col-start-2 row-end-5 col-end-4",
               "lg:row-start-2 lg:col-start-2 lg:row-end-4 lg:col-end-3"
             )}
-          />
-          <span
+            animate={{
+              scaleY: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.0726, delay: 1.1178, ease: "easeInOut" }}
+          >
+            <span className="rounded-bl-full inline-block border-b border-l border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-amber-300",
+              "bg-dark-2 origin-right outline outline-dark-1/10",
               "row-start-2 col-start-3 row-end-4 col-end-4",
               "lg:row-start-3 lg:col-start-3 lg:row-end-4 lg:col-end-5"
             )}
-          />
-          <span
+            animate={{
+              scaleX: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.0448, delay: 1.1906, ease: "easeInOut" }}
+          >
+            <span className="rounded-br-full inline-block border-b border-r border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
             className={cn(
-              "bg-emerald-300",
-              "row-start-2 col-start-2 row-end-3 col-end-3",
-              "lg:row-start-2 lg:col-start-3 lg:row-end-3 lg:col-end-4"
-            )}
-          />
-          <span
-            className={cn(
-              "bg-blue-300",
+              "bg-dark-2 origin-top outline outline-dark-1/10",
               "row-start-3 col-start-2 row-end-4 col-end-3",
               "lg:row-start-2 lg:col-start-4 lg:row-end-3 lg:col-end-5"
             )}
-          />
-        </div> */}
+            animate={{
+              scaleY: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.0276, delay: 1.2354, ease: "easeInOut" }}
+          >
+            <span className="rounded-tr-full inline-block border-t border-r border-dark-1/50 size-full" />
+          </motion.span>
+          <motion.span
+            className={cn(
+              "bg-dark-2 origin-left outline outline-dark-1/10",
+              "row-start-2 col-start-2 row-end-3 col-end-3",
+              "lg:row-start-2 lg:col-start-3 lg:row-end-3 lg:col-end-4"
+            )}
+            animate={{
+              scaleX: isInView ? 0 : 1,
+              opacity: isInView ? 0.25 : 1,
+            }}
+            transition={{ duration: 0.017, delay: 1.263, ease: "easeInOut" }}
+          >
+            <span className="rounded-tl-full inline-block border-t border-l border-dark-1/50 size-full" />
+          </motion.span>
+        </div>
 
         <div className="grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid">
           <div
