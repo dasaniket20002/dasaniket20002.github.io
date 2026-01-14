@@ -18,6 +18,7 @@ import { createPortal } from "react-dom";
 import { cn } from "../utils";
 import useClickOutside from "../hooks/use-click-outside";
 import { IconX } from "@tabler/icons-react";
+import { useStickySnap } from "../hooks/use-sticky-snap";
 
 export type MorphingDialogContextType = {
   isOpen: boolean;
@@ -146,6 +147,8 @@ function MorphingDialogContent({
   const firstFocusableElement = useRef<HTMLElement>(null);
   const lastFocusableElement = useRef<HTMLElement>(null);
 
+  const { lockScroll, unlockScroll } = useStickySnap();
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -177,7 +180,8 @@ function MorphingDialogContent({
 
   useEffect(() => {
     if (isOpen) {
-      document.body.classList.add("overflow-hidden");
+      // document.body.classList.add("overflow-hidden");
+      lockScroll();
       const focusableElements = containerRef.current?.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
@@ -189,10 +193,11 @@ function MorphingDialogContent({
         firstFocusableElement.current.focus();
       }
     } else {
-      document.body.classList.remove("overflow-hidden");
+      // document.body.classList.remove("overflow-hidden");
+      unlockScroll();
       triggerRef.current?.focus();
     }
-  }, [isOpen, triggerRef]);
+  }, [isOpen, lockScroll, triggerRef, unlockScroll]);
 
   useClickOutside(containerRef, () => {
     if (isOpen) {

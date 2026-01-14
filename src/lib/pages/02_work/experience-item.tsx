@@ -54,7 +54,7 @@ const ExperienceItem = ({
         <div className="flex gap-4 items-center">
           <div
             className={cn(
-              "bg-dark-1 aspect-square w-16 rounded-lg place-items-center place-content-center flex-none",
+              "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center flex-none",
               imgClassName
             )}
           >
@@ -65,23 +65,23 @@ const ExperienceItem = ({
             />
           </div>
           <div>
-            <MorphingDialogTitle className="font-think-loved text-3xl tracking-wide whitespace-nowrap">
+            <MorphingDialogTitle className="font-think-loved text-xl lg:text-3xl tracking-wide whitespace-nowrap">
               {title}
             </MorphingDialogTitle>
-            <MorphingDialogSubtitle className="font-thin tracking-wider text-start">
+            <MorphingDialogSubtitle className="font-thin tracking-wider text-start text-sm lg:text-base">
               {company}
             </MorphingDialogSubtitle>
           </div>
         </div>
-        <div className="flex flex-col gap-1 text-dark-1 tracking-wide group-hover:text-light-2 transition-colors">
+        <div className="flex flex-col gap-1 text-dark-1 tracking-wide group-hover:text-light-2 transition-colors text-sm lg:text-base">
           <div className="flex gap-4 items-center">
-            <span className="w-16 place-items-center">
+            <span className="w-12 lg:w-16 place-items-center">
               <IconLocation className="size-4" />
             </span>
             <p>{location}</p>
           </div>
           <div className="flex gap-4 items-center">
-            <span className="w-16 place-items-center">
+            <span className="w-12 lg:w-16 place-items-center">
               <IconCalendar className="size-4" />
             </span>
             <p>{period}</p>
@@ -90,11 +90,11 @@ const ExperienceItem = ({
       </MorphingDialogTrigger>
 
       <MorphingDialogContainer>
-        <MorphingDialogContent className="p-6 pointer-events-auto relative flex h-auto w-full flex-col gap-6 overflow-hidden rounded-xl shadow-2xl border border-light-2/10 bg-dark-2 sm:w-lg">
+        <MorphingDialogContent className="p-6 pointer-events-auto relative flex h-auto flex-col gap-6 overflow-hidden rounded-xl shadow-2xl border border-light-2/10 bg-dark-2 m-4 w-full sm:w-lg">
           <div className="flex gap-6 items-center">
             <div
               className={cn(
-                "bg-dark-1 aspect-square w-16 rounded-lg place-items-center place-content-center",
+                "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center",
                 imgClassName
               )}
             >
@@ -105,10 +105,10 @@ const ExperienceItem = ({
               />
             </div>
             <div className="text-dark-1">
-              <MorphingDialogTitle className="font-think-loved text-3xl tracking-wide whitespace-nowrap">
+              <MorphingDialogTitle className="font-think-loved text-xl lg:text-3xl tracking-wide whitespace-nowrap">
                 {title}
               </MorphingDialogTitle>
-              <MorphingDialogSubtitle className="tracking-wide text-start">
+              <MorphingDialogSubtitle className="tracking-wide text-start text-sm lg:text-base">
                 {company}
               </MorphingDialogSubtitle>
             </div>
@@ -122,7 +122,7 @@ const ExperienceItem = ({
               exit: { opacity: 0, scale: 0.8, y: 100 },
             }}
             transition={{ delayChildren: stagger(0.5) }}
-            className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2"
+            className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2 text-sm lg:text-base font-light lg:font-normal"
           >
             {description.map((d, i) => (
               <motion.div

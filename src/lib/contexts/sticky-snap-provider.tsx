@@ -18,9 +18,12 @@ export function StickySnapProvider({
 
   const sectionsRef = useRef<SnapSection[]>([]);
   const snappingRef = useRef(false);
-  const programmaticScrollRef = useRef(false);
+  const lockedSnapRef = useRef(false);
   const lastScrollRef = useRef(0);
   const activeElement = useRef<HTMLElement>(null);
+
+  const lockedScrollRef = useRef(false);
+  const lockedScrollPositionRef = useRef<number | null>(null);
 
   const activeIndex = useMotionValue(0);
   const isSnapping = useMotionValue<0 | 1>(0);
@@ -41,19 +44,35 @@ export function StickySnapProvider({
   );
 
   const lockSnap = useCallback(() => {
-    programmaticScrollRef.current = true;
+    lockedSnapRef.current = true;
   }, []);
 
   const unlockSnap = useCallback(() => {
-    programmaticScrollRef.current = false;
+    lockedSnapRef.current = false;
+  }, []);
+
+  const lockScroll = useCallback(() => {
+    lockedScrollRef.current = true;
+    lockedScrollPositionRef.current = lastScrollRef.current;
+  }, []);
+
+  const unlockScroll = useCallback(() => {
+    lockedScrollRef.current = false;
+    lockedScrollPositionRef.current = null;
   }, []);
 
   useEffect(() => {
     if (!lenis) return;
 
     const onScroll = ({ scroll }: { scroll: number }) => {
+      if (lockedScrollRef.current) {
+        const lockPos = lockedScrollPositionRef.current ?? scroll;
+        lenis.scrollTo(lockPos, { duration: 0, immediate: true });
+        return;
+      }
+
       if (snappingRef.current) return;
-      if (programmaticScrollRef.current) return;
+      if (lockedSnapRef.current) return;
 
       const scrollingDown = scroll > lastScrollRef.current;
       lastScrollRef.current = scroll;
@@ -101,6 +120,8 @@ export function StickySnapProvider({
         registerSection,
         lockSnap,
         unlockSnap,
+        lockScroll,
+        unlockScroll,
         activeIndex,
         isSnapping,
         sectionsRef,

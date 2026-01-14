@@ -13,6 +13,8 @@ export type StickySnapContextValue = {
   ) => void;
   lockSnap: () => void;
   unlockSnap: () => void;
+  lockScroll: () => void;
+  unlockScroll: () => void;
   activeIndex: MotionValue<number>;
   isSnapping: MotionValue<0 | 1>;
   sectionsRef: React.RefObject<SnapSection[]>;
