@@ -1,5 +1,11 @@
 import { ReactLenis, type LenisRef } from "lenis/react";
-import { AnimatePresence, cancelFrame, frame, motion } from "motion/react";
+import {
+  AnimatePresence,
+  cancelFrame,
+  frame,
+  motion,
+  type FrameData,
+} from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import Header from "./lib/components/header";
 import NoiseOverlay from "./lib/components/noise-overlay";
@@ -15,18 +21,22 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
-    function update(data: { timestamp: number }) {
-      const time = data.timestamp;
-      lenisRef.current?.lenis?.raf(time);
+    function update({ timestamp }: FrameData) {
+      lenisRef.current?.lenis?.raf(timestamp);
     }
-
     frame.update(update, true);
-
     return () => cancelFrame(update);
   }, []);
 
   return (
-    <ReactLenis root options={{ autoRaf: false }} ref={lenisRef}>
+    <ReactLenis
+      root
+      options={{
+        autoRaf: false,
+        syncTouch: true,
+      }}
+      ref={lenisRef}
+    >
       <StickySnapProvider>
         <NoiseOverlay />
         <AnimatePresence mode="wait">
