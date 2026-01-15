@@ -1,4 +1,9 @@
-import { motion, useInView, type HTMLMotionProps } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  type HTMLMotionProps,
+} from "motion/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import SedimentaryGrooveP5 from "../../components/sedimentary-groove-p5";
 import { useWindowSize } from "../../hooks/use-window-size";
@@ -228,11 +233,39 @@ const Experience = forwardRef<
                 "lg:row-start-1 lg:col-start-1 lg:row-end-5 lg:col-end-2"
               )}
             >
-              <SedimentaryGrooveP5 className="w-32 h-8/10" />
-              <SedimentaryGrooveP5 className="w-32 h-8/10" />
-              <SedimentaryGrooveP5 className="w-32 h-8/10" />
-              <SedimentaryGrooveP5 className="w-32 h-8/10" />
-              <SedimentaryGrooveP5 className="w-32 h-8/10" />
+              <AnimatePresence mode="popLayout">
+                {isInView && (
+                  <SedimentaryGrooveP5
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ ease: "easeIn", duration: 0.5, delay: 1 }}
+                    className="w-32 h-8/10"
+                  />
+                )}
+              </AnimatePresence>
+              <AnimatePresence mode="popLayout">
+                {isInView && (
+                  <SedimentaryGrooveP5
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ ease: "easeIn", duration: 0.5, delay: 1.25 }}
+                    className="w-32 h-8/10"
+                  />
+                )}
+              </AnimatePresence>
+              <AnimatePresence mode="popLayout">
+                {isInView && (
+                  <SedimentaryGrooveP5
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ ease: "easeIn", duration: 0.5, delay: 1.5 }}
+                    className="w-32 h-8/10"
+                  />
+                )}
+              </AnimatePresence>
             </div>
           )}
           <div className="row-start-1 col-start-1 row-end-2 col-end-5 lg:row-start-1 lg:col-start-2 lg:row-end-2 lg:col-end-6 flex items-center justify-center p-4">

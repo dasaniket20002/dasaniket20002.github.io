@@ -52,54 +52,78 @@ const colorPalettes = [
 ];
 
 export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
+  // Initialize ALL variables with default values
   let _w = 0;
   let _h = 0;
-  let sedimentShader: p5.default.Shader;
-  let noiseTexture: p5.default.Graphics;
+  let sedimentShader: p5.default.Shader | null = null;
+  let noiseTexture: p5.default.Graphics | null = null;
   let paletteIdx = 0;
   let isNoiseReady = false;
   let isGenerating = false;
-  let loadingProgress = 0;
+  let isSetupComplete = false;
+  let pendingRegeneration = false;
+  let generationId = 0; // Track generation to handle race conditions
   let onLoadingChange: ((isLoading: boolean) => void) | undefined;
   let vertShader = "";
   let fragShader = "";
 
   p5.updateWithProps = (props) => {
-    const newW = props.width || p5.windowWidth;
-    const newH = props.height || p5.windowHeight;
+    // Store shaders FIRST - before any dimension checks
+    if (props.vertShader) vertShader = props.vertShader;
+    if (props.fragShader) fragShader = props.fragShader;
     onLoadingChange = props.onLoadingChange;
 
-    if (newW !== _w || newH !== _h) {
-      _w = newW;
-      _h = newH;
+    const newW = props.width || 0;
+    const newH = props.height || 0;
 
-      if (_w > 0 && _h > 0) {
+    // Skip if dimensions are invalid
+    if (newW <= 0 || newH <= 0) return;
+
+    const dimensionsChanged = newW !== _w || newH !== _h;
+    _w = newW;
+    _h = newH;
+
+    if (dimensionsChanged) {
+      if (isSetupComplete) {
         p5.resizeCanvas(_w, _h);
         regenerateNoise();
+      } else {
+        // Mark for regeneration after setup completes
+        pendingRegeneration = true;
       }
     }
-
-    vertShader = props.vertShader;
-    fragShader = props.fragShader;
   };
 
-  const generateNoiseTextureAsync = async (timestamp: number) => {
-    if (_w <= 0 || _h <= 0) return;
+  const generateNoiseTextureAsync = async (
+    currentGenerationId: number
+  ): Promise<boolean> => {
+    if (_w <= 0 || _h <= 0) return false;
 
     const rez = 0.0025;
     const chunkSize = 10000;
+    const timestamp = p5.random(0, Date.now());
 
+    // Cleanup previous texture
     if (noiseTexture) {
       noiseTexture.remove();
+      noiseTexture = null;
     }
-    noiseTexture = p5.createGraphics(_w, _h);
-    noiseTexture.pixelDensity(1);
-    noiseTexture.loadPixels();
+
+    // Create new graphics buffer
+    const newTexture = p5.createGraphics(_w, _h);
+    newTexture.pixelDensity(1);
+    newTexture.loadPixels();
 
     const totalPixels = _w * _h;
     let processed = 0;
 
     while (processed < totalPixels) {
+      // Check if this generation was superseded
+      if (currentGenerationId !== generationId) {
+        newTexture.remove();
+        return false;
+      }
+
       const end = Math.min(processed + chunkSize, totalPixels);
 
       for (let i = processed; i < end; i++) {
@@ -114,85 +138,152 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
         const randMult = p5.floor(p5.random(9, 11));
 
         const pos = i * 4;
-        noiseTexture.pixels[pos] = Math.floor(n * 255);
-        noiseTexture.pixels[pos + 1] = (randMult - 9) * 255;
-        noiseTexture.pixels[pos + 2] = 0;
-        noiseTexture.pixels[pos + 3] = 255;
+        newTexture.pixels[pos] = Math.floor(n * 255);
+        newTexture.pixels[pos + 1] = (randMult - 9) * 255;
+        newTexture.pixels[pos + 2] = 0;
+        newTexture.pixels[pos + 3] = 255;
       }
 
       processed = end;
-      loadingProgress = processed / totalPixels;
-
       await yieldToMain();
     }
 
-    noiseTexture.updatePixels();
+    // Final check before committing
+    if (currentGenerationId !== generationId) {
+      newTexture.remove();
+      return false;
+    }
+
+    newTexture.updatePixels();
+    noiseTexture = newTexture;
+    return true;
   };
 
   const regenerateNoise = async () => {
-    if (isGenerating) return;
+    // Prevent concurrent generation
+    if (isGenerating) {
+      pendingRegeneration = true;
+      return;
+    }
+
+    // Validate state
+    if (!isSetupComplete || _w <= 0 || _h <= 0) {
+      pendingRegeneration = true;
+      return;
+    }
 
     isGenerating = true;
     isNoiseReady = false;
-    loadingProgress = 0;
+    pendingRegeneration = false;
     onLoadingChange?.(true);
 
+    // Increment generation ID to invalidate any in-progress generation
+    const currentGenerationId = ++generationId;
+
+    // Randomize palette
     paletteIdx = p5.floor(p5.random(colorPalettes.length));
 
-    await generateNoiseTextureAsync(p5.random(0, Date.now()));
+    const success = await generateNoiseTextureAsync(currentGenerationId);
 
-    isNoiseReady = true;
+    // Only update state if this generation is still valid
+    if (success && currentGenerationId === generationId) {
+      isNoiseReady = true;
+      onLoadingChange?.(false);
+      p5.loop(); // Trigger redraw
+    }
+
     isGenerating = false;
-    onLoadingChange?.(false);
-    p5.loop();
+
+    // Handle any pending regeneration requests
+    if (pendingRegeneration) {
+      regenerateNoise();
+    }
   };
 
   p5.setup = async () => {
+    // Wait for valid dimensions
+    if (_w <= 0 || _h <= 0) {
+      // Retry setup on next frame
+      requestAnimationFrame(() => {
+        if (!isSetupComplete) {
+          p5.setup?.();
+        }
+      });
+      return;
+    }
+
+    // Wait for shaders to be available
+    if (!vertShader || !fragShader) {
+      requestAnimationFrame(() => {
+        if (!isSetupComplete) {
+          p5.setup?.();
+        }
+      });
+      return;
+    }
+
     p5.createCanvas(_w, _h, p5.WEBGL);
-    p5.noStroke();
     p5.pixelDensity(1);
+    p5.noStroke();
 
-    sedimentShader = p5.createShader(vertShader, fragShader);
-    paletteIdx = p5.floor(p5.random(colorPalettes.length));
+    // Create shader
+    try {
+      sedimentShader = p5.createShader(vertShader, fragShader);
+    } catch (e) {
+      console.error("Failed to create shader:", e);
+      return;
+    }
 
-    onLoadingChange?.(true);
+    isSetupComplete = true;
 
-    await generateNoiseTextureAsync(p5.random(0, Date.now()));
-    isNoiseReady = true;
-    onLoadingChange?.(false);
+    // Process any pending regeneration
+    await regenerateNoise();
   };
 
   p5.draw = () => {
-    p5.background(0);
+    // Clear with transparent background
+    p5.clear();
 
-    // Show loading progress bar while generating
-    if (!isNoiseReady || isGenerating) {
+    // Guard: ensure everything is ready
+    if (
+      !isSetupComplete ||
+      !sedimentShader ||
+      !noiseTexture ||
+      !isNoiseReady ||
+      _w <= 0 ||
+      _h <= 0
+    ) {
+      return;
+    }
+
+    try {
+      p5.shader(sedimentShader);
+
+      sedimentShader.setUniform("u_noiseTexture", noiseTexture);
+
+      const palette = colorPalettes[paletteIdx];
+      for (let i = 0; i < 5; i++) {
+        const { h, s, b } = palette[i];
+        sedimentShader.setUniform(`u_color${i}`, [h, s, b]);
+      }
+
+      p5.plane(_w, _h);
       p5.resetShader();
-      p5.push();
-      p5.fill(50);
-      p5.noStroke();
-      p5.rect(-_w / 4, -5, _w / 2, 10);
-      p5.fill(255);
-      p5.rect(-_w / 4, -5, (_w / 2) * loadingProgress, 10);
-      p5.pop();
-      return;
+    } catch (e) {
+      console.error("Draw error:", e);
     }
 
-    if (!sedimentShader || !noiseTexture || _w === 0 || _h === 0) {
-      return;
-    }
-
-    p5.shader(sedimentShader);
-
-    sedimentShader.setUniform("u_noiseTexture", noiseTexture);
-
-    const palette = colorPalettes[paletteIdx];
-    for (let i = 0; i < 5; i++) {
-      const { h, s, b } = palette[i];
-      sedimentShader.setUniform(`u_color${i}`, [h, s, b]);
-    }
-
-    p5.plane(_w, _h);
     p5.noLoop();
+  };
+
+  p5.remove = () => {
+    if (noiseTexture) {
+      noiseTexture.remove();
+      noiseTexture = null;
+    }
+    isSetupComplete = false;
+    isNoiseReady = false;
+    isGenerating = false;
+    generationId++;
   };
 };
