@@ -71,20 +71,6 @@ body {
   padding-top: var(--header-height);
 }
 
-@utility golden-grid-container {
-  container-type: size;
-  container-name: golden-grid;
-}
-
-@utility golden-grid-query {
-  @container golden-grid (min-aspect-ratio:34/21) {
-    @apply h-full;
-  }
-  @container golden-grid (max-aspect-ratio:34/21) {
-    @apply w-full;
-  }
-}
-
 /* header {
   background-image: radial-gradient(transparent 1px, var(--color-light-1) 1px);
   background-size: 4px 4px;

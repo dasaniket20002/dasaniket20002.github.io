@@ -51,3 +51,13 @@ export function mapRange(
 ): number {
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
+
+export const yieldToMain = (): Promise<void> => {
+  return new Promise((resolve) => {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => resolve(), { timeout: 16 });
+    } else {
+      setTimeout(resolve, 0);
+    }
+  });
+};
