@@ -9,7 +9,7 @@ export type SnapSection = {
 export type StickySnapContextValue = {
   registerSection: (
     el: HTMLElement | null,
-    options?: { offset?: number }
+    options?: { offset?: number; useDefaultHeaderHeight?: boolean }
   ) => void;
   lockSnap: () => void;
   unlockSnap: () => void;

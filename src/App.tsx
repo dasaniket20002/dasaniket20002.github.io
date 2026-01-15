@@ -17,6 +17,10 @@ import Services from "./lib/pages/03_services/services";
 import About from "./lib/pages/04_about/about";
 import Contact from "./lib/pages/05_contact/contact";
 
+export const HEADER_HEIGHT = 40;
+export const SECTION_HEADER_HEIGHT = 108;
+export const MIN_SECTION_HEADER_HEIGHT = 72;
+
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const lenisRef = useRef<LenisRef>(null);
@@ -51,6 +55,13 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ ease: "easeIn" }}
               className="relative h-full bg-light-1"
+              style={
+                {
+                  "--header-height": `${HEADER_HEIGHT}px`,
+                  "--section-header-height": `${SECTION_HEADER_HEIGHT}px`,
+                  "--min-section-header-height": `${MIN_SECTION_HEADER_HEIGHT}px`,
+                } as React.CSSProperties
+              }
             >
               <Header className="w-full sticky top-0" />
               <Hero />

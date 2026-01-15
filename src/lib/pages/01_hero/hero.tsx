@@ -24,7 +24,7 @@ export default function Hero({ className }: { className?: string }) {
       ref={containerRef}
       data-bg-theme="light"
       className={cn(
-        "min-h-page pt-[5vh] w-full text-dark-1 -space-y-4 relative flex flex-col",
+        "h-[calc(100vh-var(--header-height))] w-full text-dark-1 -space-y-4 relative flex flex-col",
         "bg-light-1",
         className
       )}

@@ -1,9 +1,9 @@
 import { motion, useInView, type HTMLMotionProps } from "motion/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { cn } from "../../utils";
-import ExperienceItem from "./experience-item";
 import SedimentaryGrooveP5 from "../../components/sedimentary-groove-p5";
 import { useWindowSize } from "../../hooks/use-window-size";
+import { cn } from "../../utils";
+import ExperienceItem from "./experience-item";
 
 const Experience = forwardRef<
   HTMLElement,
@@ -23,7 +23,7 @@ const Experience = forwardRef<
       ref={containerRef}
       {...motionProps}
       className={cn(
-        "place-content-center place-items-center h-[calc(100vh-var(--head-height))] w-full px-8 py-1 @container-[size] [container-name:golden-grid]",
+        "place-content-center place-items-center h-full w-full px-8 py-1 @container-[size] [container-name:golden-grid]",
         className
       )}
     >

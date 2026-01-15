@@ -31,8 +31,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-
-  --header-height: calc(var(--spacing) * 10) /* 2.5rem = 40px */;
 }
 
 body {
@@ -49,26 +47,6 @@ body {
 
 @utility trim-text-caps {
   text-box: trim-both cap alphabetic;
-}
-
-@utility h-header {
-  height: var(--header-height);
-}
-
-@utility h-page {
-  height: calc(100vh - var(--header-height));
-}
-
-@utility min-h-page {
-  min-height: calc(100vh - var(--header-height));
-}
-
-@utility mt-page {
-  margin-top: var(--header-height);
-}
-
-@utility pt-page {
-  padding-top: var(--header-height);
 }
 
 /* header {

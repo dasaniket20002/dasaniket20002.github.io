@@ -75,7 +75,7 @@ const Featured = forwardRef<
       ref={containerRef}
       {...motionProps}
       className={cn(
-        "relative h-[calc(100vh-var(--head-height))] cursor-grab active:cursor-grabbing",
+        "relative h-[calc(100vh-var(---min-section-header-height))] md:h-[calc(100vh-var(--section-header-height))] cursor-grab active:cursor-grabbing",
         className
       )}
     >
@@ -87,7 +87,7 @@ const Featured = forwardRef<
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ ease: "easeIn", duration: 1 }}
-            className="mask-b-from-172 mask-t-from-128"
+            className="mask-t-from-128"
           />
         )}
       </AnimatePresence>

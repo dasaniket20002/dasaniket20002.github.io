@@ -87,7 +87,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
       ref={ref}
       id="header"
       className={cn(
-        "px-4 md:px-16 h-header flex gap-4 md:gap-8 justify-between items-center z-9998",
+        "px-4 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-9998",
         className
       )}
     >

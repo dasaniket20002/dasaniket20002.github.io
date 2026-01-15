@@ -2,6 +2,8 @@ import { useLenis } from "lenis/react";
 import { easeOut, useMotionValue } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
 import { StickySnapContext, type SnapSection } from "../hooks/use-sticky-snap";
+import { useWindowSize } from "../hooks/use-window-size";
+import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../App";
 
 export function StickySnapProvider({
   snapThreshold = 100,
@@ -28,11 +30,22 @@ export function StickySnapProvider({
   const activeIndex = useMotionValue(0);
   const isSnapping = useMotionValue<0 | 1>(0);
 
+  const { width: windowWidth } = useWindowSize();
+
   const registerSection = useCallback(
-    (el: HTMLElement | null, options?: { offset?: number }) => {
+    (
+      el: HTMLElement | null,
+      options?: { offset?: number; useDefaultHeaderHeight?: boolean }
+    ) => {
       if (!el) return;
 
-      const offset = options?.offset ?? 0;
+      let offset = options?.offset ?? 0;
+      if (options?.useDefaultHeaderHeight) {
+        offset +=
+          windowWidth >= 768
+            ? SECTION_HEADER_HEIGHT
+            : MIN_SECTION_HEADER_HEIGHT;
+      }
 
       const exists = sectionsRef.current.some((s) => s.el === el);
 
@@ -40,7 +53,7 @@ export function StickySnapProvider({
         sectionsRef.current.push({ el, offset });
       }
     },
-    []
+    [windowWidth]
   );
 
   const lockSnap = useCallback(() => {
