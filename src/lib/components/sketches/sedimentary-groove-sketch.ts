@@ -3,7 +3,7 @@ video: https://youtu.be/onemNhgAVg8
 */
 
 import type { Sketch } from "@p5-wrapper/react";
-import { yieldToMain } from "../../utils";
+import { colorPalettes, yieldToMain } from "../../utils";
 
 export type SedimentaryGrooveProps = {
   width?: number;
@@ -12,44 +12,6 @@ export type SedimentaryGrooveProps = {
   fragShader: string;
   vertShader: string;
 };
-
-const colorPalettes = [
-  [
-    { h: 161, s: 55, b: 50 },
-    { h: 55, s: 82, b: 87 },
-    { h: 31, s: 90, b: 97 },
-    { h: 17, s: 47, b: 49 },
-    { h: 95, s: 86, b: 35 },
-  ],
-  [
-    { h: 30, s: 58, b: 90 },
-    { h: 67, s: 102, b: 51 },
-    { h: 32, s: 98, b: 91 },
-    { h: 339, s: 100, b: 70 },
-    { h: 311, s: 86, b: 49 },
-  ],
-  [
-    { h: 39, s: 45, b: 89 },
-    { h: 27, s: 120, b: 99 },
-    { h: 180, s: 120, b: 56 },
-    { h: 39, s: 120, b: 76 },
-    { h: 350, s: 100, b: 76 },
-  ],
-  [
-    { h: 175, s: 30, b: 65 },
-    { h: 215, s: 68, b: 68 },
-    { h: 15, s: 92, b: 98 },
-    { h: 356, s: 84, b: 90 },
-    { h: 38, s: 92, b: 98 },
-  ],
-  [
-    { h: 150, s: 65, b: 60 },
-    { h: 55, s: 92, b: 97 },
-    { h: 23, s: 43, b: 47 },
-    { h: 180, s: 86, b: 60 },
-    { h: 120, s: 86, b: 40 },
-  ],
-];
 
 export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
   // Initialize ALL variables with default values
@@ -263,8 +225,8 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
 
       const palette = colorPalettes[paletteIdx];
       for (let i = 0; i < 5; i++) {
-        const { h, s, b } = palette[i];
-        sedimentShader.setUniform(`u_color${i}`, [h, s, b]);
+        const { h, s, v } = palette[i];
+        sedimentShader.setUniform(`u_color${i}`, [h, s, v]);
       }
 
       p5.plane(_w, _h);

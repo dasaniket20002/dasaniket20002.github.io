@@ -74,10 +74,7 @@ const Featured = forwardRef<
     <motion.section
       ref={containerRef}
       {...motionProps}
-      className={cn(
-        "relative h-[calc(100vh-var(---min-section-header-height))] md:h-[calc(100vh-var(--section-header-height))] cursor-grab active:cursor-grabbing",
-        className
-      )}
+      className={cn("relative cursor-grab active:cursor-grabbing", className)}
     >
       <AnimatePresence mode="popLayout">
         {inView && (

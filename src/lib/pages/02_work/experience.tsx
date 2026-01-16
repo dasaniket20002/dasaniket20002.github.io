@@ -28,7 +28,7 @@ const Experience = forwardRef<
       ref={containerRef}
       {...motionProps}
       className={cn(
-        "place-content-center place-items-center h-[calc(100vh-var(--min-section-header-height))] md:h-[calc(100vh-var(--section-header-height))] @container-[size] w-full px-8 py-1",
+        "place-content-center place-items-center @container-[size] w-full px-8 py-1",
         className
       )}
     >
