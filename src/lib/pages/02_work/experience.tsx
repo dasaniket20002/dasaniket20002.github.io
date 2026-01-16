@@ -28,11 +28,19 @@ const Experience = forwardRef<
       ref={containerRef}
       {...motionProps}
       className={cn(
-        "place-content-center place-items-center h-full w-full px-8 py-1 @container-[size] [container-name:golden-grid]",
+        "place-content-center place-items-center h-[calc(100vh-var(--min-section-header-height))] md:h-[calc(100vh-var(--section-header-height))] @container-[size] w-full px-8 py-1",
         className
       )}
     >
-      <div className="[@container_golden-grid_(min-aspect-ratio:34/21)]:h-full [@container_golden-grid_(max-aspect-ratio:34/21)]:w-full grid aspect-21/34 grid-rows-[8fr_1fr_1fr_3fr_21fr] grid-cols-[5fr_1fr_2fr_13fr] lg:aspect-34/21 lg:grid-cols-[21fr_3fr_1fr_1fr_8fr] lg:grid-rows-[5fr_1fr_2fr_13fr]">
+      <div
+        className={cn(
+          "[--ar-w:21] [--ar-h:34] lg:[--ar-w:34] lg:[--ar-h:21]",
+          "aspect-[calc(var(--ar-w)/var(--ar-h))] w-[min(100cqw,calc(100cqh*var(--ar-w)/var(--ar-h)))]",
+          "grid",
+          "grid-rows-[8fr_1fr_1fr_3fr_21fr] grid-cols-[5fr_1fr_2fr_13fr]",
+          "lg:grid-cols-[21fr_3fr_1fr_1fr_8fr] lg:grid-rows-[5fr_1fr_2fr_13fr]"
+        )}
+      >
         <div
           className={cn(
             "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1",
