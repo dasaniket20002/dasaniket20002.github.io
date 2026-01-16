@@ -234,48 +234,26 @@ const Experience = forwardRef<
         </div>
 
         <div className="grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid">
-          {windowWidth >= 1024 && (
-            <div
-              className={cn(
-                "flex items-center justify-center gap-6 h-full",
-                "lg:row-start-1 lg:col-start-1 lg:row-end-5 lg:col-end-2"
-              )}
-            >
-              <AnimatePresence mode="popLayout">
-                {isInView && (
-                  <SedimentaryGrooveP5
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ ease: "easeIn", duration: 0.5, delay: 1 }}
-                    className="w-32 h-8/10"
-                  />
+          <AnimatePresence mode="popLayout">
+            {windowWidth >= 1024 && isInView && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: "easeIn", duration: 0.5, delay: 1 }}
+                className={cn(
+                  "grid grid-cols-[repeat(3,8rem)] grid-rows-2 place-self-center gap-8 h-8/10",
+                  "lg:row-start-1 lg:col-start-1 lg:row-end-5 lg:col-end-2"
                 )}
-              </AnimatePresence>
-              <AnimatePresence mode="popLayout">
-                {isInView && (
-                  <SedimentaryGrooveP5
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ ease: "easeIn", duration: 0.5, delay: 1.25 }}
-                    className="w-32 h-8/10"
-                  />
-                )}
-              </AnimatePresence>
-              <AnimatePresence mode="popLayout">
-                {isInView && (
-                  <SedimentaryGrooveP5
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ ease: "easeIn", duration: 0.5, delay: 1.5 }}
-                    className="w-32 h-8/10"
-                  />
-                )}
-              </AnimatePresence>
-            </div>
-          )}
+              >
+                <SedimentaryGrooveP5 className="row-start-1 col-start-1 row-end-2 col-end-2 size-full outline outline-light-2/80 shadow-2xl [corner-shape:squircle] rounded-4xl overflow-hidden" />
+                <SedimentaryGrooveP5 className="row-start-2 col-start-1 row-end-3 col-end-2 size-full outline outline-light-2/80 shadow-2xl [corner-shape:squircle] rounded-4xl overflow-hidden" />
+                <SedimentaryGrooveP5 className="row-start-1 col-start-2 row-end-3 col-end-3 size-full outline outline-light-2/80 shadow-2xl [corner-shape:squircle] rounded-4xl overflow-hidden" />
+                <SedimentaryGrooveP5 className="row-start-1 col-start-3 row-end-2 col-end-4 size-full outline outline-light-2/80 shadow-2xl [corner-shape:squircle] rounded-4xl overflow-hidden" />
+                <SedimentaryGrooveP5 className="row-start-2 col-start-3 row-end-3 col-end-4 size-full outline outline-light-2/80 shadow-2xl [corner-shape:squircle] rounded-4xl overflow-hidden" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div className="row-start-1 col-start-1 row-end-2 col-end-5 lg:row-start-1 lg:col-start-2 lg:row-end-2 lg:col-end-6 flex items-center justify-center p-4">
             <h1 className="text-3xl lg:text-5xl font-think-loved">
               EXPERIENCE

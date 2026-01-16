@@ -100,7 +100,7 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
     if (_w <= 0 || _h <= 0) return false;
 
     const rez = 0.0025;
-    const chunkSize = 10000;
+    const chunkSize = 2000;
     const timestamp = p5.random(0, Date.now());
 
     // Cleanup previous texture
