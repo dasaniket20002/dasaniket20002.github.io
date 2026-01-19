@@ -2,9 +2,9 @@ import { motion, type HTMLMotionProps } from "motion/react";
 import { forwardRef } from "react";
 import GridGolden from "../../components/grid-golden-34-21";
 import SedimentaryGrooveP5 from "../../components/sedimentary-groove-p5";
+import { useWindowSize } from "../../hooks/use-window-size";
 import { cn } from "../../utils";
 import ExperienceItem from "./experience-item";
-import { useWindowSize } from "../../hooks/use-window-size";
 
 const Experience = forwardRef<
   HTMLElement,
@@ -27,7 +27,7 @@ const Experience = forwardRef<
       >
         <div
           className={cn(
-            "flex flex-col gap-16 py-4 px-6 items-start justify-center",
+            "flex flex-col gap-16 py-4 px-6 items-start justify-center place-self-center max-w-min",
             width / height <= 1 && "row-span-full! col-span-full! items-center",
           )}
         >
@@ -36,7 +36,6 @@ const Experience = forwardRef<
           </h1>
 
           <ExperienceItem
-            className="w-full"
             imgSrc="assets/logos/JMAN Group.png"
             imgAlt="JMAN Group"
             imgClassName="p-2 [&>img]:drop-shadow-xl"
@@ -55,10 +54,9 @@ const Experience = forwardRef<
           />
 
           <ExperienceItem
-            className="w-full"
             imgSrc="assets/logos/IDZ Digital.png"
             imgAlt="IDZ Digital"
-            imgClassName="p-4 [&>img]:drop-shadow-xl"
+            imgClassName="p-4"
             title="Game Developer"
             company="IDZ Digital Pvt.Ltd."
             url="https://www.idzdigital.com/"
@@ -75,23 +73,15 @@ const Experience = forwardRef<
         {width / height > 1 && (
           <>
             <SedimentaryGrooveP5
-              className="row-start-1 col-start-1 row-end-2 col-end-2 h-full p-1"
+              className="h-full p-1"
               containerClassName="[corner-shape:squircle] rounded-full overflow-hidden shadow-2xl"
             />
             <SedimentaryGrooveP5
-              className="row-start-2 col-start-1 row-end-3 col-end-2 h-full p-1"
+              className="h-full p-1"
               containerClassName="[corner-shape:squircle] rounded-full overflow-hidden shadow-2xl"
             />
             <SedimentaryGrooveP5
-              className="row-start-1 col-start-2 row-end-3 col-end-3 h-full p-1"
-              containerClassName="[corner-shape:squircle] rounded-full overflow-hidden shadow-2xl"
-            />
-            <SedimentaryGrooveP5
-              className="row-start-1 col-start-3 row-end-2 col-end-4 h-full p-1"
-              containerClassName="[corner-shape:squircle] rounded-full overflow-hidden shadow-2xl"
-            />
-            <SedimentaryGrooveP5
-              className="row-start-2 col-start-3 row-end-3 col-end-4 h-full p-1"
+              className="h-full p-1"
               containerClassName="[corner-shape:squircle] rounded-full overflow-hidden shadow-2xl"
             />
           </>

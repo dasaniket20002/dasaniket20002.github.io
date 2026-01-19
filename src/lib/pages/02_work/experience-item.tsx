@@ -4,7 +4,7 @@ import {
   IconExternalLink,
   IconLocation,
 } from "@tabler/icons-react";
-import { motion, stagger } from "motion/react";
+import { motion } from "motion/react";
 import HorizontalDivider from "../../components/horizontal-divider";
 import {
   MorphingDialog,
@@ -47,21 +47,21 @@ const ExperienceItem = ({
     <MorphingDialog>
       <MorphingDialogTrigger
         className={cn(
-          "group flex flex-col gap-4 rounded-xl transition-[shadow,color,border] px-3 py-3 hover:shadow-2xl border border-transparent hover:border-light-2/10",
-          className
+          "group w-full flex flex-col gap-4 rounded-xl transition-[shadow,color,border] px-3 py-3 hover:shadow-2xl border border-transparent hover:border-light-2/10",
+          className,
         )}
       >
         <div className="flex gap-4 items-center">
           <div
             className={cn(
               "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center flex-none",
-              imgClassName
+              imgClassName,
             )}
           >
             <MorphingDialogImage
               src={imgSrc}
               alt={imgAlt}
-              className="drop-shadow-xl"
+              className="bg-cover"
             />
           </div>
           <div>
@@ -95,14 +95,10 @@ const ExperienceItem = ({
             <div
               className={cn(
                 "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center",
-                imgClassName
+                imgClassName,
               )}
             >
-              <MorphingDialogImage
-                src={imgSrc}
-                alt={imgAlt}
-                className="drop-shadow-xl"
-              />
+              <MorphingDialogImage src={imgSrc} alt={imgAlt} />
             </div>
             <div className="text-dark-1">
               <MorphingDialogTitle className="font-think-loved text-xl lg:text-3xl tracking-wide whitespace-nowrap">
@@ -115,13 +111,11 @@ const ExperienceItem = ({
           </div>
           <HorizontalDivider />
           <MorphingDialogDescription
-            disableLayoutAnimation
             variants={{
               initial: { opacity: 0, scale: 0.8, y: 100 },
               animate: { opacity: 1, scale: 1, y: 0 },
               exit: { opacity: 0, scale: 0.8, y: 100 },
             }}
-            transition={{ delayChildren: stagger(0.5) }}
             className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2 text-sm lg:text-base font-light lg:font-normal"
           >
             {description.map((d, i) => (

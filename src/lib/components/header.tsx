@@ -70,7 +70,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     <header
       ref={headerRef}
       className={cn(
-        "px-4 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-9998",
+        "px-4 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-98",
         className,
       )}
     >
@@ -88,7 +88,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         {!hidden && (
           <LogoName
             className={cn(
-              "text-lg md:text-xl cursor-pointer transition-colors z-9998",
+              "text-lg md:text-xl cursor-pointer transition-colors z-98",
               bgTheme === "light" ? "text-dark-1" : "text-light-2",
             )}
             initial={{ y: -24, opacity: 0 }}

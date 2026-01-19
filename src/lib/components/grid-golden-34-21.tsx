@@ -26,70 +26,69 @@ export type GoldenGridProps = {
   children?: React.ReactNode;
 };
 
+export type GridGoldenCellProps = {
+  isInView: boolean;
+  className?: string;
+  bgTheme: "light" | "dark";
+};
+
 const ArcPathSVG = forwardRef<SVGSVGElement, ArcPathSVGProps>(
   ({ className, width = 100, height = 100, ...motionProps }, ref) => {
     return (
-      <motion.svg
+      <svg
         ref={ref}
         className={cn(
-          "fill-none stroke-current stroke-1 overflow-visible size-full",
+          "fill-none stroke-1 size-full overflow-visible",
           className,
         )}
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
         <motion.path
           {...motionProps}
-          strokeLinecap="square"
           d={`M0 0 A${width} ${height} 0 0 1 ${width} ${height}`}
         />
-      </motion.svg>
+      </svg>
     );
   },
 );
 
-function GridGoldenCell({
-  isInView,
-  className,
-  bgTheme,
-}: {
-  isInView: boolean;
-  className?: string;
-  bgTheme: "light" | "dark";
-} & Omit<SVGMotionProps<SVGPathElement>, "width" | "height">) {
-  const containerRef = useRef<HTMLSpanElement>(null);
-  const { width, height } = useElementSize(containerRef);
-  return (
-    <span
-      ref={containerRef}
-      className={cn(
-        "relative border border-dashed transition-[border] border-collapse size-full",
-        isInView
-          ? bgTheme === "light"
-            ? "border-light-2/25"
-            : "border-dark-1/10"
-          : bgTheme === "light"
-            ? "border-light-2/50"
-            : "border-dark-1/20",
-        className,
-      )}
-    >
-      <ArcPathSVG
-        width={width}
-        height={height}
+const GridGoldenCell = forwardRef<HTMLSpanElement, GridGoldenCellProps>(
+  ({ isInView, className, bgTheme }, ref) => {
+    const containerRef = useRef<HTMLSpanElement>(null);
+    const { width, height } = useElementSize(containerRef);
+    useImperativeHandle(ref, () => containerRef.current!);
+    return (
+      <span
+        ref={containerRef}
         className={cn(
-          "absolute inset-0 stroke-2",
-          bgTheme === "light" ? "stroke-light-2" : "stroke-dark-1",
+          "relative border border-dashed transition-[border] size-full",
+          isInView
+            ? bgTheme === "light"
+              ? "border-light-2/25"
+              : "border-dark-1/10"
+            : bgTheme === "light"
+              ? "border-light-2/50"
+              : "border-dark-1/20",
+          className,
         )}
-        initial={{ pathLength: 1, opacity: 1 }}
-        animate={{ pathLength: isInView ? 0 : 1, opacity: isInView ? 0 : 1 }}
-        transition={{
-          pathLength: { duration: 0.5, delay: 0.5 },
-          opacity: { delay: 1 },
-        }}
-      />
-    </span>
-  );
-}
+      >
+        <ArcPathSVG
+          width={width}
+          height={height}
+          className={cn(
+            "absolute inset-0 stroke-2",
+            bgTheme === "light" ? "stroke-light-2" : "stroke-dark-1",
+          )}
+          initial={{ pathLength: 1 }}
+          animate={{ pathLength: isInView ? 0 : 1 }}
+          transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+        />
+      </span>
+    );
+  },
+);
 
 const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
   (
@@ -109,7 +108,6 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
       once: false,
       margin: "-50% 0% -50% 0%",
     });
-    // const isInView = false;
 
     useImperativeHandle(ref, () => containerRef.current!);
 
@@ -146,7 +144,7 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
           <div
             className={cn(
               "relative",
-              "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1",
+              "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1 overflow-hidden",
               isInView ? "pointer-events-none" : "pointer-events-auto",
               landscapeConvergeQuadrant === "top-left" &&
                 `
@@ -243,21 +241,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
               )}
             />
             <GridGoldenCell
@@ -265,21 +263,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
               )}
             />
             <GridGoldenCell
@@ -287,21 +285,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
               )}
             />
             <GridGoldenCell
@@ -309,21 +307,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
               )}
             />
             <GridGoldenCell
@@ -331,21 +329,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
               )}
             />
             <GridGoldenCell
@@ -353,21 +351,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
               )}
             />
             <GridGoldenCell
@@ -375,21 +373,21 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
               )}
             />
             <GridGoldenCell
@@ -397,32 +395,30 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               isInView={isInView}
               className={cn(
                 landscapeConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-landscape:rotate-0",
+                  "cqw-landscape:[&>svg]:rotate-0",
                 landscapeConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-landscape:rotate-270",
+                  "cqw-landscape:[&>svg]:rotate-270",
                 landscapeConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-landscape:rotate-90",
+                  "cqw-landscape:[&>svg]:rotate-90",
                 landscapeConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-landscape:rotate-180",
+                  "cqw-landscape:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "top-left" &&
-                  "[&>svg]:cqw-portrait:rotate-180",
+                  "cqw-portrait:[&>svg]:rotate-180",
                 portraitConvergeQuadrant === "top-right" &&
-                  "[&>svg]:cqw-portrait:rotate-90",
+                  "cqw-portrait:[&>svg]:rotate-90",
                 portraitConvergeQuadrant === "bottom-left" &&
-                  "[&>svg]:cqw-portrait:rotate-270",
+                  "cqw-portrait:[&>svg]:rotate-270",
                 portraitConvergeQuadrant === "bottom-right" &&
-                  "[&>svg]:cqw-portrait:rotate-0",
+                  "cqw-portrait:[&>svg]:rotate-0",
               )}
             />
           </div>
         )}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isInView ? 1 : 0 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
+        <div
           className={cn(
             "relative",
-            "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid",
+            "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid transform-gpu transition-opacity duration-500",
+            isInView ? "opacity-100 delay-1000" : "opacity-0",
             landscapeConvergeQuadrant === "top-left" &&
               `
               [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[5/6]
@@ -514,7 +510,7 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
           )}
         >
           {children}
-        </motion.div>
+        </div>
       </motion.div>
     );
   },

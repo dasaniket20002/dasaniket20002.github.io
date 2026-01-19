@@ -40,9 +40,10 @@ const SedimentaryGrooveP5 = forwardRef<
         />
       </motion.div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait" propagate>
         {isLoading && (
           <motion.div
+            layout
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 flex items-center justify-center"

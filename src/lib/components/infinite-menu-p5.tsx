@@ -47,12 +47,12 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
           setActiveItem(items[itemIndex]);
         }
       },
-      [items]
+      [items],
     );
 
     const handleMovementChange = useCallback(
       (moving: boolean) => isMoving.set(moving ? 1 : 0),
-      [isMoving]
+      [isMoving],
     );
 
     const handleButtonClick = () => {
@@ -69,7 +69,7 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
     const transitionDuration = useTransform(
       isMoving,
       [0, 1],
-      ["500ms", "100ms"]
+      ["500ms", "100ms"],
     );
 
     const titleX = useTransform(isMoving, [0, 1], ["0%", "-4rem"]);
@@ -109,7 +109,7 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
             <motion.p
               className={cn(
                 "select-none max-w-32 md:max-w-64 absolute text-lg md:text-[1.5rem] top-1/2 -translate-y-1/2 right-4 md:right-[1.6em] text-light-2 text-right",
-                "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2"
+                "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2",
               )}
               style={{
                 opacity,
@@ -123,7 +123,7 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
 
             <motion.div
               onClick={handleButtonClick}
-              className="absolute left-1/2 -translate-x-1/2 z-10 size-14 grid place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
+              className="absolute left-1/2 -translate-x-1/2 z-2 size-14 grid place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
               whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
               style={{
                 opacity,
@@ -139,7 +139,7 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
         )}
       </motion.div>
     );
-  }
+  },
 );
 
 export default InfiniteMenuP5;

@@ -127,7 +127,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
     return (
       <motion.div
         ref={ref}
-        className="relative h-screen z-9998 overflow-y-hidden grid grid-rows-3 py-8"
+        className="relative h-screen z-98 overflow-y-hidden grid grid-rows-3 py-8"
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ delay: 1, ease: "easeInOut" }}
@@ -181,7 +181,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
         </motion.div>
       </motion.div>
     );
-  }
+  },
 );
 
 export default Loader;

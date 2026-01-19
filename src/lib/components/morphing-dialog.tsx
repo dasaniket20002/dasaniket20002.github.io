@@ -76,11 +76,7 @@ export type MorphingDialogProps = {
 };
 
 function MorphingDialog({ children, transition }: MorphingDialogProps) {
-  return (
-    <MorphingDialogProvider transition={transition}>
-      {children}
-    </MorphingDialogProvider>
-  );
+  return <MorphingDialogProvider transition={transition} children={children} />;
 }
 
 export type MorphingDialogTriggerProps = {
@@ -231,18 +227,18 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
   const { isOpen, uniqueId } = useMorphingDialog();
 
   return createPortal(
-    <AnimatePresence initial={false} mode="sync">
+    <AnimatePresence initial={false} mode="wait">
       {isOpen && (
         <>
           <motion.div
             key={`backdrop-${uniqueId}`}
             // className="fixed inset-0 h-full w-full z-9998 bg-dark-2/40 backdrop-blur-xs"
-            className="fixed inset-0 size-full z-9998 bg-size-[4px_4px] backdrop-blur-xs bg-[radial-gradient(transparent_1px,var(--color-dark-2)_1px)]"
+            className="fixed inset-0 z-99 bg-size-[4px_4px] backdrop-blur-xs bg-[radial-gradient(transparent_1px,var(--color-dark-2)_1px)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
-          <div className="fixed inset-0 z-9998 flex items-center justify-center">
+          <div className="fixed inset-0 z-99 flex items-center justify-center">
             {children}
           </div>
         </>

@@ -5,8 +5,10 @@
   font-synthesis: none;
   font-variant-ligatures: common-ligatures discretionary-ligatures;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 
   --light-1: oklch(0.9454 0.0231 93.33);
   --light-2: oklch(0.861 0.0322 91.05);

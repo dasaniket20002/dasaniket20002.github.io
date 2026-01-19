@@ -12,17 +12,17 @@ export default function NoiseOverlay() {
   const { width, height } = useWindowSize();
   const vb = useMemo(
     () => ({ w: width || 100, h: height || 100 }),
-    [width, height]
+    [width, height],
   );
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const opacity = useSpring(
     useTransform(scrollVelocity, [-5000, -1000, 1000, 5000], [0.5, 0, 0, 0.5]),
-    { visualDuration: 0.1 }
+    { visualDuration: 0.1 },
   );
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-9999">
+    <div className="fixed inset-0 pointer-events-none z-100">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="size-full"
