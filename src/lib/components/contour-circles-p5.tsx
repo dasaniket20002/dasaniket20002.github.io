@@ -7,13 +7,12 @@ import vertShader from "../components/shaders/contour-circles-vs.glsl?raw";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 import { contourCircleSketch } from "./sketches/contour-circles-sketch";
-import type { ClassValue } from "clsx";
 
 const ContourCirclesP5 = forwardRef<
   HTMLDivElement,
   {
-    className?: ClassValue;
-    containerClassName?: ClassValue;
+    className?: string;
+    containerClassName?: string;
   } & HTMLMotionProps<"div">
 >(({ className, containerClassName, ...motionProps }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -7,13 +7,12 @@ import vertShader from "../components/shaders/sedimentary-groove-vs.glsl?raw";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 import { sedimentaryGrooveSketch } from "./sketches/sedimentary-groove-sketch";
-import type { ClassValue } from "clsx";
 
 const SedimentaryGrooveP5 = forwardRef<
   HTMLDivElement,
   {
-    className?: ClassValue;
-    containerClassName?: ClassValue;
+    className?: string;
+    containerClassName?: string;
   } & HTMLMotionProps<"div">
 >(({ className, containerClassName, ...motionProps }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
