@@ -1,9 +1,4 @@
-import {
-  AnimatePresence,
-  motion,
-  useInView,
-  type HTMLMotionProps,
-} from "motion/react";
+import { motion, useInView, type HTMLMotionProps } from "motion/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import InfiniteMenuP5 from "../../components/infinite-menu-p5";
 import { cn } from "../../utils";
@@ -76,18 +71,13 @@ const Featured = forwardRef<
       {...motionProps}
       className={cn("relative cursor-grab active:cursor-grabbing", className)}
     >
-      <AnimatePresence mode="popLayout">
-        {inView && (
-          <InfiniteMenuP5
-            scale={0.75}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ ease: "easeIn", duration: 1 }}
-            className="mask-t-from-128"
-          />
-        )}
-      </AnimatePresence>
+      <InfiniteMenuP5
+        scale={0.75}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: inView ? 1 : 0, scale: inView ? 1 : 0.8 }}
+        transition={{ ease: "anticipate", duration: 1 }}
+        className="mask-t-from-128"
+      />
     </motion.section>
   );
 });

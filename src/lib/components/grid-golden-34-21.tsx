@@ -1,13 +1,7 @@
-import {
-  motion,
-  useInView,
-  type HTMLMotionProps,
-  type SVGMotionProps,
-} from "motion/react";
+import { motion, useInView, type SVGMotionProps } from "motion/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { cn } from "../utils";
 import { useElementSize } from "../hooks/use-element-size";
-import { useBGTheme } from "../hooks/use-bg-theme";
+import { cn } from "../utils";
 
 export type ArcPathSVGProps = {
   className?: string;
@@ -27,8 +21,10 @@ export type GoldenGridProps = {
     | "bottom-left"
     | "top-right"
     | "bottom-right";
-  useReveal?: boolean;
-} & HTMLMotionProps<"div">;
+  showSpiral?: boolean;
+  borderTheme?: "light" | "dark";
+  children?: React.ReactNode;
+};
 
 const ArcPathSVG = forwardRef<SVGSVGElement, ArcPathSVGProps>(
   ({ className, width = 100, height = 100, ...motionProps }, ref) => {
@@ -36,7 +32,7 @@ const ArcPathSVG = forwardRef<SVGSVGElement, ArcPathSVGProps>(
       <motion.svg
         ref={ref}
         className={cn(
-          "fill-none stroke-current stroke-1 overflow-visible",
+          "fill-none stroke-current stroke-1 overflow-visible size-full",
           className,
         )}
         viewBox={`0 0 ${width} ${height}`}
@@ -54,26 +50,26 @@ const ArcPathSVG = forwardRef<SVGSVGElement, ArcPathSVGProps>(
 function GridGoldenCell({
   isInView,
   className,
-  ...motionProps
+  bgTheme,
 }: {
   isInView: boolean;
   className?: string;
+  bgTheme: "light" | "dark";
 } & Omit<SVGMotionProps<SVGPathElement>, "width" | "height">) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const { width, height } = useElementSize(containerRef);
-  const bgTheme = useBGTheme(containerRef);
   return (
     <span
       ref={containerRef}
       className={cn(
-        "relative outline outline-dashed transition-[outline] size-full",
+        "relative border border-dashed transition-[border] border-collapse size-full",
         isInView
-          ? bgTheme === "dark"
-            ? "outline-light-2/25"
-            : "outline-dark-1/10"
-          : bgTheme === "dark"
-            ? "outline-light-2/50"
-            : "outline-dark-1/25",
+          ? bgTheme === "light"
+            ? "border-light-2/25"
+            : "border-dark-1/10"
+          : bgTheme === "light"
+            ? "border-light-2/50"
+            : "border-dark-1/20",
         className,
       )}
     >
@@ -82,9 +78,14 @@ function GridGoldenCell({
         height={height}
         className={cn(
           "absolute inset-0 stroke-2",
-          bgTheme === "dark" ? "stroke-light-2" : "stroke-dark-1",
+          bgTheme === "light" ? "stroke-light-2" : "stroke-dark-1",
         )}
-        {...motionProps}
+        initial={{ pathLength: 1, opacity: 1 }}
+        animate={{ pathLength: isInView ? 0 : 1, opacity: isInView ? 0 : 1 }}
+        transition={{
+          pathLength: { duration: 0.5, delay: 0.5 },
+          opacity: { delay: 1 },
+        }}
       />
     </span>
   );
@@ -96,6 +97,9 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
       className,
       landscapeConvergeQuadrant = "top-right",
       portraitConvergeQuadrant = "top-right",
+      children,
+      showSpiral = true,
+      borderTheme = "light",
       ...motionProps
     },
     ref,
@@ -103,7 +107,7 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const isInView = useInView(containerRef, {
       once: false,
-      margin: "-25% 0% -75% 0%",
+      margin: "-50% 0% -50% 0%",
     });
     // const isInView = false;
 
@@ -138,11 +142,287 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
           className,
         )}
       >
-        <div
+        {showSpiral && (
+          <div
+            className={cn(
+              "relative",
+              "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1",
+              isInView ? "pointer-events-none" : "pointer-events-auto",
+              landscapeConvergeQuadrant === "top-left" &&
+                `
+              [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[5/6]
+              [&>:nth-child(2)]:cqw-landscape:row-[4/5] [&>:nth-child(2)]:cqw-landscape:col-[1/5]
+              [&>:nth-child(3)]:cqw-landscape:row-[1/4] [&>:nth-child(3)]:cqw-landscape:col-[1/2]
+              [&>:nth-child(4)]:cqw-landscape:row-[1/2] [&>:nth-child(4)]:cqw-landscape:col-[2/5]
+              [&>:nth-child(5)]:cqw-landscape:row-[2/4] [&>:nth-child(5)]:cqw-landscape:col-[4/5]
+              [&>:nth-child(6)]:cqw-landscape:row-[3/4] [&>:nth-child(6)]:cqw-landscape:col-[2/4]
+              [&>:nth-child(7)]:cqw-landscape:row-[2/3] [&>:nth-child(7)]:cqw-landscape:col-[2/3]
+              [&>:nth-child(8)]:cqw-landscape:row-[2/3] [&>:nth-child(8)]:cqw-landscape:col-[3/4]
+              `,
+              landscapeConvergeQuadrant === "top-right" &&
+                `
+              [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[1/2]
+              [&>:nth-child(2)]:cqw-landscape:row-[4/5] [&>:nth-child(2)]:cqw-landscape:col-[2/6]
+              [&>:nth-child(3)]:cqw-landscape:row-[1/4] [&>:nth-child(3)]:cqw-landscape:col-[5/6]
+              [&>:nth-child(4)]:cqw-landscape:row-[1/2] [&>:nth-child(4)]:cqw-landscape:col-[2/5]
+              [&>:nth-child(5)]:cqw-landscape:row-[2/4] [&>:nth-child(5)]:cqw-landscape:col-[2/3]
+              [&>:nth-child(6)]:cqw-landscape:row-[3/4] [&>:nth-child(6)]:cqw-landscape:col-[3/5]
+              [&>:nth-child(7)]:cqw-landscape:row-[2/3] [&>:nth-child(7)]:cqw-landscape:col-[4/5]
+              [&>:nth-child(8)]:cqw-landscape:row-[2/3] [&>:nth-child(8)]:cqw-landscape:col-[3/4]
+              `,
+              landscapeConvergeQuadrant === "bottom-left" &&
+                `
+              [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[5/6]
+              [&>:nth-child(2)]:cqw-landscape:row-[1/2] [&>:nth-child(2)]:cqw-landscape:col-[1/5]
+              [&>:nth-child(3)]:cqw-landscape:row-[2/5] [&>:nth-child(3)]:cqw-landscape:col-[1/2]
+              [&>:nth-child(4)]:cqw-landscape:row-[4/5] [&>:nth-child(4)]:cqw-landscape:col-[2/5]
+              [&>:nth-child(5)]:cqw-landscape:row-[2/4] [&>:nth-child(5)]:cqw-landscape:col-[4/5]
+              [&>:nth-child(6)]:cqw-landscape:row-[2/3] [&>:nth-child(6)]:cqw-landscape:col-[2/4]
+              [&>:nth-child(7)]:cqw-landscape:row-[3/4] [&>:nth-child(7)]:cqw-landscape:col-[2/3]
+              [&>:nth-child(8)]:cqw-landscape:row-[3/4] [&>:nth-child(8)]:cqw-landscape:col-[3/4]
+              `,
+              landscapeConvergeQuadrant === "bottom-right" &&
+                `
+              [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[1/2]
+              [&>:nth-child(2)]:cqw-landscape:row-[1/2] [&>:nth-child(2)]:cqw-landscape:col-[2/6]
+              [&>:nth-child(3)]:cqw-landscape:row-[2/5] [&>:nth-child(3)]:cqw-landscape:col-[5/6]
+              [&>:nth-child(4)]:cqw-landscape:row-[4/5] [&>:nth-child(4)]:cqw-landscape:col-[2/5]
+              [&>:nth-child(5)]:cqw-landscape:row-[2/4] [&>:nth-child(5)]:cqw-landscape:col-[2/3]
+              [&>:nth-child(6)]:cqw-landscape:row-[2/3] [&>:nth-child(6)]:cqw-landscape:col-[3/5]
+              [&>:nth-child(7)]:cqw-landscape:row-[3/4] [&>:nth-child(7)]:cqw-landscape:col-[4/5]
+              [&>:nth-child(8)]:cqw-landscape:row-[3/4] [&>:nth-child(8)]:cqw-landscape:col-[3/4]
+              `,
+              portraitConvergeQuadrant === "top-left" &&
+                `
+              [&>:nth-child(1)]:cqw-portrait:row-[5/6] [&>:nth-child(1)]:cqw-portrait:col-[1/5]
+              [&>:nth-child(2)]:cqw-portrait:row-[1/5] [&>:nth-child(2)]:cqw-portrait:col-[4/5]
+              [&>:nth-child(3)]:cqw-portrait:row-[1/2] [&>:nth-child(3)]:cqw-portrait:col-[1/4]
+              [&>:nth-child(4)]:cqw-portrait:row-[2/5] [&>:nth-child(4)]:cqw-portrait:col-[1/2]
+              [&>:nth-child(5)]:cqw-portrait:row-[4/5] [&>:nth-child(5)]:cqw-portrait:col-[2/4]
+              [&>:nth-child(6)]:cqw-portrait:row-[2/4] [&>:nth-child(6)]:cqw-portrait:col-[3/4]
+              [&>:nth-child(7)]:cqw-portrait:row-[2/3] [&>:nth-child(7)]:cqw-portrait:col-[2/3]
+              [&>:nth-child(8)]:cqw-portrait:row-[3/4] [&>:nth-child(8)]:cqw-portrait:col-[2/3]
+              `,
+              portraitConvergeQuadrant === "top-right" &&
+                `
+              [&>:nth-child(1)]:cqw-portrait:row-[5/6] [&>:nth-child(1)]:cqw-portrait:col-[1/5]
+              [&>:nth-child(2)]:cqw-portrait:row-[1/5] [&>:nth-child(2)]:cqw-portrait:col-[1/2]
+              [&>:nth-child(3)]:cqw-portrait:row-[1/2] [&>:nth-child(3)]:cqw-portrait:col-[2/5]
+              [&>:nth-child(4)]:cqw-portrait:row-[2/5] [&>:nth-child(4)]:cqw-portrait:col-[4/5]
+              [&>:nth-child(5)]:cqw-portrait:row-[4/5] [&>:nth-child(5)]:cqw-portrait:col-[2/4]
+              [&>:nth-child(6)]:cqw-portrait:row-[2/4] [&>:nth-child(6)]:cqw-portrait:col-[2/3]
+              [&>:nth-child(7)]:cqw-portrait:row-[2/3] [&>:nth-child(7)]:cqw-portrait:col-[3/4]
+              [&>:nth-child(8)]:cqw-portrait:row-[3/4] [&>:nth-child(8)]:cqw-portrait:col-[3/4]
+              `,
+              portraitConvergeQuadrant === "bottom-left" &&
+                `
+              [&>:nth-child(1)]:cqw-portrait:row-[1/2] [&>:nth-child(1)]:cqw-portrait:col-[1/5]
+              [&>:nth-child(2)]:cqw-portrait:row-[2/6] [&>:nth-child(2)]:cqw-portrait:col-[4/5]
+              [&>:nth-child(3)]:cqw-portrait:row-[5/6] [&>:nth-child(3)]:cqw-portrait:col-[1/4]
+              [&>:nth-child(4)]:cqw-portrait:row-[2/5] [&>:nth-child(4)]:cqw-portrait:col-[1/2]
+              [&>:nth-child(5)]:cqw-portrait:row-[2/3] [&>:nth-child(5)]:cqw-portrait:col-[2/4]
+              [&>:nth-child(6)]:cqw-portrait:row-[3/5] [&>:nth-child(6)]:cqw-portrait:col-[3/4]
+              [&>:nth-child(7)]:cqw-portrait:row-[4/5] [&>:nth-child(7)]:cqw-portrait:col-[2/3]
+              [&>:nth-child(8)]:cqw-portrait:row-[3/4] [&>:nth-child(8)]:cqw-portrait:col-[2/3]
+              `,
+              portraitConvergeQuadrant === "bottom-right" &&
+                `
+              [&>:nth-child(1)]:cqw-portrait:row-[1/2] [&>:nth-child(1)]:cqw-portrait:col-[1/5]
+              [&>:nth-child(2)]:cqw-portrait:row-[2/6] [&>:nth-child(2)]:cqw-portrait:col-[1/2]
+              [&>:nth-child(3)]:cqw-portrait:row-[5/6] [&>:nth-child(3)]:cqw-portrait:col-[2/5]
+              [&>:nth-child(4)]:cqw-portrait:row-[2/5] [&>:nth-child(4)]:cqw-portrait:col-[4/5]
+              [&>:nth-child(5)]:cqw-portrait:row-[2/3] [&>:nth-child(5)]:cqw-portrait:col-[2/4]
+              [&>:nth-child(6)]:cqw-portrait:row-[3/5] [&>:nth-child(6)]:cqw-portrait:col-[2/3]
+              [&>:nth-child(7)]:cqw-portrait:row-[4/5] [&>:nth-child(7)]:cqw-portrait:col-[3/4]
+              [&>:nth-child(8)]:cqw-portrait:row-[3/4] [&>:nth-child(8)]:cqw-portrait:col-[3/4]
+              `,
+            )}
+          >
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+              )}
+            />
+            <GridGoldenCell
+              bgTheme={borderTheme}
+              isInView={isInView}
+              className={cn(
+                landscapeConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-landscape:rotate-0",
+                landscapeConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-landscape:rotate-270",
+                landscapeConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-landscape:rotate-90",
+                landscapeConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-landscape:rotate-180",
+                portraitConvergeQuadrant === "top-left" &&
+                  "[&>svg]:cqw-portrait:rotate-180",
+                portraitConvergeQuadrant === "top-right" &&
+                  "[&>svg]:cqw-portrait:rotate-90",
+                portraitConvergeQuadrant === "bottom-left" &&
+                  "[&>svg]:cqw-portrait:rotate-270",
+                portraitConvergeQuadrant === "bottom-right" &&
+                  "[&>svg]:cqw-portrait:rotate-0",
+              )}
+            />
+          </div>
+        )}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isInView ? 1 : 0 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
           className={cn(
             "relative",
-            "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid z-1",
-            isInView ? "pointer-events-none" : "pointer-events-auto",
+            "grid col-span-full row-span-full grid-cols-subgrid grid-rows-subgrid",
             landscapeConvergeQuadrant === "top-left" &&
               `
               [&>:nth-child(1)]:cqw-landscape:row-[1/5] [&>:nth-child(1)]:cqw-landscape:col-[5/6]
@@ -233,199 +513,8 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
               `,
           )}
         >
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-          <GridGoldenCell
-            isInView={isInView}
-            className={cn(
-              landscapeConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-landscape:rotate-0",
-              landscapeConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-landscape:rotate-270",
-              landscapeConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-landscape:rotate-90",
-              landscapeConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-landscape:rotate-180",
-              portraitConvergeQuadrant === "top-left" &&
-                "[&>svg]:cqw-portrait:rotate-180",
-              portraitConvergeQuadrant === "top-right" &&
-                "[&>svg]:cqw-portrait:rotate-90",
-              portraitConvergeQuadrant === "bottom-left" &&
-                "[&>svg]:cqw-portrait:rotate-270",
-              portraitConvergeQuadrant === "bottom-right" &&
-                "[&>svg]:cqw-portrait:rotate-0",
-            )}
-            initial={{ pathLength: 1 }}
-            whileInView={{ pathLength: 0 }}
-            transition={{ duration: 2 }}
-          />
-        </div>
+          {children}
+        </motion.div>
       </motion.div>
     );
   },

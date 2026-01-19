@@ -30,7 +30,7 @@ void main() {
     float r = u_centers[i*3 + 2];
 
     // subtle motion
-    c += 0.03 * vec2(
+    c += 0.025 * vec2(
       sin(u_time + float(i)),
       cos(u_time * 0.7 + float(i))
     );
@@ -40,13 +40,17 @@ void main() {
   }
 
   // Rings
-  float freq = 12.0;
-  float line = abs(fract(d * freq) - 0.5);
+  float freq = 16.0;
+  float pattern = d * freq;
+  float line = abs(fract(pattern) - 0.5);
 
-  float thickness = 0.1;
-  float mask = step(line, thickness);
+  float thickness = 0.05;
+  // float mask = step(line, thickness);
 
-  vec3 col = mix(u_color2, u_color1, mask);
+  float aa = 6.0 / min(u_resolution.x, u_resolution.y);
+  float mask = 1.0 - smoothstep(thickness - aa, thickness + aa, line);
+
+  vec3 col = mix(u_color1, u_color2, mask);
 
   gl_FragColor = vec4(col, 1.0);
 }

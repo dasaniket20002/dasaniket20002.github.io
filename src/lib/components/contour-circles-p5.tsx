@@ -1,17 +1,21 @@
 import { P5Canvas } from "@p5-wrapper/react";
+import { converter, parse } from "culori";
 import { motion, type HTMLMotionProps } from "motion/react";
-import { forwardRef, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, useMemo, useRef } from "react";
 import fragShader from "../components/shaders/contour-circles-fs.glsl?raw";
 import vertShader from "../components/shaders/contour-circles-vs.glsl?raw";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 import { contourCircleSketch } from "./sketches/contour-circles-sketch";
-import { converter, parse } from "culori";
+import type { ClassValue } from "clsx";
 
 const ContourCirclesP5 = forwardRef<
   HTMLDivElement,
-  { className?: string } & HTMLMotionProps<"div">
->(({ className, ...motionProps }, ref) => {
+  {
+    className?: ClassValue;
+    containerClassName?: ClassValue;
+  } & HTMLMotionProps<"div">
+>(({ className, containerClassName, ...motionProps }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { width, height } = useElementSize(containerRef);
   const lightColor = useMemo(() => {
@@ -28,23 +32,23 @@ const ContourCirclesP5 = forwardRef<
       .trim();
     return converter("rgb")(parse(oklchString));
   }, []);
-
-  useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
   return (
     <motion.div
-      ref={containerRef}
+      ref={ref}
       className={cn("relative", className)}
       {...motionProps}
     >
-      <P5Canvas
-        sketch={contourCircleSketch}
-        width={width}
-        height={height}
-        fragShader={fragShader}
-        vertShader={vertShader}
-        color1={lightColor}
-        color2={darkColor}
-      />
+      <div ref={containerRef} className={cn("size-full", containerClassName)}>
+        <P5Canvas
+          sketch={contourCircleSketch}
+          width={width}
+          height={height}
+          fragShader={fragShader}
+          vertShader={vertShader}
+          color1={lightColor}
+          color2={darkColor}
+        />
+      </div>
     </motion.div>
   );
 });

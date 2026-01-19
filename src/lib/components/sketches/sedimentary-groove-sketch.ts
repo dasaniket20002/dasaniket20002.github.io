@@ -11,6 +11,7 @@ export type SedimentaryGrooveProps = {
   onLoadingChange?: (isLoading: boolean) => void;
   fragShader: string;
   vertShader: string;
+  isInView: boolean;
 };
 
 export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
@@ -28,6 +29,7 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
   let onLoadingChange: ((isLoading: boolean) => void) | undefined;
   let vertShader = "";
   let fragShader = "";
+  let isDrawn = false;
 
   p5.updateWithProps = (props) => {
     // Store shaders FIRST - before any dimension checks
@@ -35,8 +37,8 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
     if (props.fragShader) fragShader = props.fragShader;
     onLoadingChange = props.onLoadingChange;
 
-    const newW = props.width || 0;
-    const newH = props.height || 0;
+    const newW = props.width || p5.windowWidth;
+    const newH = props.height || p5.windowHeight;
 
     // Skip if dimensions are invalid
     if (newW <= 0 || newH <= 0) return;
@@ -57,7 +59,7 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
   };
 
   const generateNoiseTextureAsync = async (
-    currentGenerationId: number
+    currentGenerationId: number,
   ): Promise<boolean> => {
     if (_w <= 0 || _h <= 0) return false;
 
@@ -203,49 +205,40 @@ export const sedimentaryGrooveSketch: Sketch<SedimentaryGrooveProps> = (p5) => {
   };
 
   p5.draw = () => {
-    // Clear with transparent background
-    p5.clear();
+    if (!isDrawn) {
+      // Clear with transparent background
+      p5.clear();
 
-    // Guard: ensure everything is ready
-    if (
-      !isSetupComplete ||
-      !sedimentShader ||
-      !noiseTexture ||
-      !isNoiseReady ||
-      _w <= 0 ||
-      _h <= 0
-    ) {
-      return;
-    }
-
-    try {
-      p5.shader(sedimentShader);
-
-      sedimentShader.setUniform("u_noiseTexture", noiseTexture);
-
-      const palette = colorPalettes[paletteIdx];
-      for (let i = 0; i < 5; i++) {
-        const { h, s, v } = palette[i];
-        sedimentShader.setUniform(`u_color${i}`, [h, s, v]);
+      // Guard: ensure everything is ready
+      if (
+        !isSetupComplete ||
+        !sedimentShader ||
+        !noiseTexture ||
+        !isNoiseReady ||
+        _w <= 0 ||
+        _h <= 0
+      ) {
+        return;
       }
 
-      p5.plane(_w, _h);
-      p5.resetShader();
-    } catch (e) {
-      console.error("Draw error:", e);
-    }
+      try {
+        p5.shader(sedimentShader);
 
-    p5.noLoop();
-  };
+        sedimentShader.setUniform("u_noiseTexture", noiseTexture);
 
-  p5.remove = () => {
-    if (noiseTexture) {
-      noiseTexture.remove();
-      noiseTexture = null;
+        const palette = colorPalettes[paletteIdx];
+        for (let i = 0; i < 5; i++) {
+          const { h, s, v } = palette[i];
+          sedimentShader.setUniform(`u_color${i}`, [h, s, v]);
+        }
+
+        p5.plane(_w, _h);
+        p5.resetShader();
+      } catch (e) {
+        console.error("Draw error:", e);
+      }
+
+      isDrawn = true;
     }
-    isSetupComplete = false;
-    isNoiseReady = false;
-    isGenerating = false;
-    generationId++;
   };
 };
