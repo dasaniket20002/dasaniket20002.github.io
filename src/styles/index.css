@@ -8,11 +8,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --light-1: 0.9454 0.0231 93.33;
-  --light-2: 0.861 0.0322 91.05;
-  --dark-1: 0.4426 0.0674 40.29;
-  --dark-2: 0.2036 0.0388 21.05;
-  --success: 0.5198 0.176858 142.4953;
+  --light-1: oklch(0.9454 0.0231 93.33);
+  --light-2: oklch(0.861 0.0322 91.05);
+  --dark-1: oklch(0.4426 0.0674 40.29);
+  --dark-2: oklch(0.2036 0.0388 21.05);
+  --success: oklch(0.5198 0.176858 142.4953);
 
   --radius: 0.625rem;
 }
@@ -21,11 +21,11 @@
   --font-helvetica: "Helvetica Neue", sans-serif;
   --font-think-loved: "Think Loved", sans-serif;
 
-  --color-light-1: oklch(var(--light-1));
-  --color-light-2: oklch(var(--light-2));
-  --color-dark-1: oklch(var(--dark-1));
-  --color-dark-2: oklch(var(--dark-2));
-  --color-success: oklch(var(--success));
+  --color-light-1: var(--light-1);
+  --color-light-2: var(--light-2);
+  --color-dark-1: var(--dark-1);
+  --color-dark-2: var(--dark-2);
+  --color-success: var(--success);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -48,6 +48,9 @@ body {
 @utility trim-text-caps {
   text-box: trim-both cap alphabetic;
 }
+
+@custom-variant cqw-landscape (@container (min-aspect-ratio: 1/1));
+@custom-variant cqw-portrait (@container (max-aspect-ratio: 1/1));
 
 /* header {
   background-image: radial-gradient(transparent 1px, var(--color-light-1) 1px);

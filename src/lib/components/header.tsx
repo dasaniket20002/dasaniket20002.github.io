@@ -1,17 +1,24 @@
+import { useLenis } from "lenis/react";
 import {
   AnimatePresence,
   motion,
-  useAnimationFrame,
+  stagger,
   // useMotionValueEvent,
   // useScroll,
   type Variants,
 } from "motion/react";
-import { forwardRef, useEffect, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { useBGTheme } from "../hooks/use-bg-theme";
+import { useStickySnap } from "../hooks/use-sticky-snap";
 import { cn } from "../utils";
 import Link from "./link";
 import LogoName from "./logo-name";
-import { useStickySnap } from "../hooks/use-sticky-snap";
-import { useLenis } from "lenis/react";
 
 type HeaderProps = { className?: string };
 
@@ -21,8 +28,8 @@ const LINK_VARIANTS: Variants = {
 };
 
 const CONTAINER_VARIANTS: Variants = {
-  hidden: { transition: { staggerChildren: 0.05, staggerDirection: 1 } },
-  visible: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
+  hidden: { transition: { delayChildren: stagger(0.05, { from: 1 }) } },
+  visible: { transition: { delayChildren: stagger(0.05, { from: -1 }) } },
 };
 
 const NAV_LINKS = [
@@ -35,8 +42,9 @@ const NAV_LINKS = [
 const HEADER_INITIAL_DELAY = 1500;
 
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
+  const headerRef = useRef<HTMLElement>(null);
   const [hidden, setHidden] = useState(true);
-  const [bgTheme, setBGTheme] = useState<"light" | "dark">("dark");
+  const bgTheme = useBGTheme(headerRef);
   // const { scrollY } = useScroll();
 
   // useMotionValueEvent(scrollY, "change", (latest) => {
@@ -48,32 +56,6 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const { lockSnap, unlockSnap } = useStickySnap();
   const lenis = useLenis();
 
-  useAnimationFrame(() => {
-    const elementsWithBGTheme = document.querySelectorAll("[data-bg-theme]");
-    const header = document.getElementById("header");
-
-    if (elementsWithBGTheme.length <= 0 || !header) return;
-
-    const headerBounds = header.getBoundingClientRect();
-
-    elementsWithBGTheme.forEach((element) => {
-      const sectionBounds = element.getBoundingClientRect();
-      if (
-        !(
-          headerBounds.right < sectionBounds.left ||
-          headerBounds.left > sectionBounds.right ||
-          headerBounds.bottom < sectionBounds.top ||
-          headerBounds.top > sectionBounds.bottom
-        )
-      ) {
-        const bgTheme = element.getAttribute("data-bg-theme");
-        if (bgTheme === "light" || bgTheme === "dark") {
-          setBGTheme(bgTheme);
-        }
-      }
-    });
-  });
-
   useEffect(() => {
     const t = setTimeout(() => setHidden(false), HEADER_INITIAL_DELAY);
 
@@ -82,13 +64,14 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     };
   }, []);
 
+  useImperativeHandle(ref, () => headerRef.current!);
+
   return (
     <header
-      ref={ref}
-      id="header"
+      ref={headerRef}
       className={cn(
         "px-4 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-9998",
-        className
+        className,
       )}
     >
       <motion.span
@@ -106,7 +89,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
           <LogoName
             className={cn(
               "text-lg md:text-xl cursor-pointer transition-colors z-9998",
-              bgTheme === "light" ? "text-dark-1" : "text-light-2"
+              bgTheme === "light" ? "text-dark-1" : "text-light-2",
             )}
             initial={{ y: -24, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -129,7 +112,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             exit="hidden"
             className={cn(
               "flex gap-4 md:gap-8 items-center text-sm tracking-wide font-light transition-colors",
-              bgTheme === "light" ? "text-dark-1" : "text-light-2"
+              bgTheme === "light" ? "text-dark-1" : "text-light-2",
             )}
           >
             {NAV_LINKS.map((l, i) => (

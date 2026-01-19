@@ -16,9 +16,9 @@ import {
 } from "motion/react";
 import { createPortal } from "react-dom";
 import { cn } from "../utils";
-import useClickOutside from "../hooks/use-click-outside";
 import { IconX } from "@tabler/icons-react";
 import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useClickOutside } from "../hooks/use-click-outside";
 
 export type MorphingDialogContextType = {
   isOpen: boolean;
@@ -34,7 +34,7 @@ function useMorphingDialog() {
   const context = useContext(MorphingDialogContext);
   if (!context) {
     throw new Error(
-      "useMorphingDialog must be used within a MorphingDialogProvider"
+      "useMorphingDialog must be used within a MorphingDialogProvider",
     );
   }
   return context;
@@ -60,7 +60,7 @@ function MorphingDialogProvider({
       uniqueId,
       triggerRef,
     }),
-    [isOpen, uniqueId]
+    [isOpen, uniqueId],
   );
 
   return (
@@ -109,7 +109,7 @@ function MorphingDialogTrigger({
         setIsOpen(!isOpen);
       }
     },
-    [isOpen, setIsOpen]
+    [isOpen, setIsOpen],
   );
 
   return (
@@ -183,7 +183,7 @@ function MorphingDialogContent({
       // document.body.classList.add("overflow-hidden");
       lockScroll();
       const focusableElements = containerRef.current?.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       if (focusableElements && focusableElements.length > 0) {
         firstFocusableElement.current = focusableElements[0] as HTMLElement;
@@ -248,7 +248,7 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 }
 
