@@ -1,18 +1,9 @@
-import { useLayoutEffect, useRef } from "react";
+import GridGolden from "../../components/grid-golden-34-21";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
-import GridGolden from "../../components/grid-golden-34-21";
 
 export default function Services({ className }: { className?: string }) {
-  const section1 = useRef<HTMLElement>(null);
-  const section2 = useRef<HTMLElement>(null);
   const { registerSection } = useStickySnap();
-  useLayoutEffect(() => {
-    if (section1.current)
-      registerSection(section1.current, { useDefaultHeaderHeight: true });
-    if (section2.current)
-      registerSection(section2.current, { useDefaultHeaderHeight: true });
-  }, [registerSection]);
 
   return (
     <SectionContainer
@@ -24,7 +15,7 @@ export default function Services({ className }: { className?: string }) {
     >
       <section
         className="place-content-center place-items-center @container-[size] p-4"
-        ref={section1}
+        ref={registerSection}
       >
         <GridGolden
           landscapeConvergeQuadrant="top-right"

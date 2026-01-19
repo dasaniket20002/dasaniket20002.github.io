@@ -35,7 +35,10 @@ export function StickySnapProvider({
   const registerSection = useCallback(
     (
       el: HTMLElement | null,
-      options?: { offset?: number; useDefaultHeaderHeight?: boolean }
+      options: { offset?: number; useDefaultHeaderHeight?: boolean } = {
+        offset: 0,
+        useDefaultHeaderHeight: true,
+      },
     ) => {
       if (!el) return;
 
@@ -53,7 +56,7 @@ export function StickySnapProvider({
         sectionsRef.current.push({ el, offset });
       }
     },
-    [windowWidth]
+    [windowWidth],
   );
 
   const lockSnap = useCallback(() => {
@@ -113,10 +116,13 @@ export function StickySnapProvider({
             easing: easeOut,
           });
 
-          setTimeout(() => {
-            snappingRef.current = false;
-            isSnapping.set(0);
-          }, duration * 1000 + 80);
+          setTimeout(
+            () => {
+              snappingRef.current = false;
+              isSnapping.set(0);
+            },
+            duration * 1000 + 80,
+          );
 
           break;
         }
