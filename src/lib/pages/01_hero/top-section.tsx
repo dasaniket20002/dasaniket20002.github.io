@@ -15,7 +15,7 @@ export function TopSection({
         {revealContent && (
           <motion.section
             layout
-            className="w-full uppercase font-light text-4xl flex items-center justify-between gap-8 px-4"
+            className="w-full uppercase font-light text-3xl flex items-center justify-between gap-8 px-4"
             initial={{ clipPath: "inset(0 50% 0 50%)" }}
             animate={{ clipPath: "inset(0 0% 0 0%)" }}
             transition={{ delay: 0.5, ease: "easeInOut" }}
@@ -48,7 +48,7 @@ export function TopSection({
               scale: 1.1,
               filter:
                 "drop-shadow(0px 0px 7px color-mix(in oklch, var(--color-dark-1) 50%, transparent))",
-              zIndex: 9998,
+              zIndex: 98,
               cursor: "grabbing",
             }}
             transition={{ filter: { ease: "easeOut" } }}

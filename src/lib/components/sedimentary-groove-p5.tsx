@@ -7,6 +7,7 @@ import vertShader from "../components/shaders/sedimentary-groove-vs.glsl?raw";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 import { sedimentaryGrooveSketch } from "./sketches/sedimentary-groove-sketch";
+import { DEBUG_HIDE_SKETCHES } from "../../App";
 
 const SedimentaryGrooveP5 = forwardRef<
   HTMLDivElement,
@@ -18,6 +19,9 @@ const SedimentaryGrooveP5 = forwardRef<
   const containerRef = useRef<HTMLDivElement>(null);
   const { width, height } = useElementSize(containerRef);
   const [isLoading, setIsLoading] = useState(true);
+
+  if (DEBUG_HIDE_SKETCHES) return null;
+
   return (
     <motion.div
       ref={ref}

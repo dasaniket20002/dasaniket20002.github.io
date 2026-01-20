@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
-import TextRoll from "../../components/text-roll";
-import { ShakeButton } from "./shake-button";
+import Link from "../../components/link";
 import type { ShakeOptions } from "../../hooks/use-screen-shake";
+import { ShakeButton } from "./shake-button";
 
 export function MiddleSection({
   shake,
@@ -18,28 +18,31 @@ export function MiddleSection({
     >
       <ShakeButton shake={shake} />
 
-      <section className="text-end self-center uppercase tracking-wide leading-8 font-light text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap flex flex-col">
+      <section className="text-end self-center uppercase tracking-wide leading-loose font-light text-2xl whitespace-nowrap flex flex-col">
         <motion.p
           initial={{ clipPath: "inset(0 100% 0 0)" }}
           animate={{ clipPath: "inset(0 0% 0 0)" }}
           transition={{ duration: 0.8, delay: 0.7, ease: "easeInOut" }}
         >
-          LET'S BUILD YOUR
+          I&nbsp;bridge&nbsp;the&nbsp;gap&nbsp;between
         </motion.p>
         <motion.p
           initial={{ clipPath: "inset(0 100% 0 0)" }}
           animate={{ clipPath: "inset(0 0% 0 0)" }}
           transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
-          className="italic font-normal"
+          className="italic font-normal text-3xl tracking-normal"
         >
-          BUSINESS WEBSITE
+          technical&nbsp;architecture
         </motion.p>
         <motion.p
           initial={{ clipPath: "inset(0 100% 0 0)" }}
           animate={{ clipPath: "inset(0 0% 0 0)" }}
           transition={{ duration: 0.8, delay: 0.8, ease: "easeInOut" }}
         >
-          TOGETHER
+          and&nbsp;
+          <span className="italic font-normal text-3xl tracking-normal">
+            visual&nbsp;storytelling
+          </span>
         </motion.p>
       </section>
       <motion.div
@@ -71,33 +74,33 @@ export function MiddleSection({
           transition={{ duration: 0.8, delay: 0.6, ease: "anticipate" }}
         />
       </motion.div>
-      <section className="text-start self-center uppercase tracking-wide leading-10 space-y-3 font-light text-[clamp(1rem,2.5vw,2rem)] whitespace-nowrap">
+      <section className="text-start self-center uppercase tracking-wide space-y-1 font-light text-3xl whitespace-nowrap">
         <motion.p
           initial={{ clipPath: "inset(0 0 0 100%)" }}
           animate={{ clipPath: "inset(0 0 0 0%)" }}
           transition={{ duration: 0.8, delay: 0.7, ease: "easeInOut" }}
         >
-          <TextRoll className="w-min px-2 py-1">
+          <Link className="w-min px-2 py-1" href="#" underlineHeight={2}>
             \&nbsp;WEB&nbsp;DESIGN&nbsp;(UI/UX)
-          </TextRoll>
+          </Link>
         </motion.p>
         <motion.p
           initial={{ clipPath: "inset(0 0 0 100%)" }}
           animate={{ clipPath: "inset(0 0 0 0%)" }}
           transition={{ duration: 0.8, delay: 0.75, ease: "easeInOut" }}
         >
-          <TextRoll className="w-min px-2 py-1">
+          <Link className="w-min px-2 py-1" href="#" underlineHeight={2}>
             \&nbsp;WEB&nbsp;DEVELOPER
-          </TextRoll>
+          </Link>
         </motion.p>
         <motion.p
           initial={{ clipPath: "inset(0 0 0 100%)" }}
           animate={{ clipPath: "inset(0 0 0 0%)" }}
           transition={{ duration: 0.8, delay: 0.8, ease: "easeInOut" }}
         >
-          <TextRoll className="w-min px-2 py-1">
+          <Link className="w-min px-2 py-1" href="#" underlineHeight={2}>
             \&nbsp;CREATIVE&nbsp;DESIGN
-          </TextRoll>
+          </Link>
         </motion.p>
       </section>
     </motion.div>

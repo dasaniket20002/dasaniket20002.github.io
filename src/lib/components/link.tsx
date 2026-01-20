@@ -7,13 +7,24 @@ import { useStickySnap } from "../hooks/use-sticky-snap";
 
 type LinkProps = {
   href: string;
-  text?: string;
+  children?: string;
   className?: string;
   theme?: "light" | "dark";
+  underlineHeight?: number;
 } & HTMLMotionProps<"a">;
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, text, className, theme = "light", ...motionProps }, ref) => {
+  (
+    {
+      href,
+      children,
+      className,
+      theme = "light",
+      underlineHeight = 1,
+      ...motionProps
+    },
+    ref,
+  ) => {
     const [hovered, setHovered] = useState(false);
     const lenis = useLenis();
     const { lockSnap, unlockSnap } = useStickySnap();
@@ -27,7 +38,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           "relative md:p-1 py-1 flex transition-colors",
           theme === "light" && "text-dark-1",
           theme === "dark" && "text-light-2",
-          className
+          className,
         )}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -36,6 +47,11 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           lockSnap();
           lenis?.scrollTo(href, { onComplete: unlockSnap });
         }}
+        style={
+          {
+            "--underline-height": `${underlineHeight}px`,
+          } as React.CSSProperties
+        }
       >
         <AnimatePresence mode="popLayout">
           {hovered && (
@@ -54,9 +70,9 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               }}
               transition={{ ease: "backOut", duration: 0.5 }}
               className={cn(
-                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-px opacity-75",
+                "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-(--underline-height) opacity-75",
                 theme === "light" && "bg-dark-1",
-                theme === "dark" && "bg-light-2"
+                theme === "dark" && "bg-light-2",
               )}
             />
           )}
@@ -68,17 +84,17 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               exit={{ clipPath: "inset(0 100% 0 0)" }}
               transition={{ ease: "backOut" }}
               className={cn(
-                "absolute left-0 md:left-1 right-0 md:right-1 bottom-px top-0",
+                "absolute left-0 md:left-1 right-0 md:right-1 bottom-(--underline-height) top-0",
                 theme === "light" && "bg-light-1",
-                theme === "dark" && "bg-dark-2"
+                theme === "dark" && "bg-dark-2",
               )}
             />
           )}
         </AnimatePresence>
-        <TextRoll hovered={hovered}>{text}</TextRoll>
+        <TextRoll hovered={hovered}>{children}</TextRoll>
       </motion.a>
     );
-  }
+  },
 );
 
 export default Link;

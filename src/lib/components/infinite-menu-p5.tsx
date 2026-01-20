@@ -12,6 +12,7 @@ import fragShader from "../components/shaders/infinite-menu-fs.glsl?raw";
 import vertShader from "../components/shaders/infinite-menu-vs.glsl?raw";
 import SVGText from "./svg-text";
 import { IconArrowUpRight } from "@tabler/icons-react";
+import { DEBUG_HIDE_SKETCHES } from "../../App";
 
 export type MenuItem = {
   image: string;
@@ -76,6 +77,8 @@ const InfiniteMenuP5 = forwardRef<HTMLDivElement, InfiniteMenuProps>(
     const descriptionX = useTransform(isMoving, [0, 1], ["-4rem", "0rem"]);
     const buttonBottom = useTransform(isMoving, [0, 1], ["3rem", "-5rem"]);
     const buttonScale = useTransform(isMoving, [0, 1], [1, 0]);
+
+    if (DEBUG_HIDE_SKETCHES) return null;
 
     return (
       <motion.div

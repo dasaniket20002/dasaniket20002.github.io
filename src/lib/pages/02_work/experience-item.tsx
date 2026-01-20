@@ -2,6 +2,7 @@ import {
   IconArrowForward,
   IconCalendar,
   IconExternalLink,
+  IconHandClick,
   IconLocation,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
@@ -54,7 +55,7 @@ const ExperienceItem = ({
         <div className="flex gap-4 items-center">
           <div
             className={cn(
-              "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center flex-none",
+              "bg-dark-1 aspect-square w-12 md:w-16 rounded-lg place-items-center place-content-center flex-none",
               imgClassName,
             )}
           >
@@ -65,28 +66,31 @@ const ExperienceItem = ({
             />
           </div>
           <div>
-            <MorphingDialogTitle className="font-think-loved text-xl lg:text-3xl tracking-wide whitespace-nowrap">
+            <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl tracking-wide whitespace-nowrap">
               {title}
             </MorphingDialogTitle>
-            <MorphingDialogSubtitle className="font-thin tracking-wider text-start text-sm lg:text-base">
+            <MorphingDialogSubtitle className="font-thin tracking-wider text-start text-sm md:text-base">
               {company}
             </MorphingDialogSubtitle>
           </div>
         </div>
-        <div className="flex flex-col gap-1 text-dark-1 tracking-wide group-hover:text-light-2 transition-colors text-sm lg:text-base">
+        <div className="flex flex-col gap-1 text-dark-1 tracking-wide group-hover:text-light-2 transition-colors text-sm md:text-base">
           <div className="flex gap-4 items-center">
-            <span className="w-12 lg:w-16 place-items-center">
+            <span className="w-12 md:w-16 place-items-center">
               <IconLocation className="size-4" />
             </span>
             <p>{location}</p>
           </div>
           <div className="flex gap-4 items-center">
-            <span className="w-12 lg:w-16 place-items-center">
+            <span className="w-12 md:w-16 place-items-center">
               <IconCalendar className="size-4" />
             </span>
             <p>{period}</p>
           </div>
         </div>
+        <motion.span layout className="absolute bottom-5 right-5 flex size-4">
+          <IconHandClick className="stroke-1 stroke-dark-1" />
+        </motion.span>
       </MorphingDialogTrigger>
 
       <MorphingDialogContainer>
@@ -94,37 +98,35 @@ const ExperienceItem = ({
           <div className="flex gap-6 items-center">
             <div
               className={cn(
-                "bg-dark-1 aspect-square w-12 lg:w-16 rounded-lg place-items-center place-content-center",
+                "bg-dark-1 aspect-square w-12 md:w-16 rounded-lg place-items-center place-content-center",
                 imgClassName,
               )}
             >
               <MorphingDialogImage src={imgSrc} alt={imgAlt} />
             </div>
             <div className="text-dark-1">
-              <MorphingDialogTitle className="font-think-loved text-xl lg:text-3xl tracking-wide whitespace-nowrap">
+              <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl tracking-wide whitespace-nowrap">
                 {title}
               </MorphingDialogTitle>
-              <MorphingDialogSubtitle className="tracking-wide text-start text-sm lg:text-base">
+              <MorphingDialogSubtitle className="tracking-wide text-start text-sm md:text-base">
                 {company}
               </MorphingDialogSubtitle>
             </div>
           </div>
           <HorizontalDivider />
-          <MorphingDialogDescription
-            variants={{
-              initial: { opacity: 0, scale: 0.8, y: 100 },
-              animate: { opacity: 1, scale: 1, y: 0 },
-              exit: { opacity: 0, scale: 0.8, y: 100 },
-            }}
-            className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2 text-sm lg:text-base font-light lg:font-normal"
-          >
+          <MorphingDialogDescription className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2 text-sm md:text-base font-light md:font-normal">
             {description.map((d, i) => (
               <motion.div
                 key={i}
                 className="grid grid-cols-subgrid col-span-full"
-                initial="initial"
-                animate="animate"
-                exit="exit"
+                initial={{ opacity: 0, scale: 0.8, y: 100 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: { delay: 0.1 * i },
+                }}
+                exit={{ opacity: 0, scale: 0.8, y: 100 }}
               >
                 <IconArrowForward className="size-4 mt-0.5 stroke-1" />
                 <p>{d}</p>

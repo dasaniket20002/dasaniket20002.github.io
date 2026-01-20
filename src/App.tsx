@@ -21,6 +21,8 @@ export const HEADER_HEIGHT = 40;
 export const SECTION_HEADER_HEIGHT = 108;
 export const MIN_SECTION_HEADER_HEIGHT = 72;
 
+export const DEBUG_HIDE_SKETCHES = false;
+
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const lenisRef = useRef<LenisRef>(null);

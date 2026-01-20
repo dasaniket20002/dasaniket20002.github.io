@@ -7,6 +7,7 @@ import vertShader from "../components/shaders/contour-circles-vs.glsl?raw";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 import { contourCircleSketch } from "./sketches/contour-circles-sketch";
+import { DEBUG_HIDE_SKETCHES } from "../../App";
 
 const ContourCirclesP5 = forwardRef<
   HTMLDivElement,
@@ -27,10 +28,12 @@ const ContourCirclesP5 = forwardRef<
   const darkColor = useMemo(() => {
     const oklchString = window
       .getComputedStyle(document.documentElement)
-      .getPropertyValue("--color-dark-2")
+      .getPropertyValue("--color-light-2")
       .trim();
     return converter("rgb")(parse(oklchString));
   }, []);
+
+  if (DEBUG_HIDE_SKETCHES) return null;
   return (
     <motion.div
       ref={ref}

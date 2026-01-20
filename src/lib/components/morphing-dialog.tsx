@@ -84,6 +84,7 @@ export type MorphingDialogTriggerProps = {
   className?: string;
   style?: React.CSSProperties;
   triggerRef?: React.RefObject<HTMLButtonElement>;
+  disableLayoutAnimation?: boolean;
 };
 
 function MorphingDialogTrigger({
@@ -91,6 +92,7 @@ function MorphingDialogTrigger({
   className,
   style,
   triggerRef,
+  disableLayoutAnimation,
 }: MorphingDialogTriggerProps) {
   const { setIsOpen, isOpen, uniqueId } = useMorphingDialog();
 
@@ -111,7 +113,7 @@ function MorphingDialogTrigger({
   return (
     <motion.button
       ref={triggerRef}
-      layoutId={`dialog-${uniqueId}`}
+      layoutId={disableLayoutAnimation ? undefined : `dialog-${uniqueId}`}
       className={cn("relative cursor-pointer", className)}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -252,18 +254,24 @@ export type MorphingDialogTitleProps = {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  disableLayoutAnimation?: boolean;
 };
 
 function MorphingDialogTitle({
   children,
   className,
   style,
+  disableLayoutAnimation,
 }: MorphingDialogTitleProps) {
   const { uniqueId } = useMorphingDialog();
 
   return (
     <motion.div
-      layoutId={`dialog-title-container-${uniqueId}`}
+      layoutId={
+        disableLayoutAnimation
+          ? undefined
+          : `dialog-title-container-${uniqueId}`
+      }
       className={className}
       style={style}
       layout
@@ -277,18 +285,24 @@ export type MorphingDialogSubtitleProps = {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  disableLayoutAnimation?: boolean;
 };
 
 function MorphingDialogSubtitle({
   children,
   className,
   style,
+  disableLayoutAnimation,
 }: MorphingDialogSubtitleProps) {
   const { uniqueId } = useMorphingDialog();
 
   return (
     <motion.div
-      layoutId={`dialog-subtitle-container-${uniqueId}`}
+      layoutId={
+        disableLayoutAnimation
+          ? undefined
+          : `dialog-subtitle-container-${uniqueId}`
+      }
       className={className}
       style={style}
     >

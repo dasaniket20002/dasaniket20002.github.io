@@ -21,6 +21,31 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
   let color1: Rgb = { mode: "rgb", r: 1, g: 1, b: 1 };
   let color2: Rgb = { mode: "rgb", r: 0, g: 0, b: 0 };
 
+  function _circlesIntersect(
+    x1: number,
+    y1: number,
+    r1: number,
+    x2: number,
+    y2: number,
+    r2: number,
+  ): boolean {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const distSq = dx * dx + dy * dy;
+
+    const rSum = r1 + r2;
+    const rDiff = Math.abs(r1 - r2);
+
+    return distSq <= rSum * rSum && distSq >= rDiff * rDiff;
+  }
+
+  function circlesIntersect(x: number, y: number, r: number) {
+    for (const c of centers) {
+      if (_circlesIntersect(x, y, r, c[0], c[1], c[2])) return true;
+    }
+    return false;
+  }
+
   p5.updateWithProps = (props) => {
     vertShader = props.vertShader;
     fragShader = props.fragShader;
@@ -57,14 +82,15 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
     p5.colorMode(p5.OKLCH);
     shader = p5.createShader(vertShader, fragShader);
 
-    // Random circle centers
-    for (let i = 0; i < 8; i++) {
-      centers.push([
-        p5.random(-0.5, 0.5),
-        p5.random(-0.5, 0.5),
-        p5.random(0.15, 0.35), // radius influence
-      ]);
-    }
+    let i = 0;
+    do {
+      const x = p5.random(-0.5, 0.5);
+      const y = p5.random(-0.5, 0.5);
+      const r = p5.random(0.15, 0.35);
+      if (circlesIntersect(x, y, r)) continue;
+      centers.push([x, y, r]);
+      i++;
+    } while (i < 2);
   };
 
   p5.draw = () => {
@@ -82,5 +108,21 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
     p5.plane(width, height);
 
     p5.resetShader();
+    p5.rect(p5.mouseX - width / 2, p5.mouseY - height / 2, 20, 20);
+  };
+
+  p5.mouseReleased = () => {
+    const x = p5.map(p5.mouseX - width / 2, -width / 2, width / 2, -0.5, 0.5);
+    const y = p5.map(
+      p5.mouseY - height / 2,
+      -height / 2,
+      height / 2,
+      0.5,
+      -0.5,
+    );
+    const r = p5.random(0.05, 0.25);
+    if (circlesIntersect(x, y, r)) return;
+    if (centers.length > 10) centers.splice(0, 1);
+    centers.push([x, y, r]);
   };
 };

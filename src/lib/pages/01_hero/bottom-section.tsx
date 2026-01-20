@@ -53,7 +53,7 @@ export function BottomSection({
               scale: 1.1,
               filter:
                 "drop-shadow(0px 0px 7px color-mix(in oklch, var(--color-dark-1) 50%, transparent))",
-              zIndex: 9998,
+              zIndex: 98,
               cursor: "grabbing",
             }}
             transition={{ filter: { ease: "easeOut" } }}
