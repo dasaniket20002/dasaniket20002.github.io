@@ -40,9 +40,8 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
   }
 
   function circlesIntersect(x: number, y: number, r: number) {
-    for (const c of centers) {
+    for (const c of centers)
       if (_circlesIntersect(x, y, r, c[0], c[1], c[2])) return true;
-    }
     return false;
   }
 
@@ -108,19 +107,19 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
     p5.plane(width, height);
 
     p5.resetShader();
-    p5.rect(p5.mouseX - width / 2, p5.mouseY - height / 2, 20, 20);
   };
 
   p5.mouseReleased = () => {
-    const x = p5.map(p5.mouseX - width / 2, -width / 2, width / 2, -0.5, 0.5);
-    const y = p5.map(
-      p5.mouseY - height / 2,
-      -height / 2,
-      height / 2,
-      0.5,
-      -0.5,
-    );
     const r = p5.random(0.05, 0.25);
+    const x = p5.map(p5.mouseX - width / 2 - r, -width / 2, width / 2, -1, 1);
+    const y = p5.map(
+      p5.mouseY - height / 2 - r,
+      height / 2,
+      -height / 2,
+      -1,
+      1,
+    );
+
     if (circlesIntersect(x, y, r)) return;
     if (centers.length > 10) centers.splice(0, 1);
     centers.push([x, y, r]);

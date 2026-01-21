@@ -47,13 +47,13 @@ const ServiceCell = ({
       }
       onMouseLeave={() => setHoverState({ isHovered: false, hoverCell: 0 })}
       className={cn(
-        "group size-full [corner-shape:squircle] rounded-4xl border border-light-2/50 flex items-center justify-center hover:z-20",
+        "group size-full [corner-shape:squircle] rounded-4xl border border-light-2/50 flex items-center justify-center",
         className,
       )}
     >
       <MorphingDialog>
         <MorphingDialogTrigger className="size-full flex justify-center">
-          <div className="flex flex-col justify-center gap-10">
+          <div className="flex flex-col justify-center items-center gap-10">
             <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl whitespace-nowrap w-min">
               {title}
             </MorphingDialogTitle>

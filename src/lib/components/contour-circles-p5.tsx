@@ -49,6 +49,14 @@ const ContourCirclesP5 = forwardRef<
           vertShader={vertShader}
           color1={lightColor}
           color2={darkColor}
+          error={(e) => (
+            <div className="size-full">
+              <p className="text-dark-1 text-xl">
+                Unfortunately, your device is saying no. :(
+              </p>
+              <p className="text-dark-1 text-base">{e.message}</p>
+            </div>
+          )}
         />
       </div>
     </motion.div>
