@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "../../components/link";
 import { useState } from "react";
 import { cn } from "../../utils";
+import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useLenis } from "lenis/react";
 
 export default function HeroSkillList({ className }: { className?: string }) {
   const [hoverState, setHoverState] = useState<{
@@ -12,16 +14,23 @@ export default function HeroSkillList({ className }: { className?: string }) {
     isHovered: false,
     hoverCell: 0,
   });
+
+  const lenis = useLenis();
+  const { lockSnap, unlockSnap } = useStickySnap();
+
   return (
-    <div
+    <motion.div
       className={cn(
         "grid grid-cols-subgrid grid-rows-subgrid items-center",
         className,
       )}
+      initial={{ clipPath: "inset(0 0% 0 100%)", scale: 1.25, opacity: 0.75 }}
+      animate={{ clipPath: "inset(0 0% 0 0%)", scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <div className="row-[1/3] col-[2/4] text-[max(1.618rem,1.618vw)] font-thin leading-tight px-3">
         <Link
-          href={"#"}
+          href={"#services"}
           underlineThickness={2}
           className="w-min hover:my-2 transition-[margin]"
           onMouseEnter={() => {
@@ -35,7 +44,7 @@ export default function HeroSkillList({ className }: { className?: string }) {
           / UI/UX Design
         </Link>
         <Link
-          href={"#"}
+          href={"#services"}
           underlineThickness={2}
           className="w-min hover:my-2 transition-[margin]"
           onMouseEnter={() => {
@@ -49,7 +58,7 @@ export default function HeroSkillList({ className }: { className?: string }) {
           / Web Design
         </Link>
         <Link
-          href={"#"}
+          href={"#services"}
           underlineThickness={2}
           className="w-min hover:my-2 transition-[margin]"
           onMouseEnter={() => {
@@ -63,7 +72,7 @@ export default function HeroSkillList({ className }: { className?: string }) {
           / Development
         </Link>
         <Link
-          href={"#"}
+          href={"#services"}
           underlineThickness={2}
           className="w-min hover:my-2 transition-[margin]"
           onMouseEnter={() => {
@@ -80,7 +89,7 @@ export default function HeroSkillList({ className }: { className?: string }) {
       <div className="row-[2/3] col-[1/2] size-full pt-1">
         <AnimatePresence mode="wait">
           {!hoverState.isHovered && hoverState.hoverCell === 0 && (
-            <motion.section
+            <motion.button
               key={0}
               initial={{
                 clipPath: "inset(0 100% 0 0%)",
@@ -100,10 +109,15 @@ export default function HeroSkillList({ className }: { className?: string }) {
                   bounce: 0.5,
                 },
               }}
+              onClick={(e) => {
+                e.preventDefault();
+                lockSnap();
+                lenis?.scrollTo("#work", { onComplete: unlockSnap });
+              }}
               className="group size-full place-items-center place-content-center cursor-pointer"
             >
               <IconPlayerTrackNextFilled className="size-7/10 group-hover:stroke-light-2 transition" />
-            </motion.section>
+            </motion.button>
           )}
           {hoverState.isHovered && hoverState.hoverCell === 1 && (
             <motion.section
@@ -756,6 +770,6 @@ export default function HeroSkillList({ className }: { className?: string }) {
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }

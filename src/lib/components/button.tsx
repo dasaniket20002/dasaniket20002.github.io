@@ -1,4 +1,9 @@
-import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useDragControls,
+  type HTMLMotionProps,
+} from "motion/react";
 import { forwardRef, useState } from "react";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
@@ -9,14 +14,24 @@ type ButtonProps = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   icon?: React.ReactNode;
   variant?: "light" | "dark";
+  magnetic?: boolean;
 } & HTMLMotionProps<"button">;
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { text, className, onClick, icon, variant = "dark", ...motionProps },
+    {
+      text,
+      className,
+      onClick,
+      icon,
+      variant = "dark",
+      magnetic = true,
+      ...motionProps
+    },
     ref,
   ) => {
     const [hovered, setHovered] = useState(false);
+    const dragControls = useDragControls();
 
     return (
       <motion.button
@@ -32,10 +47,22 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "cursor-pointer [&>svg]:size-4 transition-colors duration-150",
           className,
         )}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={(e) => {
+          setHovered(true);
+          dragControls.start(e as unknown as PointerEvent);
+        }}
+        onMouseLeave={() => {
+          setHovered(false);
+          dragControls.stop();
+        }}
         initial={{ scale: 1 }}
         whileTap={{ scale: 0.8 }}
+        drag={magnetic}
+        dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
+        dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
+        dragElastic={0.2}
+        dragListener={false}
+        dragControls={dragControls}
         {...motionProps}
       >
         <TextRoll key="text" hovered={hovered} layout>

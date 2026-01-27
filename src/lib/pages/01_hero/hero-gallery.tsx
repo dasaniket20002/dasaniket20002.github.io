@@ -111,6 +111,8 @@ const carouselImages: {
   },
 ];
 
+const IMAGE_SWAP_DURATION = 6000;
+
 export default function HeroGallery({
   className,
   shake,
@@ -135,10 +137,9 @@ export default function HeroGallery({
 
   useEffect(() => {
     if (!isHovered) {
-      const duration = 6000;
       const interval = setInterval(() => {
         setIndex((current) => (current + 1) % carouselImages.length);
-      }, duration);
+      }, IMAGE_SWAP_DURATION);
 
       return () => clearInterval(interval);
     }
@@ -146,110 +147,119 @@ export default function HeroGallery({
 
   return (
     <motion.div
-      {...useLongPress({
-        onLongPress,
-        onLongPressStart,
-        onLongPressEnd,
-        repeatInterval: 2000,
-      })}
-      drag
-      dragConstraints={containerRef}
-      dragControls={dragControls}
-      dragListener={false}
-      className={cn(
-        "relative size-full overflow-hidden rounded cursor-grab active:cursor-grabbing",
-        className,
-      )}
-      initial={{ scale: 1 }}
-      animate={{ scale: isHovered && isDragged ? 1.5 : 1 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      initial={{ scale: 1.15, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 1, ease: "anticipate" }}
+      className={cn("size-full relative", className)}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          className="size-full z-101"
-          initial={{ clipPath: "inset(0 100% 0 0%)", opacity: 0.1 }}
-          animate={{ clipPath: "inset(0 0% 0 0%)", opacity: 1 }}
-          exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.1 }}
-          transition={{ ease: "anticipate" }}
-        >
-          <img
-            src={carouselImages[index].imgSrc}
-            alt={carouselImages[index].name}
-            className="select-none pointer-events-none size-full object-cover"
-            draggable={false}
-          />
-          <AnimatePresence mode="popLayout" propagate>
-            {isHovered && (
-              <motion.div
-                className="w-full h-[calc(100%+2rem)] absolute inset-0 flex flex-col gap-2 items-center justify-center select-none z-98"
-                initial={{ y: "100%" }}
-                animate={{ y: "0%" }}
-                exit={{ y: "100%" }}
-                transition={{ ease: "anticipate" }}
-              >
-                <div className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-t-from-0 bg-[radial-gradient(var(--color-dark-1)_1px,var(--color-dark-2)_1px)] z-97" />
-                <p className="font-bold italic text-2xl text-light-2 z-98 text-shadow-lg">
-                  {carouselImages[index].name}
-                </p>
-                <a
-                  href="#"
-                  className="text-xs flex items-center gap-1 text-light-1 tracking-widest font-thin z-98 text-shadow-lg"
-                >
-                  Visit
-                  <IconExternalLink className="size-3 stroke-1" />
-                </a>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Navigation Buttons */}
-      <motion.button
-        onClick={() =>
-          setIndex(
-            (i) => (i - 1 + carouselImages.length) % carouselImages.length,
-          )
-        }
-        className="absolute left-2 top-1/2 -translate-y-1/2 size-6 p-1 rounded-full flex items-center justify-center z-98 cursor-pointer bg-light-1 [&>svg]:stroke-transparent hover:[&>svg]:stroke-dark-1"
-        initial={{ scale: 0.5, opacity: 0.25 }}
-        animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
-        whileHover={{ scale: 1, opacity: 1 }}
-        whileTap={{ scale: 0.5 }}
-      >
-        <IconChevronLeft />
-      </motion.button>
-
-      <motion.button
-        onClick={() => setIndex((i) => (i + 1) % carouselImages.length)}
-        className="absolute right-2 top-1/2 -translate-y-1/2 size-6 p-1 rounded-full flex items-center justify-center z-98 cursor-pointer bg-light-1 [&>svg]:stroke-transparent hover:[&>svg]:stroke-dark-1"
-        initial={{ scale: 0.5, opacity: 0.25 }}
-        animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
-        whileHover={{ scale: 1, opacity: 1 }}
-        whileTap={{ scale: 0.5 }}
-      >
-        <IconChevronRight />
-      </motion.button>
-
-      {/* Progress Indicator */}
       <motion.div
-        className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 h-2 z-98"
-        initial={{ scale: 0.5, opacity: 0.25 }}
-        animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
-        whileHover={{ scale: 1, opacity: 1 }}
+        {...useLongPress({
+          onLongPress,
+          onLongPressStart,
+          onLongPressEnd,
+          repeatInterval: 2000,
+        })}
+        drag
+        dragConstraints={containerRef}
+        dragControls={dragControls}
+        dragListener={false}
+        className="relative size-full overflow-hidden rounded cursor-grab active:cursor-grabbing"
+        initial={{ scale: 1, opacity: 0 }}
+        animate={{ scale: isHovered && isDragged ? 1.5 : 1, opacity: 1 }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {carouselImages.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            className={cn(
-              "h-1 rounded-full transition-all cursor-pointer",
-              i === index ? "w-4 bg-light-2" : "w-1 bg-light-2/50",
-            )}
-          />
-        ))}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            className="size-full"
+            initial={{ clipPath: "inset(0 100% 0 0%)", opacity: 0.1 }}
+            animate={{ clipPath: "inset(0 0% 0 0%)", opacity: 1 }}
+            exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.1 }}
+            transition={{ ease: "anticipate" }}
+          >
+            <img
+              src={carouselImages[index].imgSrc}
+              alt={carouselImages[index].name}
+              className="select-none pointer-events-none size-full object-cover z-101"
+              draggable={false}
+            />
+            <AnimatePresence mode="popLayout">
+              {isHovered && (
+                <motion.div
+                  className="w-full h-[calc(100%+2rem)] absolute inset-0 flex flex-col gap-2 items-center justify-center select-none z-98"
+                  initial={{ y: "100%" }}
+                  animate={{ y: "0%" }}
+                  exit={{ y: "100%" }}
+                  transition={{ ease: "anticipate" }}
+                >
+                  <div className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-t-from-0 bg-[radial-gradient(var(--color-dark-1)_1px,var(--color-dark-2)_1px)] z-97" />
+                  <p className="font-bold italic text-2xl text-light-2 z-98 text-shadow-lg">
+                    {carouselImages[index].name}
+                  </p>
+                  <a
+                    href="#"
+                    className="text-xs flex items-center gap-1 text-light-1 tracking-widest font-thin z-98 text-shadow-lg"
+                  >
+                    Visit
+                    <IconExternalLink className="size-3 stroke-1" />
+                  </a>
+                  {!isDragged && (
+                    <p className="text-[10px] text-light-2/75 z-98 tracking-widest font-extralight text-shadow-lg absolute top-1 right-1">
+                      Long press to move
+                    </p>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Navigation Buttons */}
+        <motion.button
+          onClick={() =>
+            setIndex(
+              (i) => (i - 1 + carouselImages.length) % carouselImages.length,
+            )
+          }
+          className="absolute left-2 top-1/2 -translate-y-1/2 size-6 p-1 rounded-full flex items-center justify-center z-98 cursor-pointer bg-light-1 [&>svg]:stroke-transparent hover:[&>svg]:stroke-dark-1"
+          initial={{ scale: 0.5, opacity: 0.25 }}
+          animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
+          whileHover={{ scale: 1, opacity: 1 }}
+          whileTap={{ scale: 0.5 }}
+        >
+          <IconChevronLeft />
+        </motion.button>
+
+        <motion.button
+          onClick={() => setIndex((i) => (i + 1) % carouselImages.length)}
+          className="absolute right-2 top-1/2 -translate-y-1/2 size-6 p-1 rounded-full flex items-center justify-center z-98 cursor-pointer bg-light-1 [&>svg]:stroke-transparent hover:[&>svg]:stroke-dark-1"
+          initial={{ scale: 0.5, opacity: 0.25 }}
+          animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
+          whileHover={{ scale: 1, opacity: 1 }}
+          whileTap={{ scale: 0.5 }}
+        >
+          <IconChevronRight />
+        </motion.button>
+
+        {/* Progress Indicator */}
+        <motion.div
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 h-2 z-98"
+          initial={{ scale: 0.5, opacity: 0.25 }}
+          animate={{ scale: 0.5, opacity: isHovered ? 0.75 : 0.25 }}
+          whileHover={{ scale: 1, opacity: 1 }}
+        >
+          {carouselImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className={cn(
+                "h-1 rounded-full transition-all cursor-pointer",
+                i === index ? "w-4 bg-light-2" : "w-1 bg-light-2/50",
+              )}
+            />
+          ))}
+        </motion.div>
       </motion.div>
     </motion.div>
   );

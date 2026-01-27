@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import GOLP5 from "../../components/gol-p5";
 import { useElementSize } from "../../hooks/use-element-size";
 import { useScreenShake } from "../../hooks/use-screen-shake";
@@ -12,13 +12,27 @@ import HeroSubtitle from "./hero-subtitle";
 import HeroTagLine from "./hero-tag-line";
 import HeroTitle from "./hero-title";
 
+const SKETCH_HIDDEN_INITIAL_DELAY = 5000;
+
 export default function Hero({ className }: { className?: string }) {
   const dragContainerRef = useRef<HTMLDivElement>(null);
   const { width: containerWidth, height: containerHeight } =
     useElementSize(dragContainerRef);
+  const [sketchHidden, setSketchHidden] = useState(true);
 
   const { controls: screenShakeControls, shake } =
     useScreenShake(dragContainerRef);
+
+  useEffect(() => {
+    const t = setTimeout(
+      () => setSketchHidden(false),
+      SKETCH_HIDDEN_INITIAL_DELAY,
+    );
+
+    return () => {
+      if (t) clearTimeout(t);
+    };
+  }, []);
 
   return (
     <div
@@ -45,11 +59,15 @@ export default function Hero({ className }: { className?: string }) {
           <div className="row-[5/7] col-[1/3] border-light-2/75 border-t" />
         </div>
 
-        <GOLP5
-          className="row-span-full col-span-full size-full opacity-25 mask-radial-at-center mask-radial-farthest-corner mask-radial-from-0%"
-          width={containerWidth}
-          height={containerHeight}
-        />
+        {!sketchHidden && (
+          <GOLP5
+            className="row-span-full col-span-full size-full mask-radial-at-center mask-radial-farthest-corner mask-radial-from-0%"
+            width={containerWidth}
+            height={containerHeight}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.25 }}
+          />
+        )}
 
         <HeroTagLine className="place-self-center row-[1/3] col-[1/6] z-1" />
         <HeroSkillList className="place-self-end row-[1/3] col-[6/9] z-1" />

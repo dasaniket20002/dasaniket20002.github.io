@@ -1,3 +1,4 @@
+import { motion } from "motion/react";
 import SVGText from "../../components/svg-text";
 import { cn } from "../../utils";
 
@@ -9,11 +10,14 @@ export default function HeroTitle({
   containerRef: React.RefObject<HTMLElement | null>;
 }) {
   return (
-    <div
+    <motion.div
       className={cn(
         "self-end relative size-full flex flex-col gap-2 items-center justify-end",
         className,
       )}
+      initial={{ clipPath: "inset(0 50% 0 50%)", scale: 1.25, opacity: 0.75 }}
+      animate={{ clipPath: "inset(0 0% 0 0%)", scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.75, ease: "easeOut" }}
     >
       <section className="relative flex select-none">
         {["C", "RE", "A", "T", "I", "V", "E"].map((c, i) => (
@@ -69,6 +73,6 @@ export default function HeroTitle({
           </SVGText>
         ))}
       </section>
-    </div>
+    </motion.div>
   );
 }
