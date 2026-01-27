@@ -51,7 +51,7 @@ export async function wait(ms: number) {
 export function randomRange(
   min: number,
   max: number,
-  exclude: number[] = []
+  exclude: number[] = [],
 ): number {
   const excluded = new Set(exclude);
 
@@ -75,7 +75,7 @@ export function mapRangeClamped(
   inMin: number,
   inMax: number,
   outMin: number,
-  outMax: number
+  outMax: number,
 ): number {
   const clamped = Math.min(Math.max(value, inMin), inMax);
   return ((clamped - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
@@ -86,7 +86,7 @@ export function mapRange(
   inMin: number,
   inMax: number,
   outMin: number,
-  outMax: number
+  outMax: number,
 ): number {
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
@@ -99,4 +99,37 @@ export const yieldToMain = (): Promise<void> => {
       setTimeout(resolve, 0);
     }
   });
+};
+
+export const gcd = (a: number, b: number): number => {
+  a = Math.abs(a);
+  b = Math.abs(b);
+
+  while (b !== 0) {
+    const temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
+};
+
+export const findOptimalSquareTiling = (width: number, height: number) => {
+  if (
+    width <= 0 ||
+    height <= 0 ||
+    !Number.isInteger(width) ||
+    !Number.isInteger(height)
+  )
+    return;
+
+  const size = gcd(width, height);
+  const columns = width / size;
+  const rows = height / size;
+
+  return {
+    size,
+    columns,
+    rows,
+    totalSquares: columns * rows,
+  };
 };

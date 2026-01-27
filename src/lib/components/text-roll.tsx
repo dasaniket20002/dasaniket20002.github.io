@@ -46,13 +46,13 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
           if (hovered === undefined) handleHover();
         }}
         className={cn(
-          "relative flex flex-col h-[1em] overflow-hidden select-none",
-          className
+          "relative flex flex-col h-[calc(1em+1px)] overflow-hidden select-none",
+          className,
         )}
         {...motionProps}
       >
         {/* Row 1: The Original Text */}
-        <span className="flex h-[1em] leading-[1em]">
+        <span className="flex h-[calc(1em+1px)] leading-[calc(1em+1px)]">
           {characters.map((char, i) => (
             <motion.span
               key={`char1-${i}`}
@@ -67,7 +67,7 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
         </span>
 
         {/* Row 2: The Coming-from-bottom Text */}
-        <span className="flex h-[1em] leading-[1em]">
+        <span className="flex h-[calc(1em+1px)] leading-[calc(1em+1px)]">
           {characters.map((char, i) => (
             <motion.span
               key={`char2-${i}`}
@@ -82,7 +82,7 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
         </span>
       </motion.span>
     );
-  }
+  },
 );
 
 export default TextRoll;

@@ -121,7 +121,7 @@ export const contourCircleSketch: Sketch<ContourCirclesProps> = (p5) => {
     );
 
     if (circlesIntersect(x, y, r)) return;
-    if (centers.length > 10) centers.splice(0, 1);
+    if (centers.length > 7) centers.splice(0, 1);
     centers.push([x, y, r]);
   };
 };

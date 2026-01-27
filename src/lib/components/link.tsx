@@ -10,7 +10,9 @@ type LinkProps = {
   children?: string;
   className?: string;
   theme?: "light" | "dark";
-  underlineHeight?: number;
+  underlineThickness?: number;
+  hovered?: boolean;
+  setHovered?: (h: boolean) => void;
 } & HTMLMotionProps<"a">;
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
@@ -20,28 +22,32 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       children,
       className,
       theme = "light",
-      underlineHeight = 1,
+      underlineThickness = 1,
+      hovered,
+      setHovered,
       ...motionProps
     },
     ref,
   ) => {
-    const [hovered, setHovered] = useState(false);
+    const [_hovered, _setHovered] = useState(false);
     const lenis = useLenis();
     const { lockSnap, unlockSnap } = useStickySnap();
+
+    const __hovered = hovered === undefined ? _hovered : hovered;
+    const __setHovered = setHovered ? setHovered : _setHovered;
 
     return (
       <motion.a
         ref={ref}
         href={href}
-        {...motionProps}
         className={cn(
           "relative md:p-1 py-1 flex transition-colors",
           theme === "light" && "text-dark-1",
           theme === "dark" && "text-light-2",
           className,
         )}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={() => __setHovered(true)}
+        onMouseLeave={() => __setHovered(false)}
         onClick={(e) => {
           e.preventDefault();
           lockSnap();
@@ -49,12 +55,13 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         }}
         style={
           {
-            "--underline-height": `${underlineHeight}px`,
+            "--underline-height": `${underlineThickness}px`,
           } as React.CSSProperties
         }
+        {...motionProps}
       >
         <AnimatePresence mode="popLayout">
-          {hovered && (
+          {__hovered && (
             <motion.span
               key="underline"
               initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
@@ -76,7 +83,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               )}
             />
           )}
-          {hovered && (
+          {__hovered && (
             <motion.span
               key="background"
               initial={{ clipPath: "inset(0 100% 0 0)" }}
@@ -91,7 +98,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
             />
           )}
         </AnimatePresence>
-        <TextRoll hovered={hovered}>{children}</TextRoll>
+        <TextRoll hovered={__hovered}>{children}</TextRoll>
       </motion.a>
     );
   },
