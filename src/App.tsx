@@ -11,7 +11,7 @@ import Header from "./lib/components/header";
 import NoiseOverlay from "./lib/components/noise-overlay";
 import { StickySnapProvider } from "./lib/contexts/sticky-snap-provider";
 import Loader from "./lib/pages/00_loader/loader";
-import Hero from "./lib/pages/01_hero/hero2";
+import Hero from "./lib/pages/01_hero/hero";
 import Work from "./lib/pages/02_work/work";
 import Services from "./lib/pages/03_services/services";
 import About from "./lib/pages/04_about/about";
