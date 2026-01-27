@@ -29,20 +29,21 @@ export default function Counter({ onComplete }: { onComplete: () => void }) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    const sequence = async () => {
-      let counter = 0;
-      const increment = 100 / ALL_IMAGES.length;
-      for (const imgSrc of ALL_IMAGES) {
-        await preloadImage(imgSrc);
-        counter += increment;
-        animate(count, counter, {
+    let loadedCount = 0;
+    const increment = 100 / ALL_IMAGES.length;
+
+    // Start all image loads in parallel
+    const promises = ALL_IMAGES.map((imgSrc) =>
+      preloadImage(imgSrc).finally(() => {
+        loadedCount += increment;
+        animate(count, loadedCount, {
           duration: 0.25,
           ease: "easeInOut",
         });
-      }
-    };
+      }),
+    );
 
-    sequence().then(async () => {
+    Promise.all(promises).then(async () => {
       await wait(500);
       onComplete();
     });
