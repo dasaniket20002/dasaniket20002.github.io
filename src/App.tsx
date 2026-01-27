@@ -24,7 +24,7 @@ export const MIN_SECTION_HEADER_HEIGHT = 72;
 export const DEBUG_HIDE_SKETCHES = false;
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const lenisRef = useRef<LenisRef>(null);
   useEffect(() => {
     function update({ timestamp }: FrameData) {

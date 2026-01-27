@@ -1,29 +1,11 @@
 import { P5Canvas, type P5CanvasInstance } from "@p5-wrapper/react";
-import { IconLoader2 } from "@tabler/icons-react";
-import { animate, AnimatePresence, motion, useMotionValue } from "motion/react";
-import { forwardRef, useEffect, useState } from "react";
-import { randomRange, wait } from "../../utils";
-import LogoName from "../../components/logo-name";
+import { motion } from "motion/react";
+import { forwardRef } from "react";
 import Key from "../../components/key";
-
-const LOADING_MESSAGES = [
-  "Aligning pixels...",
-  "Convincing the internet to cooperate...",
-  "Making it look intentional...",
-  "Warming up the servers.",
-  "Applying duct tape.",
-  "Running on caffeine and hope.",
-  "npm install patience...",
-  "Have you tried turning it off and on again?",
-  "Blame the cache.",
-  "Summoning semicolons...",
-  "Still faster than Jira.",
-  "Loading the loading message...",
-  "Consulting the crystal ball...",
-  "This message is here so you don't feel ignored.",
-  "Yes, this is actually loading.",
-  "I could've shown a spinner. I chose chaos.",
-];
+import LogoName from "../../components/logo-name";
+import LoadingSketch from "./loading_sketch";
+import Counter from "./counter";
+import Message from "./message";
 
 function sketch(p5: P5CanvasInstance) {
   p5.setup = () => p5.createCanvas(p5.windowWidth / 3, 384, p5.WEBGL);
@@ -38,86 +20,6 @@ function sketch(p5: P5CanvasInstance) {
     p5.plane(100);
     p5.pop();
   };
-}
-
-function LoadingSketch() {
-  return (
-    <section className="w-1/3 h-96 place-content-center place-items-center flex-none">
-      <IconLoader2 className="animate-spin stroke-2 size-4 stroke-light-2" />
-    </section>
-  );
-}
-
-function Counter({ onComplete }: { onComplete: () => void }) {
-  const count = useMotionValue(0);
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const sequence = async () => {
-      await wait(1500);
-
-      await animate(count, randomRange(30, 40), {
-        duration: 1.5,
-        ease: "easeInOut",
-      });
-      await wait(400);
-
-      await animate(count, randomRange(50, 70), {
-        duration: 1.2,
-        ease: "easeInOut",
-      });
-      await wait(500);
-
-      await animate(count, 100, { duration: 1, ease: "easeInOut" });
-      await wait(500);
-
-      onComplete();
-    };
-    sequence();
-  }, [count, onComplete]);
-
-  count.on("change", (latest) => {
-    setDisplay(Math.round(latest));
-  });
-
-  return (
-    <p className="w-full font-think-loved text-5xl text-center">{display}</p>
-  );
-}
-
-function Message() {
-  const [message, setMessage] = useState<string>("");
-
-  useEffect(() => {
-    const rs: Array<number> = [];
-    const generateMessage = () => {
-      const r = randomRange(0, LOADING_MESSAGES.length - 1, rs);
-      rs.push(r);
-      if (rs.length === LOADING_MESSAGES.length) rs.splice(0, rs.length - 2);
-      setMessage(LOADING_MESSAGES[r]);
-    };
-    generateMessage();
-    const interval = setInterval(() => generateMessage(), 3000);
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, []);
-
-  return (
-    <AnimatePresence mode="wait">
-      <motion.p
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: 1 }}
-        exit={{ scaleY: 1, opacity: 0 }}
-        key={message}
-        className="text-center font-light h-4 origin-top"
-        layout
-      >
-        {message}
-      </motion.p>
-    </AnimatePresence>
-  );
 }
 
 type LoaderProps = { onComplete: () => void };

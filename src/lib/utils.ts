@@ -133,3 +133,16 @@ export const findOptimalSquareTiling = (width: number, height: number) => {
     totalSquares: columns * rows,
   };
 };
+
+export const preloadImage = (src: string) => {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.onload = function () {
+      resolve(img);
+    };
+    img.onerror = img.onabort = function () {
+      reject();
+    };
+    img.src = src;
+  });
+};
