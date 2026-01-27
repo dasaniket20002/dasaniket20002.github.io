@@ -1,5 +1,5 @@
 import { animate, useAnimation } from "motion/react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 export type ShakeOptions = {
   strength?: number; // px
@@ -7,12 +7,16 @@ export type ShakeOptions = {
 };
 
 export function useScreenShake(
-  containerRef?: React.RefObject<HTMLElement | null>
+  containerRef?: React.RefObject<HTMLElement | null>,
 ) {
   const controls = useAnimation();
+  const isShaking = useRef(false);
 
   const shake = useCallback(
-    ({ strength = 3, duration = 0.25 }: ShakeOptions = {}) => {
+    async ({ strength = 3, duration = 0.25 }: ShakeOptions = {}) => {
+      if (isShaking.current) return;
+      isShaking.current = true;
+
       controls.start({
         x: [0, -strength, strength, -strength / 2, strength / 2, 0],
         y: [0, strength / 2, -strength / 2, strength / 4, -strength / 4, 0],
@@ -21,17 +25,18 @@ export function useScreenShake(
       });
 
       const root = containerRef?.current ?? document.documentElement;
-
       const elements = root.querySelectorAll("[data-screen-shakable='true']");
 
-      elements.forEach((el) => {
+      elements.forEach(async (el) => {
         const { x: baseX, y: baseY } = getCurrentTranslate(el);
+        const returnToOrigin =
+          el.getAttribute("data-return-to-origin") === "true";
 
         // small random drift
         const offsetX = (Math.random() * 2 - 1) * strength * 2;
         const offsetY = (Math.random() * 2 - 1) * strength * 2;
 
-        animate(
+        await animate(
           el,
           {
             x: baseX + offsetX,
@@ -40,11 +45,28 @@ export function useScreenShake(
           {
             duration,
             ease: "backOut",
-          }
+          },
         );
+
+        if (returnToOrigin) {
+          await animate(
+            el,
+            {
+              x: baseX,
+              y: baseY,
+            },
+            {
+              type: "spring",
+              stiffness: 500,
+              damping: 15,
+            },
+          );
+        }
+
+        isShaking.current = false;
       });
     },
-    [controls, containerRef]
+    [controls, containerRef],
   );
 
   return { controls, shake };

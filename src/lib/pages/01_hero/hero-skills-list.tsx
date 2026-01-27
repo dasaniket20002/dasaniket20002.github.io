@@ -40,6 +40,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
             setHoverState({ isHovered: false, hoverCell: 0 });
           }}
           hovered={hoverState.isHovered && hoverState.hoverCell === 1}
+          data-screen-shakable={true}
+          data-return-to-origin={true}
         >
           / UI/UX Design
         </Link>
@@ -54,6 +56,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
             setHoverState({ isHovered: false, hoverCell: 0 });
           }}
           hovered={hoverState.isHovered && hoverState.hoverCell === 2}
+          data-screen-shakable={true}
+          data-return-to-origin={true}
         >
           / Web Design
         </Link>
@@ -68,6 +72,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
             setHoverState({ isHovered: false, hoverCell: 0 });
           }}
           hovered={hoverState.isHovered && hoverState.hoverCell === 3}
+          data-screen-shakable={true}
+          data-return-to-origin={true}
         >
           / Development
         </Link>
@@ -82,6 +88,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
             setHoverState({ isHovered: false, hoverCell: 0 });
           }}
           hovered={hoverState.isHovered && hoverState.hoverCell === 4}
+          data-screen-shakable={true}
+          data-return-to-origin={true}
         >
           / Creative Design
         </Link>
@@ -115,6 +123,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
                 lenis?.scrollTo("#work", { onComplete: unlockSnap });
               }}
               className="group size-full place-items-center place-content-center cursor-pointer"
+              data-screen-shakable={true}
+              data-return-to-origin={true}
             >
               <IconPlayerTrackNextFilled className="size-7/10 group-hover:stroke-light-2 transition" />
             </motion.button>
@@ -127,6 +137,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
               exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.4 }}
               transition={{ ease: "anticipate" }}
               className="size-full"
+              data-screen-shakable={true}
+              data-return-to-origin={true}
             >
               <svg
                 width="125"
@@ -246,6 +258,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
               exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.4 }}
               transition={{ ease: "anticipate" }}
               className="size-full"
+              data-screen-shakable={true}
+              data-return-to-origin={true}
             >
               <svg
                 width="125"
@@ -403,6 +417,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
               exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.4 }}
               transition={{ ease: "anticipate" }}
               className="size-full"
+              data-screen-shakable={true}
+              data-return-to-origin={true}
             >
               <svg
                 width="125"
@@ -665,6 +681,8 @@ export default function HeroSkillList({ className }: { className?: string }) {
               exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.4 }}
               transition={{ ease: "anticipate" }}
               className="size-full"
+              data-screen-shakable={true}
+              data-return-to-origin={true}
             >
               <svg
                 width="125"

@@ -44,7 +44,7 @@ export default function Counter({ onComplete }: { onComplete: () => void }) {
     );
 
     Promise.all(promises).then(async () => {
-      await wait(500);
+      await wait(1000);
       onComplete();
     });
   }, [count, onComplete]);

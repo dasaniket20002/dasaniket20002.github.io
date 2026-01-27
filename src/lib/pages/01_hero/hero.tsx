@@ -12,7 +12,7 @@ import HeroSubtitle from "./hero-subtitle";
 import HeroTagLine from "./hero-tag-line";
 import HeroTitle from "./hero-title";
 
-const SKETCH_HIDDEN_INITIAL_DELAY = 5000;
+const SKETCH_HIDDEN_INITIAL_DELAY = 2000;
 
 export default function Hero({ className }: { className?: string }) {
   const dragContainerRef = useRef<HTMLDivElement>(null);
@@ -66,6 +66,7 @@ export default function Hero({ className }: { className?: string }) {
             height={containerHeight}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
+            transition={{ duration: 1, ease: "easeIn" }}
           />
         )}
 
@@ -79,7 +80,7 @@ export default function Hero({ className }: { className?: string }) {
         />
         <HeroCTA className="row-[4/7] col-[7/9] z-1" />
         <HeroGallery
-          className="row-[3/5] col-[1/3] z-1"
+          className="row-[3/5] col-[1/3] z-101"
           shake={shake}
           containerRef={dragContainerRef}
         />

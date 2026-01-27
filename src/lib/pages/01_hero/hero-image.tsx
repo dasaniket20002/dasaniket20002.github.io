@@ -3,7 +3,11 @@ import { cn } from "../../utils";
 
 export default function HeroImage({ className }: { className?: string }) {
   return (
-    <div className={cn("relative aspect-3/4 w-full", className)}>
+    <div
+      className={cn("relative aspect-3/4 w-full", className)}
+      data-screen-shakable={true}
+      data-return-to-origin={true}
+    >
       <motion.img
         src="assets/portrait/Portrait-BG.png"
         alt="Portrait-BG"

@@ -23,7 +23,7 @@ const carouselImages: {
   },
   {
     imgSrc: "/assets/works/blender/bathroom_woman.png",
-    name: "Woman",
+    name: "Subject A",
   },
   {
     imgSrc: "/assets/works/blender/black_hole.png",
@@ -101,11 +101,12 @@ export default function HeroGallery({
   const dragControls = useDragControls();
 
   const onLongPress = () => shake();
-  const onLongPressStart = (e: MaybeEvent) => {
-    setDragged(true);
+  const onLongPressStart = (e: MaybeEvent) =>
     dragControls.start(e as React.PointerEvent, { distanceThreshold: 0.1 });
+  const onLongPressEnd = () => {
+    dragControls.stop();
+    setDragged(true);
   };
-  const onLongPressEnd = () => dragControls.stop();
 
   useEffect(() => {
     if (!isHovered) {
@@ -138,6 +139,7 @@ export default function HeroGallery({
         className="relative size-full overflow-hidden rounded cursor-grab active:cursor-grabbing"
         initial={{ scale: 1, opacity: 0 }}
         animate={{ scale: isHovered && isDragged ? 1.5 : 1, opacity: 1 }}
+        whileTap={{ scale: 1, transition: { delay: 0.25 } }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -153,31 +155,35 @@ export default function HeroGallery({
             <img
               src={carouselImages[index].imgSrc}
               alt={carouselImages[index].name}
-              className="select-none pointer-events-none size-full object-cover z-101"
+              className="relative select-none pointer-events-none size-full object-cover"
               draggable={false}
             />
             <AnimatePresence mode="popLayout">
               {isHovered && (
                 <motion.div
-                  className="w-full h-[calc(100%+2rem)] absolute inset-0 flex flex-col gap-2 items-center justify-center select-none z-98"
+                  key={index}
+                  className="w-full h-[calc(100%+2rem)] absolute inset-0 flex flex-col gap-2 items-center justify-center select-none"
                   initial={{ y: "100%" }}
                   animate={{ y: "0%" }}
                   exit={{ y: "100%" }}
                   transition={{ ease: "anticipate" }}
                 >
-                  <div className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-t-from-0 bg-[radial-gradient(var(--color-dark-1)_1px,var(--color-dark-2)_1px)] z-97" />
-                  <p className="font-bold italic text-2xl text-light-2 z-98 text-shadow-lg">
+                  <div className="absolute inset-0 bg-size-[3px_3px] backdrop-blur-md mask-t-from-0 bg-[radial-gradient(var(--color-dark-1)_1px,var(--color-dark-2)_1px)]" />
+                  <p className="relative z-1 font-bold italic text-2xl text-light-2 text-shadow-lg">
                     {carouselImages[index].name}
                   </p>
                   <a
                     href="#"
-                    className="text-xs flex items-center gap-1 text-light-1 tracking-widest font-thin z-98 text-shadow-lg"
+                    className={cn(
+                      "relative z-1 text-xs flex items-center gap-1 text-light-1 font-thin text-shadow-lg",
+                      isDragged ? "tracking-wide" : "tracking-widest",
+                    )}
                   >
                     Visit
                     <IconExternalLink className="size-3 stroke-1" />
                   </a>
                   {!isDragged && (
-                    <p className="text-[10px] text-light-2/75 z-98 tracking-widest font-extralight text-shadow-lg absolute top-1 right-1">
+                    <p className="z-1 text-[10px] text-light-2/75 tracking-widest font-extralight text-shadow-lg absolute top-1 right-1">
                       Long press to move
                     </p>
                   )}

@@ -27,6 +27,8 @@ export default function HeroCTA({ className }: { className?: string }) {
           lockSnap();
           lenis?.scrollTo("#about", { onComplete: unlockSnap });
         }}
+        data-screen-shakable={true}
+        data-return-to-origin={true}
       />
       <Button
         variant="dark"
@@ -45,6 +47,8 @@ export default function HeroCTA({ className }: { className?: string }) {
           lockSnap();
           lenis?.scrollTo("#contact", { onComplete: unlockSnap });
         }}
+        data-screen-shakable={true}
+        data-return-to-origin={true}
       />
 
       <motion.section
@@ -52,6 +56,8 @@ export default function HeroCTA({ className }: { className?: string }) {
         initial={{ clipPath: "inset(0 0% 100% 0%)" }}
         animate={{ clipPath: "inset(0 0% 0% 0%)" }}
         transition={{ duration: 0.5, delay: 1.5, ease: "easeOut" }}
+        data-screen-shakable={true}
+        data-return-to-origin={true}
       >
         Or email me @{" "}
         <a

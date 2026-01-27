@@ -12,11 +12,21 @@ export default function HeroTagLine({ className }: { className?: string }) {
       animate={{ clipPath: "inset(0 0% 0 0)", scale: 1, opacity: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <p className="pb-2">I bridge the gap between</p>
-      <p className="italic font-normal text-[max(2.427rem,2.427vw)] tracking-normal text-dark-1">
+      <p
+        className="pb-2"
+        data-screen-shakable={true}
+        data-return-to-origin={true}
+      >
+        I bridge the gap between
+      </p>
+      <p
+        data-screen-shakable={true}
+        data-return-to-origin={true}
+        className="italic font-normal text-[max(2.427rem,2.427vw)] tracking-normal text-dark-1"
+      >
         technical architecture
       </p>
-      <p>
+      <p data-screen-shakable={true} data-return-to-origin={true}>
         and{" "}
         <span className="italic font-normal text-[max(2.427rem,2.427vw)] tracking-normal text-dark-1">
           visual storytelling.
