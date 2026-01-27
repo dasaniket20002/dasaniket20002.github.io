@@ -1,25 +1,18 @@
 import { animate, useMotionValue } from "motion/react";
 import { useEffect, useState } from "react";
-import { preloadImage, randomRange, wait } from "../../utils";
+import { preloadImage, wait } from "../../utils";
 
 const ALL_IMAGES = [
   "/assets/portrait/Portrait-FG.png",
   "/assets/portrait/Portrait-BG.png",
   "/assets/works/blender/antigravity.png",
   "/assets/works/blender/aquarium_of_life.png",
-  "/assets/works/blender/bathroom_unclean.png",
   "/assets/works/blender/bathroom_woman.png",
-  "/assets/works/blender/beach_bottle.png",
   "/assets/works/blender/black_hole.png",
-  "/assets/works/blender/burning_butterfly.png",
-  "/assets/works/blender/candy.png",
   "/assets/works/blender/car_ruins.png",
   "/assets/works/blender/cyberpunk_01.png",
   "/assets/works/blender/cyberpunk_02.png",
-  "/assets/works/blender/data_cube.png",
   "/assets/works/blender/detained.png",
-  "/assets/works/blender/distort.png",
-  "/assets/works/blender/hallows.png",
   "/assets/works/blender/hand_and_rose.png",
   "/assets/works/blender/life_support.png",
   "/assets/works/blender/lost_01.png",
@@ -36,29 +29,21 @@ export default function Counter({ onComplete }: { onComplete: () => void }) {
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    const preloadPromise = Promise.all(
-      ALL_IMAGES.map((url) => preloadImage(url)),
-    );
+    const sequence = async () => {
+      let counter = 0;
+      const increment = 100 / ALL_IMAGES.length;
+      for (const imgSrc of ALL_IMAGES) {
+        await preloadImage(imgSrc);
+        counter += increment;
+        animate(count, counter, {
+          duration: 0.25,
+          ease: "easeInOut",
+        });
+      }
+    };
 
-    const animationPromise = (async () => {
-      await wait(1500);
-
-      await animate(count, randomRange(30, 40), {
-        duration: 0.5,
-        ease: "easeInOut",
-      });
-      await wait(400);
-
-      await animate(count, randomRange(50, 70), {
-        duration: 0.75,
-        ease: "easeInOut",
-      });
+    sequence().then(async () => {
       await wait(500);
-    })();
-
-    Promise.all([preloadPromise, animationPromise]).then(async () => {
-      await animate(count, 100, { duration: 0.25, ease: "easeInOut" });
-      await wait(250);
       onComplete();
     });
   }, [count, onComplete]);

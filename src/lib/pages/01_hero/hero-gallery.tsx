@@ -22,28 +22,12 @@ const carouselImages: {
     name: "Bio-Pod",
   },
   {
-    imgSrc: "/assets/works/blender/bathroom_unclean.png",
-    name: "Washroom",
-  },
-  {
     imgSrc: "/assets/works/blender/bathroom_woman.png",
     name: "Woman",
   },
   {
-    imgSrc: "/assets/works/blender/beach_bottle.png",
-    name: "Bottle",
-  },
-  {
     imgSrc: "/assets/works/blender/black_hole.png",
     name: "Black Hole",
-  },
-  {
-    imgSrc: "/assets/works/blender/burning_butterfly.png",
-    name: "Burning Butterfly",
-  },
-  {
-    imgSrc: "/assets/works/blender/candy.png",
-    name: "Candy",
   },
   {
     imgSrc: "/assets/works/blender/car_ruins.png",
@@ -58,20 +42,8 @@ const carouselImages: {
     name: "Cyberpunk",
   },
   {
-    imgSrc: "/assets/works/blender/data_cube.png",
-    name: "Data Cube",
-  },
-  {
     imgSrc: "/assets/works/blender/detained.png",
     name: "Detained",
-  },
-  {
-    imgSrc: "/assets/works/blender/distort.png",
-    name: "Distort",
-  },
-  {
-    imgSrc: "/assets/works/blender/hallows.png",
-    name: "Hallows",
   },
   {
     imgSrc: "/assets/works/blender/hand_and_rose.png",
