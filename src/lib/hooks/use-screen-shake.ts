@@ -36,19 +36,16 @@ export function useScreenShake(
         const offsetX = (Math.random() * 2 - 1) * strength * 2;
         const offsetY = (Math.random() * 2 - 1) * strength * 2;
 
-        await animate(
-          el,
-          {
-            x: baseX + offsetX,
-            y: baseY + offsetY,
-          },
-          {
-            duration,
-            ease: "backOut",
-          },
-        );
-
         if (returnToOrigin) {
+          await animate(
+            el,
+            {
+              x: baseX + offsetX,
+              y: baseY + offsetY,
+            },
+            { duration },
+          );
+
           await animate(
             el,
             {
@@ -60,6 +57,15 @@ export function useScreenShake(
               stiffness: 500,
               damping: 15,
             },
+          );
+        } else {
+          await animate(
+            el,
+            {
+              x: baseX + offsetX,
+              y: baseY + offsetY,
+            },
+            { duration, ease: "backOut" },
           );
         }
 
