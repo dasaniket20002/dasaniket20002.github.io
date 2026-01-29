@@ -266,7 +266,7 @@ function MorphingDialogTitle({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.div
+    <motion.h1
       layoutId={
         disableLayoutAnimation
           ? undefined
@@ -277,7 +277,7 @@ function MorphingDialogTitle({
       layout
     >
       {children}
-    </motion.div>
+    </motion.h1>
   );
 }
 
@@ -297,7 +297,7 @@ function MorphingDialogSubtitle({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.div
+    <motion.p
       layoutId={
         disableLayoutAnimation
           ? undefined
@@ -307,7 +307,40 @@ function MorphingDialogSubtitle({
       style={style}
     >
       {children}
-    </motion.div>
+    </motion.p>
+  );
+}
+
+export type MorphingDialogSpanProps = {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  disableLayoutAnimation?: boolean;
+  identifier: string | number;
+};
+
+function MorphingDialogSpan({
+  children,
+  className,
+  style,
+  disableLayoutAnimation,
+  identifier,
+}: MorphingDialogSpanProps) {
+  const { uniqueId } = useMorphingDialog();
+
+  return (
+    <motion.span
+      layoutId={
+        disableLayoutAnimation
+          ? undefined
+          : `dialog-title-container-${identifier}-${uniqueId}`
+      }
+      className={className}
+      style={style}
+      layout
+    >
+      {children}
+    </motion.span>
   );
 }
 
@@ -369,13 +402,18 @@ function MorphingDialogImage({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.img
-      src={src}
-      alt={alt}
+    <motion.div
       className={className}
-      layoutId={`dialog-img-${uniqueId}`}
+      layoutId={`dialog-img-container-${uniqueId}`}
       style={style}
-    />
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        layoutId={`dialog-img-${uniqueId}`}
+        className="size-full object-contain"
+      />
+    </motion.div>
   );
 }
 
@@ -425,6 +463,7 @@ export {
   MorphingDialogClose,
   MorphingDialogTitle,
   MorphingDialogSubtitle,
+  MorphingDialogSpan,
   MorphingDialogDescription,
   MorphingDialogImage,
 };

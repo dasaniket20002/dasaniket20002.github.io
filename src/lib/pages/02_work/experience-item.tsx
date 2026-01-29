@@ -2,11 +2,9 @@ import {
   IconArrowForward,
   IconCalendar,
   IconExternalLink,
-  IconHandClick,
   IconLocation,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
-import HorizontalDivider from "../../components/horizontal-divider";
 import {
   MorphingDialog,
   MorphingDialogClose,
@@ -14,16 +12,19 @@ import {
   MorphingDialogContent,
   MorphingDialogDescription,
   MorphingDialogImage,
+  MorphingDialogSpan,
   MorphingDialogSubtitle,
   MorphingDialogTitle,
   MorphingDialogTrigger,
 } from "../../components/morphing-dialog";
-import TextRoll from "../../components/text-roll";
 import { cn } from "../../utils";
 
 const ExperienceItem = ({
   className,
   imgClassName,
+  titleClassName,
+  subtitleClassName,
+  footerClassName,
   imgSrc,
   imgAlt,
   title,
@@ -35,6 +36,9 @@ const ExperienceItem = ({
 }: {
   className?: string;
   imgClassName?: string;
+  titleClassName?: string;
+  subtitleClassName?: string;
+  footerClassName?: string;
   imgSrc: string;
   imgAlt: string;
   title: string;
@@ -48,98 +52,139 @@ const ExperienceItem = ({
     <MorphingDialog>
       <MorphingDialogTrigger
         className={cn(
-          "group w-full flex flex-col gap-4 rounded-xl transition-[shadow,color,border] px-3 py-3 hover:shadow-2xl border border-transparent hover:border-light-2/10",
+          "group w-full h-min grid grid-cols-[auto_1fr] gap-x-8 gap-y-2 rounded-lg transition-[shadow,color,border] hover:shadow-2xl border border-transparent hover:border-light-2/10",
           className,
         )}
       >
-        <div className="flex gap-4 items-center">
-          <div
-            className={cn(
-              "bg-dark-1 aspect-square w-12 md:w-16 rounded-lg place-items-center place-content-center flex-none",
-              imgClassName,
-            )}
+        <MorphingDialogImage
+          src={imgSrc}
+          alt={imgAlt}
+          className={cn(
+            "bg-dark-1 h-8/10 aspect-square rounded-lg place-items-center place-content-center p-4 self-center",
+            imgClassName,
+          )}
+        />
+        <MorphingDialogTitle
+          className={cn(
+            "font-think-loved text-6xl whitespace-break-spaces text-start capitalize size-min self-center",
+            titleClassName,
+          )}
+        >
+          {title.replaceAll(" ", "\n")}
+        </MorphingDialogTitle>
+        <MorphingDialogSubtitle
+          className={cn(
+            "tracking-wider text-start text-2xl whitespace-nowrap col-span-full size-min col-start-2 text-dark-1 group-hover:text-light-2 transition-colors",
+            subtitleClassName,
+          )}
+        >
+          {company}
+        </MorphingDialogSubtitle>
+
+        <div
+          className={cn(
+            "col-span-full grid grid-cols-subgrid gap-y-2 py-6 text-dark-1 text-base tracking-wide group-hover:text-light-2 transition-colors",
+            footerClassName,
+          )}
+        >
+          <MorphingDialogSpan
+            identifier={"location-icon"}
+            className="size-min self-center place-self-center"
           >
-            <MorphingDialogImage
-              src={imgSrc}
-              alt={imgAlt}
-              className="bg-cover"
-            />
-          </div>
-          <div>
-            <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl tracking-wide whitespace-nowrap">
-              {title}
-            </MorphingDialogTitle>
-            <MorphingDialogSubtitle className="font-thin tracking-wider text-start text-sm md:text-base">
-              {company}
-            </MorphingDialogSubtitle>
-          </div>
+            <IconLocation className="size-4 self-center place-self-center" />
+          </MorphingDialogSpan>
+          <MorphingDialogSpan
+            identifier={"location"}
+            className="self-center w-min"
+          >
+            <p className="text-start whitespace-nowrap">{location}</p>
+          </MorphingDialogSpan>
+          <MorphingDialogSpan
+            identifier={"period-icon"}
+            className="size-min self-center place-self-center"
+          >
+            <IconCalendar className="size-4 self-center place-self-center" />
+          </MorphingDialogSpan>
+          <MorphingDialogSpan
+            identifier={"period"}
+            className="self-center w-min"
+          >
+            <p className="text-start whitespace-nowrap">{period}</p>
+          </MorphingDialogSpan>
         </div>
-        <div className="flex flex-col gap-1 text-dark-1 tracking-wide group-hover:text-light-2 transition-colors text-sm md:text-base">
-          <div className="flex gap-4 items-center">
-            <span className="w-12 md:w-16 place-items-center">
-              <IconLocation className="size-4" />
-            </span>
-            <p>{location}</p>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="w-12 md:w-16 place-items-center">
-              <IconCalendar className="size-4" />
-            </span>
-            <p>{period}</p>
-          </div>
-        </div>
-        <motion.span layout className="absolute bottom-5 right-5 flex size-4">
-          <IconHandClick className="stroke-1 stroke-dark-1" />
-        </motion.span>
       </MorphingDialogTrigger>
 
       <MorphingDialogContainer>
-        <MorphingDialogContent className="p-6 pointer-events-auto relative flex h-auto flex-col gap-6 overflow-hidden rounded-xl shadow-2xl border border-light-2/10 bg-dark-2 m-4 w-full sm:w-lg">
-          <div className="flex gap-6 items-center">
-            <div
-              className={cn(
-                "bg-dark-1 aspect-square w-12 md:w-16 rounded-lg place-items-center place-content-center",
-                imgClassName,
-              )}
+        <MorphingDialogContent className="p-6 pointer-events-auto grid grid-cols-[auto_1fr_1fr] gap-x-8 gap-y-4 relative h-auto overflow-hidden rounded-xl shadow-2xl border border-light-2/10 bg-dark-2 m-4 w-full sm:w-2xl">
+          <MorphingDialogClose className="text-light-2" />
+
+          <MorphingDialogImage
+            src={imgSrc}
+            alt={imgAlt}
+            className="bg-dark-1 h-8/10 aspect-square rounded-lg place-items-center place-content-center p-4 place-self-end self-center"
+          />
+          <MorphingDialogTitle className="font-think-loved text-light-2 text-xl md:text-3xl whitespace-pre-line text-start capitalize size-min self-center">
+            {title.replaceAll(" ", "\n")}
+          </MorphingDialogTitle>
+
+          <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 self-center items-center size-min py-6 text-light-2 tracking-wider font-light text-xs">
+            <MorphingDialogSpan
+              identifier={"location-icon"}
+              className="size-min self-center place-self-center"
             >
-              <MorphingDialogImage src={imgSrc} alt={imgAlt} />
-            </div>
-            <div className="text-dark-1">
-              <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl tracking-wide whitespace-nowrap">
-                {title}
-              </MorphingDialogTitle>
-              <MorphingDialogSubtitle className="tracking-wide text-start text-sm md:text-base">
-                {company}
-              </MorphingDialogSubtitle>
-            </div>
+              <IconLocation className="size-3 self-center place-self-center" />
+            </MorphingDialogSpan>
+            <MorphingDialogSpan
+              identifier={"location"}
+              className="self-center w-min"
+            >
+              <p className="text-start whitespace-nowrap">{location}</p>
+            </MorphingDialogSpan>
+            <MorphingDialogSpan
+              identifier={"period-icon"}
+              className="size-min self-center place-self-center"
+            >
+              <IconCalendar className="size-3 self-center place-self-center" />
+            </MorphingDialogSpan>
+            <MorphingDialogSpan
+              identifier={"period"}
+              className="self-center w-min"
+            >
+              <p className="text-start whitespace-nowrap">{period}</p>
+            </MorphingDialogSpan>
           </div>
-          <HorizontalDivider />
-          <MorphingDialogDescription className="grid grid-cols-[1rem_1fr] gap-x-4 gap-y-2 tracking-wider text-light-2 text-sm md:text-base font-light md:font-normal">
+
+          <MorphingDialogDescription className="col-span-full grid grid-cols-subgrid gap-y-2 tracking-wider text-light-2 pr-12">
             {description.map((d, i) => (
               <motion.div
                 key={i}
                 className="grid grid-cols-subgrid col-span-full"
-                initial={{ opacity: 0, scale: 0.8, y: 100 }}
+                initial={{ opacity: 0, y: 24 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
                   y: 0,
-                  transition: { delay: 0.1 * i },
+                  transition: { delay: 0.05 * i },
                 }}
-                exit={{ opacity: 0, scale: 0.8, y: 100 }}
+                exit={{ opacity: 0, y: 24 }}
               >
-                <IconArrowForward className="size-4 mt-0.5 stroke-1" />
-                <p>{d}</p>
+                <IconArrowForward className="size-4 mt-0.5 place-self-end self-start" />
+                <p className="col-span-2">{d}</p>
               </motion.div>
             ))}
             <div className="grid grid-cols-subgrid col-span-full items-center pt-6">
-              <IconExternalLink className="size-4 stroke-1" />
-              <a href={url} className="text-xs font-thin tracking-wider w-min">
-                <TextRoll>{company}</TextRoll>
+              <IconExternalLink className="size-4 place-self-end self-center" />
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-thin tracking-wider w-min col-span-2"
+              >
+                <MorphingDialogSubtitle className="tracking-wider text-start text-sm whitespace-nowrap col-span-full size-min text-light-2 place-self-center self-start">
+                  {company}
+                </MorphingDialogSubtitle>
               </a>
             </div>
           </MorphingDialogDescription>
-          <MorphingDialogClose className="text-light-2" />
         </MorphingDialogContent>
       </MorphingDialogContainer>
     </MorphingDialog>
