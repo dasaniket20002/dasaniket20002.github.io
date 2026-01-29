@@ -123,7 +123,7 @@ export default function HeroGallery({
       initial={{ scale: 1.15, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5, delay: 1, ease: "anticipate" }}
-      className={cn("size-full relative", className)}
+      className={cn("size-full relative pl-3 md:pl-12 pr-3 py-3", className)}
     >
       <motion.div
         {...useLongPress({
@@ -139,7 +139,7 @@ export default function HeroGallery({
         className="relative size-full overflow-hidden rounded cursor-grab active:cursor-grabbing"
         initial={{ scale: 1, opacity: 0 }}
         animate={{ scale: isHovered && isDragged ? 1.5 : 1, opacity: 1 }}
-        whileTap={{ scale: 1, transition: { delay: 0.25 } }}
+        whileTap={{ scale: 1, transition: { delay: 0.5 } }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
