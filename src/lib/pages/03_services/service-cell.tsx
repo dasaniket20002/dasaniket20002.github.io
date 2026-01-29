@@ -57,14 +57,14 @@ const ServiceCell = ({
             <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl whitespace-nowrap w-min">
               {title}
             </MorphingDialogTitle>
-            <MorphingDialogSubtitle className="text-dark-2 text-2xl font-medium italic text-start w-min">
+            <MorphingDialogSubtitle className="text-dark-2 text-2xl font-medium italic text-start w-min flex flex-col gap-1">
               {skills.map((s, i) => (
-                <p
+                <span
                   key={i}
                   className="first-letter:text-3xl first-letter:font-light whitespace-nowrap"
                 >
                   /&nbsp;{s}
-                </p>
+                </span>
               ))}
             </MorphingDialogSubtitle>
           </div>
@@ -114,14 +114,14 @@ const ServiceCell = ({
               {title}
             </MorphingDialogTitle>
             <HorizontalDivider />
-            <MorphingDialogSubtitle className="text-dark-2 text-2xl font-medium italic text-start w-min">
+            <MorphingDialogSubtitle className="text-dark-2 text-2xl font-medium italic text-start w-min flex flex-col gap-1">
               {skills.map((s, i) => (
-                <p
+                <span
                   key={i}
                   className="first-letter:text-3xl first-letter:font-light whitespace-nowrap"
                 >
                   /&nbsp;{s}
-                </p>
+                </span>
               ))}
             </MorphingDialogSubtitle>
             <MorphingDialogDescription className="h-full flex flex-col gap-6">
