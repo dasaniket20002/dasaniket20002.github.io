@@ -14,8 +14,8 @@ export default function Work({ className }: { className?: string }) {
       theme="light"
       className={className}
     >
-      <Experience ref={registerSection} />
-      <Featured ref={registerSection} />
+      <Experience ref={registerSection} id="work-experience" />
+      <Featured ref={registerSection} id="work-featured" />
     </SectionContainer>
   );
 }

@@ -42,6 +42,7 @@ export default function Hero({ className }: { className?: string }) {
         "bg-light-1 text-dark-1",
         className,
       )}
+      id="top"
     >
       <motion.div
         ref={dragContainerRef}
