@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import { type Hsv } from "culori";
+import { parse, type Hsv } from "culori";
 import { twMerge } from "tailwind-merge";
 
 export const colorPalettes: Hsv[][] = [
@@ -145,4 +145,14 @@ export const preloadImage = (src: string) => {
     };
     img.src = src;
   });
+};
+
+export const getColorPropertyValue = (
+  propertyName: "light-1" | "light-2" | "dark-1" | "dark-2" | "success",
+) => {
+  const oklchString = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue(`--color-${propertyName}`)
+    .trim();
+  return parse(oklchString);
 };

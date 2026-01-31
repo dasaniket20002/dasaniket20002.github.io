@@ -89,24 +89,13 @@ const Experience = forwardRef<
         </h1>
 
         <motion.button
-          key={0}
-          initial={{
-            clipPath: "inset(0 100% 0 0%)",
-            opacity: 0.25,
-            rotate: "0deg",
-          }}
-          animate={{ clipPath: "inset(0 0% 0 0%)", opacity: 1 }}
-          exit={{ clipPath: "inset(0 0% 0 100%)", opacity: 0.25 }}
+          initial={{ rotate: "0deg" }}
           whileHover={{ rotate: "90deg" }}
           transition={{
-            clipPath: { ease: "anticipate", delay: 0.1 },
-            opacity: { ease: "anticipate", delay: 0.1 },
-            rotate: {
-              ease: "anticipate",
-              duration: 0.25,
-              type: "spring",
-              bounce: 0.5,
-            },
+            ease: "anticipate",
+            duration: 0.25,
+            type: "spring",
+            bounce: 0.5,
           }}
           onClick={(e) => {
             e.preventDefault();

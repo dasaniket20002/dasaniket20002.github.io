@@ -2,7 +2,6 @@ import { IconPlayerTrackPrevFilled } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import AnimatedTicker from "../../components/animated-ticker";
-import ContourCirclesP5 from "../../components/contour-circles-p5";
 import GridGolden from "../../components/grid-golden-34-21";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
@@ -854,7 +853,7 @@ export default function Services({ className }: { className?: string }) {
               )}
             </AnimatePresence>
           </motion.div>
-          <ContourCirclesP5 className="overflow-hidden rounded-4xl [corner-shape:squircle] m-3 border border-light-2/50" />
+          <div />
           <div className="size-full place-content-center place-items-center">
             <AnimatedTicker
               value={hoverState.hoverCell}
