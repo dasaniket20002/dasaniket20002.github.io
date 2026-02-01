@@ -102,6 +102,7 @@ const Experience = forwardRef<
             lockSnap();
             lenis?.scrollTo("#work-featured", {
               onComplete: unlockSnap,
+              lock: true,
               offset:
                 -1 *
                 (containerSize.width > containerSize.height

@@ -120,7 +120,10 @@ export default function HeroSkillList({ className }: { className?: string }) {
               onClick={(e) => {
                 e.preventDefault();
                 lockSnap();
-                lenis?.scrollTo("#work", { onComplete: unlockSnap });
+                lenis?.scrollTo("#work", {
+                  onComplete: unlockSnap,
+                  lock: true,
+                });
               }}
               className="group size-full place-items-center place-content-center cursor-pointer"
               data-screen-shakable={true}
