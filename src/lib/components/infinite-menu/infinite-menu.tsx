@@ -1,17 +1,26 @@
-import { Matrix4, Quaternion, Vector2, Vector3 } from "three";
-import { useEffect, useMemo, useRef, useState, type FC } from "react";
-import discFragShaderSource from "./infinite-menu-fs.glsl?raw";
-import discVertShaderSource from "./infinite-menu-vs.glsl?raw";
-import { motion, useMotionValue, useTransform } from "motion/react";
-import SVGText from "../svg-text";
-import { cn, getColorPropertyValue } from "../../utils";
 import {
+  IconArrowRampLeft2,
+  IconArrowRampRight2,
   IconArrowUpRight,
-  IconPlayerTrackNextFilled,
+  IconHandGrab,
+  IconPlayerTrackPrevFilled,
 } from "@tabler/icons-react";
 import { converter, type Rgb } from "culori";
 import { useLenis } from "lenis/react";
+import {
+  motion,
+  useAnimationFrame,
+  useInView,
+  useMotionValue,
+  useMotionValueEvent,
+  useTransform,
+} from "motion/react";
+import { useEffect, useMemo, useRef, useState, type FC } from "react";
+import { Matrix4, Quaternion, Vector2, Vector3 } from "three";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { cn, getColorPropertyValue } from "../../utils";
+import discFragShaderSource from "./infinite-menu-fs.glsl?raw";
+import discVertShaderSource from "./infinite-menu-vs.glsl?raw";
 
 class Face {
   public a: number;
@@ -1105,10 +1114,11 @@ const defaultItems: MenuItem[] = [
   {
     image: `${window.location.origin}/assets/illustrations/undraw_under-construction_hdrn.png`,
     link: "https://google.com/", // TODO: Literally download my resume
-    title: "WIP. Literally.",
-    description: "Your project can live here.",
+    title: "WIP.",
+    description: "Looking for meaningful opportunities 👀",
   },
 ];
+const INACTIVE_TIME_LIMIT = 10000;
 
 interface InfiniteMenuProps {
   items?: MenuItem[];
@@ -1128,6 +1138,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
     () => converter("rgb")(getColorPropertyValue("dark-2")),
     [],
   );
+  const inactiveTimer = useMotionValue(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1175,45 +1186,69 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
     }
   };
 
+  useMotionValueEvent(isMoving, "change", (latest) => {
+    if (latest) inactiveTimer.set(0);
+  });
+
+  useAnimationFrame((_, delta) => {
+    if (inactiveTimer.get() > INACTIVE_TIME_LIMIT) return;
+    else inactiveTimer.set(inactiveTimer.get() + delta);
+  });
+
   const opacity = useTransform(isMoving, [0, 1], [1, 0]);
   const pointerEvents = useTransform(isMoving, [0, 1], ["auto", "none"]);
   const transitionDuration = useTransform(isMoving, [0, 1], ["500ms", "100ms"]);
 
-  const titleX = useTransform(isMoving, [0, 1], ["0%", "-4rem"]);
-  const descriptionX = useTransform(isMoving, [0, 1], ["-4rem", "0rem"]);
+  const descriptionX = useTransform(isMoving, [0, 1], ["0%", "-4rem"]);
+  const navX = useTransform(isMoving, [0, 1], ["-4rem", "0rem"]);
   const buttonBottom = useTransform(isMoving, [0, 1], ["4rem", "-5rem"]);
   const buttonScale = useTransform(isMoving, [0, 1], [1, 0]);
+
+  const tipOpacity = useTransform(inactiveTimer, () => {
+    if (inactiveTimer.get() > INACTIVE_TIME_LIMIT) return 1;
+    else return 0;
+  });
 
   const lenis = useLenis();
   const { lockSnap, unlockSnap } = useStickySnap();
 
+  const isInView = useInView(canvasRef, { margin: "-50% 0% -50% 0%" });
+
   return (
-    <div className={cn("relative size-full", className)}>
+    <motion.div
+      animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.8 }}
+      transition={{ duration: 0.5, ease: "anticipate" }}
+      className={cn("relative size-full", className)}
+    >
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
         className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
       />
-
       {activeItem && (
         <div className="absolute inset-0 pointer-events-none">
-          <SVGText
-            className="select-none absolute font-think-loved text-4xl md:text-[4rem] left-4 md:left-[1.6em] top-1/2 -translate-y-1/2 fill-light-2 stroke-dark-2 stroke-8"
-            style={{
-              opacity,
-              pointerEvents,
-              transitionDuration,
-              x: titleX,
+          <motion.span
+            className="absolute top-12 left-1/2 -translate-x-1/2 flex gap-2 transition-opacity"
+            initial={{ rotate: "0deg", x: 0, opacity: 0 }}
+            animate={{
+              rotate: ["0deg", "15deg", "0deg", "-15deg", "0deg"],
+              x: ["0rem", "0.5rem", "0rem", "-0.5rem", "0rem"],
             }}
+            transition={{
+              duration: 0.5,
+              repeat: Infinity,
+              repeatType: "loop",
+              repeatDelay: 5,
+            }}
+            style={{ opacity: tipOpacity }}
           >
-            {activeItem.title}
-          </SVGText>
+            <IconArrowRampLeft2 className="size-4 stroke-dark-1 -rotate-90" />
+            <IconHandGrab className="size-6 stroke-dark-1 -mt-2" />
+            <IconArrowRampRight2 className="size-4 stroke-dark-1 rotate-90" />
+          </motion.span>
 
-          <motion.p
-            className={cn(
-              "select-none max-w-32 md:max-w-64 absolute text-lg md:text-[1.5rem] top-1/2 -translate-y-1/2 right-4 md:right-[1.6em] text-light-2 text-right",
-              "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2",
-            )}
+          <motion.div
+            className="absolute top-1/2 -translate-y-1/2 left-16 min-w-sm max-w-lg"
             style={{
               opacity,
               pointerEvents,
@@ -1221,30 +1256,36 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
               x: descriptionX,
             }}
           >
-            {activeItem.description}
-          </motion.p>
+            <h1
+              className={cn(
+                "font-think-loved text-4xl md:text-[4rem] fill-light-2 stroke-dark-2 stroke-8",
+                "text-shadow-[0px_0px_4px_var(--tw-text-shadow-color),0px_0px_4px_var(--tw-text-shadow-color),0px_0px_16px_var(--tw-text-shadow-color)] text-shadow-dark-2",
+              )}
+            >
+              {activeItem.title}
+            </h1>
+            <p
+              className={cn(
+                "text-lg md:text-[1.5rem] text-light-2",
+                "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2",
+              )}
+            >
+              {activeItem.description}
+            </p>
+          </motion.div>
 
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 z-2 space-x-3"
+          <motion.span
+            className="absolute top-1/2 -translate-y-1/2 right-16"
             style={{
               opacity,
               pointerEvents,
+              x: navX,
               transitionDuration,
-              bottom: buttonBottom,
-              scale: buttonScale,
             }}
           >
             <motion.button
-              onClick={handleButtonClick}
-              className="size-14 place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
-              whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
-            >
-              <IconArrowUpRight className="stroke-2 stroke-light-2" />
-            </motion.button>
-
-            <motion.button
               initial={{ rotate: "0deg", scale: 1 }}
-              whileHover={{ rotate: "90deg", scale: 1.1 }}
+              whileHover={{ rotate: "-90deg", scale: 1.1 }}
               transition={{
                 rotate: {
                   ease: "anticipate",
@@ -1259,16 +1300,37 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
                 lockSnap();
                 lenis?.scrollTo("#services", {
                   onComplete: unlockSnap,
+                  lock: true,
                 });
               }}
-              className="size-14 place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
+              className="group size-24 place-items-center cursor-pointer"
             >
-              <IconPlayerTrackNextFilled className="size-7/10 group-hover:stroke-dark-1 transition" />
+              <IconPlayerTrackPrevFilled className="size-full stroke-dark-2 group-hover:stroke-dark-1 transition" />
             </motion.button>
-          </motion.div>
+          </motion.span>
+
+          <motion.span
+            className="absolute left-1/2 -translate-x-1/2 z-2"
+            style={{
+              opacity,
+              pointerEvents,
+              transitionDuration,
+              bottom: buttonBottom,
+              scale: buttonScale,
+            }}
+          >
+            <motion.button
+              onClick={handleButtonClick}
+              className="size-16 place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
+              initial={{ scale: 1, transition: { duration: 0.1 } }}
+              whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
+            >
+              <IconArrowUpRight className="stroke-2 stroke-light-2" />
+            </motion.button>
+          </motion.span>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
