@@ -1,7 +1,5 @@
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import GOLP5 from "../../components/gol-p5";
-import { useElementSize } from "../../hooks/use-element-size";
 import { useScreenShake } from "../../hooks/use-screen-shake";
 import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
@@ -11,13 +9,12 @@ import HeroSkillList from "./hero-skills-list";
 import HeroSubtitle from "./hero-subtitle";
 import HeroTagLine from "./hero-tag-line";
 import HeroTitle from "./hero-title";
+import { GameOfLife } from "../../components/game-of-life/game-of-life";
 
 const SKETCH_HIDDEN_INITIAL_DELAY = 2000;
 
 export default function Hero({ className }: { className?: string }) {
   const dragContainerRef = useRef<HTMLDivElement>(null);
-  const { width: containerWidth, height: containerHeight } =
-    useElementSize(dragContainerRef);
   const [sketchHidden, setSketchHidden] = useState(true);
 
   const { controls: screenShakeControls, shake } =
@@ -61,12 +58,10 @@ export default function Hero({ className }: { className?: string }) {
         </div>
 
         {!sketchHidden && (
-          <GOLP5
+          <GameOfLife
             className="row-span-full col-span-full size-full mask-radial-at-center mask-radial-farthest-corner mask-radial-from-0%"
-            width={containerWidth}
-            height={containerHeight}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
+            animate={{ opacity: 0.5 }}
             transition={{ duration: 1, ease: "easeIn" }}
           />
         )}
