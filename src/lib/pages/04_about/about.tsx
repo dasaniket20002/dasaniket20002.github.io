@@ -1,6 +1,8 @@
-import { motion } from "motion/react";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
+import AboutContent from "./about-content";
+import AboutPage1 from "./about-page-1";
+import AboutPage2 from "./about-page-2";
 
 export default function About({ className }: { className?: string }) {
   const { registerSection } = useStickySnap();
@@ -13,34 +15,9 @@ export default function About({ className }: { className?: string }) {
       theme="light"
       className={className}
     >
-      <section
-        className="place-content-center place-items-center text-center"
-        ref={registerSection}
-      >
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ ease: "backOut", delay: 0.1 }}
-          viewport={{ once: true, amount: "some", margin: "0px 0px -30% 0px" }}
-          className="text-center text-8xl font-think-loved"
-        >
-          Okay, you can press ctrl+w
-        </motion.p>
-      </section>
-      <section
-        className="place-content-center place-items-center"
-        ref={registerSection}
-      >
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ ease: "backOut", delay: 0.1 }}
-          viewport={{ once: true, amount: "some", margin: "0px 0px -30% 0px" }}
-          className="text-center text-8xl font-think-loved"
-        >
-          You are embarrassing me now!
-        </motion.p>
-      </section>
+      <AboutPage1 ref={registerSection} />
+      <AboutPage2 ref={registerSection} />
+      <AboutContent ref={registerSection} />
     </SectionContainer>
   );
 }

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
-import { forwardRef, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
 import { useLenis } from "lenis/react";
@@ -36,6 +36,19 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     const __hovered = hovered === undefined ? _hovered : hovered;
     const __setHovered = setHovered ? setHovered : _setHovered;
 
+    const handleClick = useCallback(
+      (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        e.preventDefault();
+        if (href.startsWith("http")) {
+          window.open(href, "_blank");
+        } else {
+          lockSnap();
+          lenis?.scrollTo(href, { onComplete: unlockSnap, lock: true });
+        }
+      },
+      [href, lenis, lockSnap, unlockSnap],
+    );
+
     return (
       <motion.a
         ref={ref}
@@ -48,11 +61,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         )}
         onMouseEnter={() => __setHovered(true)}
         onMouseLeave={() => __setHovered(false)}
-        onClick={(e) => {
-          e.preventDefault();
-          lockSnap();
-          lenis?.scrollTo(href, { onComplete: unlockSnap });
-        }}
+        onClick={handleClick}
         style={
           {
             "--underline-height": `${underlineThickness}px`,

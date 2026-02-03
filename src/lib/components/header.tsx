@@ -97,7 +97,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             onClick={(e) => {
               e.preventDefault();
               lockSnap();
-              lenis?.scrollTo("#top", { onComplete: unlockSnap });
+              lenis?.scrollTo("#top", { onComplete: unlockSnap, lock: true });
             }}
           />
         )}
