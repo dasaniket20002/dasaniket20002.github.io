@@ -47,13 +47,15 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
     return (
       <motion.section
         ref={ref}
-        {...motionProps}
         className={cn(
-          "flex items-center gap-[0.25em] p-[0.5em] text-2xl font-think-loved select-none text-dark-1",
-          className
+          "flex items-center text-2xl font-think-loved select-none text-dark-1 transition-[gap]",
+          hovered ? "gap-4" : "gap-[0.25em]",
+          className,
         )}
+        layout
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        {...motionProps}
       >
         {/* --- First Name Part --- */}
         <div className="flex">
@@ -87,17 +89,11 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
         </div>
 
         {/* --- Dash --- */}
-        <AnimatePresence initial={false} mode="wait">
-          {!hovered && (
-            <motion.span
-              layout
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: "2ch", opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              className="h-[0.15em] bg-current"
-            />
-          )}
-        </AnimatePresence>
+        <motion.span
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: hovered ? "0ch" : "2ch", opacity: hovered ? 0 : 1 }}
+          className="h-[0.15em] bg-current"
+        />
 
         {/* --- Last Name Part --- */}
         <div className="flex">
@@ -131,7 +127,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
         </div>
       </motion.section>
     );
-  }
+  },
 );
 
 export default LogoName;

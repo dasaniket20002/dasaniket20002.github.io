@@ -1,6 +1,6 @@
+import { motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { randomRange } from "../../utils";
-import { AnimatePresence, motion } from "motion/react";
+import { cn, randomRange } from "../../utils";
 
 const LOADING_MESSAGES = [
   "Aligning pixels...",
@@ -21,7 +21,7 @@ const LOADING_MESSAGES = [
   "I could've shown a spinner. I chose chaos.",
 ];
 
-export default function Message() {
+export default function Message({ className }: { className?: string }) {
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
@@ -41,17 +41,14 @@ export default function Message() {
   }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.p
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: 1 }}
-        exit={{ scaleY: 1, opacity: 0 }}
-        key={message}
-        className="text-center font-light h-4 origin-top"
-        layout
-      >
-        {message}
-      </motion.p>
-    </AnimatePresence>
+    <motion.p
+      initial={{ scaleY: 0, opacity: 0 }}
+      animate={{ scaleY: 1, opacity: 1 }}
+      key={message}
+      className={cn("font-light origin-top", className)}
+      layout
+    >
+      {message}
+    </motion.p>
   );
 }

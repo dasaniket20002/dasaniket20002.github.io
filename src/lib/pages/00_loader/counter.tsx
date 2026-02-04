@@ -1,30 +1,36 @@
-import { animate, useMotionValue } from "motion/react";
+import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { useEffect, useState } from "react";
-import { preloadImage, wait } from "../../utils";
+import { cn, preloadImage, wait } from "../../utils";
 
 const ALL_IMAGES = [
   "/assets/portrait/Portrait-FG.png",
   "/assets/portrait/Portrait-BG.png",
-  "/assets/works/blender/antigravity.png",
-  "/assets/works/blender/aquarium_of_life.png",
-  "/assets/works/blender/bathroom_woman.png",
-  "/assets/works/blender/black_hole.png",
-  "/assets/works/blender/car_ruins.png",
-  "/assets/works/blender/cyberpunk_01.png",
-  "/assets/works/blender/cyberpunk_02.png",
-  "/assets/works/blender/detained.png",
-  "/assets/works/blender/hand_and_rose.png",
-  "/assets/works/blender/life_support.png",
-  "/assets/works/blender/lost_01.png",
-  "/assets/works/blender/lost_02.png",
-  "/assets/works/blender/lost_03.png",
-  "/assets/works/blender/omw.png",
-  "/assets/works/blender/piano_ruins.png",
-  "/assets/works/blender/sunken.png",
-  "/assets/works/blender/the_door.png",
+  "/assets/works/blender/antigravity_cmp.png",
+  "/assets/works/blender/aquarium_of_life_cmp.png",
+  "/assets/works/blender/bathroom_woman_cmp.png",
+  "/assets/works/blender/black_hole_cmp.png",
+  "/assets/works/blender/car_ruins_cmp.png",
+  "/assets/works/blender/cyberpunk_01_cmp.png",
+  "/assets/works/blender/cyberpunk_02_cmp.png",
+  "/assets/works/blender/detained_cmp.png",
+  "/assets/works/blender/hand_and_rose_cmp.png",
+  "/assets/works/blender/life_support_cmp.png",
+  "/assets/works/blender/lost_01_cmp.png",
+  "/assets/works/blender/lost_02_cmp.png",
+  "/assets/works/blender/lost_03_cmp.png",
+  "/assets/works/blender/omw_cmp.png",
+  "/assets/works/blender/piano_ruins_cmp.png",
+  "/assets/works/blender/sunken_cmp.png",
+  "/assets/works/blender/the_door_cmp.png",
 ];
 
-export default function Counter({ onComplete }: { onComplete: () => void }) {
+export default function Counter({
+  onComplete,
+  className,
+}: {
+  onComplete: () => void;
+  className?: string;
+}) {
   const count = useMotionValue(0);
   const [display, setDisplay] = useState(0);
 
@@ -53,7 +59,15 @@ export default function Counter({ onComplete }: { onComplete: () => void }) {
     setDisplay(Math.round(latest));
   });
 
+  const top = useTransform(count, [0, 100], ["100%", "0%"]);
+  const y = useTransform(count, [0, 100], ["-100%", "0%"]);
+
   return (
-    <p className="w-full font-think-loved text-5xl text-center">{display}</p>
+    <motion.p
+      style={{ top, y }}
+      className={cn("absolute text-5xl text-center", className)}
+    >
+      {display}
+    </motion.p>
   );
 }
