@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from "clsx";
 import { parse, type Hsv } from "culori";
 import { twMerge } from "tailwind-merge";
 
+export const PRIMARY_EMAIL = "aniket.das.cse24@heritageit.edu.in";
+
 export const colorPalettes: Hsv[][] = [
   [
     { mode: "hsv", h: 161, s: 55, v: 50 },

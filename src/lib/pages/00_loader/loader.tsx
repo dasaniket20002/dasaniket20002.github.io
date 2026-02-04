@@ -1,26 +1,9 @@
-import { P5Canvas, type P5CanvasInstance } from "@p5-wrapper/react";
 import { motion } from "motion/react";
 import { forwardRef } from "react";
 import Key from "../../components/key";
 import LogoName from "../../components/logo-name";
-import LoadingSketch from "./loading_sketch";
 import Counter from "./counter";
 import Message from "./message";
-
-function sketch(p5: P5CanvasInstance) {
-  p5.setup = () => p5.createCanvas(p5.windowWidth / 3, 384, p5.WEBGL);
-
-  p5.draw = () => {
-    p5.background(0, 0, 0, 0);
-    p5.normalMaterial();
-    p5.push();
-    p5.rotateZ(p5.frameCount * 0.01);
-    p5.rotateX(p5.frameCount * 0.01);
-    p5.rotateY(p5.frameCount * 0.01);
-    p5.plane(100);
-    p5.pop();
-  };
-}
 
 type LoaderProps = { onComplete: () => void };
 
@@ -61,9 +44,13 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
             delay: 0.5,
           }}
         >
-          <Key className="text-2xl size-16 sm:text-4xl sm:size-24">a</Key>
-          <P5Canvas loading={LoadingSketch} sketch={sketch} />
-          <Key className="text-2xl size-16 sm:text-4xl sm:size-24">d</Key>
+          <Key className="text-2xl size-16 sm:text-4xl sm:size-24 flex-none">
+            a
+          </Key>
+          <div className="flex-1" />
+          <Key className="text-2xl size-16 sm:text-4xl sm:size-24 flex-none">
+            d
+          </Key>
         </motion.div>
 
         <motion.div
