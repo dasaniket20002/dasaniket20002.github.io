@@ -22,6 +22,7 @@ export const SECTION_HEADER_HEIGHT = 108;
 export const MIN_SECTION_HEADER_HEIGHT = 72;
 
 export const DEBUG_HIDE_SKETCHES = false;
+const RENDER_SOLO = false;
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,35 +46,44 @@ function App() {
     >
       <StickySnapProvider>
         <NoiseOverlay />
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <Loader key="loader" onComplete={() => setIsLoading(false)} />
-          ) : (
-            <motion.main
-              id="top"
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeIn" }}
-              className="relative h-full bg-light-1"
-              style={
-                {
-                  "--header-height": `${HEADER_HEIGHT}px`,
-                  "--section-header-height": `${SECTION_HEADER_HEIGHT}px`,
-                  "--min-section-header-height": `${MIN_SECTION_HEADER_HEIGHT}px`,
-                } as React.CSSProperties
-              }
-            >
-              <Header className="w-full sticky top-0" />
-              <Hero />
-              <Work />
-              <Services />
-              <About />
-              <Contact />
-            </motion.main>
-          )}
-        </AnimatePresence>
+        {RENDER_SOLO ? (
+          <>
+            {/* <div className="relative h-screen bg-linear-to-b from-[color-mix(in_oklch,var(--color-light-2),black_10%)] to-light-1">
+              <FloatingBalloon />
+            </div>
+            <div className="relative h-screen"></div> */}
+          </>
+        ) : (
+          <AnimatePresence mode="wait">
+            {isLoading ? (
+              <Loader key="loader" onComplete={() => setIsLoading(false)} />
+            ) : (
+              <motion.main
+                id="top"
+                key="content"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: "easeIn" }}
+                className="relative h-full bg-light-1"
+                style={
+                  {
+                    "--header-height": `${HEADER_HEIGHT}px`,
+                    "--section-header-height": `${SECTION_HEADER_HEIGHT}px`,
+                    "--min-section-header-height": `${MIN_SECTION_HEADER_HEIGHT}px`,
+                  } as React.CSSProperties
+                }
+              >
+                <Header className="w-full sticky top-0" />
+                <Hero />
+                <Work />
+                <Services />
+                <About />
+                <Contact />
+              </motion.main>
+            )}
+          </AnimatePresence>
+        )}
       </StickySnapProvider>
     </ReactLenis>
   );
