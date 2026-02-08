@@ -158,3 +158,44 @@ export const getColorPropertyValue = (
     .trim();
   return parse(oklchString);
 };
+
+export const getISTParts = (date = new Date()) => {
+  // time parts (hour, minute, dayPeriod)
+  const timeFormatter = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const parts = timeFormatter.formatToParts(date);
+  const hourPart = parts.find((p) => p.type === "hour")?.value ?? "12";
+  const minutePart = parts.find((p) => p.type === "minute")?.value ?? "00";
+  const dayPeriod = parts.find((p) => p.type === "dayPeriod")?.value ?? "AM";
+
+  // date string (08 February 2026) or short (08 Feb 2026)
+  const dateFormatter = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+  const shortDateFormatter = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  return {
+    hourStr: hourPart,
+    minuteStr: minutePart,
+    hourNum: parseInt(hourPart, 10),
+    minuteNum: parseInt(minutePart, 10),
+    ampm: dayPeriod,
+    dateFull: dateFormatter.format(date),
+    dateShort: shortDateFormatter.format(date),
+    iso: date.toISOString(),
+  };
+};

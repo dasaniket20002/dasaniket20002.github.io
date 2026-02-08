@@ -92,7 +92,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       smoothVelocity,
       velocityMapping?.input || [0, 1000],
       velocityMapping?.output || [0, 5],
-      { clamp: false }
+      { clamp: false },
     );
 
     const copyRef = useRef<HTMLSpanElement>(null);
@@ -129,18 +129,18 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     for (let i = 0; i < numCopies!; i++) {
       spans.push(
         <span
-          className={cn("shrink-0", className)}
+          className={cn("shrink-0 trim-text-caps", className)}
           key={i}
           ref={i === 0 ? copyRef : null}
         >
           {children}
-        </span>
+        </span>,
       );
     }
 
     return (
       <motion.div
-        className={cn(parallaxClassName, "relative overflow-hidden")}
+        className={cn("relative overflow-hidden", parallaxClassName)}
         style={parallaxStyle}
         onHoverStart={() => {
           animate(pauseFactor, 0, { duration: 0.5, ease: "easeOut" });
@@ -151,8 +151,8 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       >
         <motion.div
           className={cn(
+            "flex whitespace-nowrap text-center drop-shadow",
             scrollerClassName,
-            "flex whitespace-nowrap text-center drop-shadow"
           )}
           style={{ x, ...scrollerStyle }}
         >

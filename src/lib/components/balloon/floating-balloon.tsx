@@ -22,6 +22,7 @@ import {
   Color,
   DoubleSide,
   Mesh,
+  MeshPhysicalMaterial,
   Vector2,
   Vector3,
   type Vector3Tuple,
@@ -43,7 +44,29 @@ declare module "@react-three/fiber" {
 const DEBUG = false;
 const GRAVITY: Vector3Tuple = [0, 4, 0];
 
-export default function FloatingBalloon() {
+const BALLOON_COLOR = formatHex(getColorPropertyValue("light-2"));
+
+const BALLOON_MATERIAL = new MeshPhysicalMaterial({
+  color: BALLOON_COLOR,
+  transparent: true,
+  opacity: 0.5,
+  roughness: 0.14,
+  metalness: 0.74,
+  reflectivity: 0.83,
+  iridescence: 0.9,
+  iridescenceIOR: 1.82,
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.12,
+  side: DoubleSide,
+});
+
+export default function FloatingBalloon({
+  eventSource,
+  className,
+}: {
+  eventSource?: RefObject<HTMLElement | null>;
+  className?: string;
+}) {
   return (
     <Canvas
       shadows
@@ -56,6 +79,9 @@ export default function FloatingBalloon() {
       }}
       camera={{ position: [0, 0, 10], fov: 24, near: 1, far: 100 }}
       onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
+      className={className}
+      eventSource={eventSource as RefObject<HTMLElement>}
+      eventPrefix={eventSource ? "client" : "offset"}
     >
       <Suspense fallback={null}>
         <Physics debug={DEBUG} gravity={GRAVITY}>
@@ -105,7 +131,7 @@ function FloatingBalloonLightsAndEffects() {
 }
 
 function FloatingBalloonComponent() {
-  const { meshes } = useGLTF("/assets/models/round-foil-balloon-text.gltf");
+  const { meshes } = useGLTF("/assets/models/round-foil-balloon-portrait.gltf");
   const fixed = useRef<RapierRigidBody>(null);
   const j1 = useRef<RapierRigidBody>(null);
   const j2 = useRef<RapierRigidBody>(null);
@@ -115,9 +141,6 @@ function FloatingBalloonComponent() {
 
   // Ref to avoid re-renders
   const targetYRotation = useRef(0);
-
-  const balloonColor = formatHex(getColorPropertyValue("light-2"));
-  const textColor = formatHex(getColorPropertyValue("dark-1"));
 
   useRopeJoint(
     fixed as RefObject<RapierRigidBody>,
@@ -264,18 +287,8 @@ function FloatingBalloonComponent() {
           colliders={false}
         >
           <BallCollider args={[0.05]} />
-          <mesh>
+          <mesh material={BALLOON_MATERIAL}>
             <sphereGeometry args={[0.05]} />
-            <meshPhysicalMaterial
-              color={balloonColor}
-              roughness={0.14}
-              metalness={0.74}
-              reflectivity={0.83}
-              iridescence={0.9}
-              iridescenceIOR={1.82}
-              clearcoat={0.5}
-              clearcoatRoughness={0.12}
-            />
           </mesh>
         </RigidBody>
 
@@ -291,31 +304,17 @@ function FloatingBalloonComponent() {
             castShadow
             receiveShadow
             geometry={meshes["Balloon_o"].geometry}
+            material={BALLOON_MATERIAL}
             onClick={handleClick}
             onPointerMove={handlePointerMove}
             onPointerLeave={handlePointerLeave}
-          >
-            <meshPhysicalMaterial
-              color={balloonColor}
-              transparent
-              opacity={0.25}
-              roughness={0.14}
-              metalness={0.74}
-              reflectivity={0.83}
-              iridescence={0.9}
-              iridescenceIOR={1.82}
-              clearcoat={0.5}
-              clearcoatRoughness={0.12}
-              side={DoubleSide}
-            />
-          </mesh>
-          <mesh castShadow receiveShadow geometry={meshes["Text_o"].geometry}>
-            <meshPhysicalMaterial
-              color={textColor}
-              roughness={0.1}
-              reflectivity={0.2}
-            />
-          </mesh>
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={meshes["Portrait_o"].geometry}
+            material={meshes["Portrait_o"].material}
+          />
         </RigidBody>
       </group>
 
@@ -326,8 +325,8 @@ function FloatingBalloonComponent() {
           args={[
             {
               opacity: 0.75,
-              color: "white",
-              lineWidth: 0.025,
+              color: "gray",
+              lineWidth: 0.05,
               resolution: new Vector2(width, height),
             },
           ]}

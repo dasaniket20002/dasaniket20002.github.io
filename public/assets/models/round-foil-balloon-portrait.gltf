@@ -20,7 +20,7 @@
 		},
 		{
 			"mesh":1,
-			"name":"Text_o"
+			"name":"Portrait_o"
 		}
 	],
 	"materials":[
@@ -34,6 +34,18 @@
 					0.800000011920929,
 					1
 				],
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		},
+		{
+			"alphaMode":"BLEND",
+			"doubleSided":true,
+			"name":"Portrait",
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":0
+				},
 				"metallicFactor":0,
 				"roughnessFactor":0.5
 			}
@@ -55,16 +67,31 @@
 			]
 		},
 		{
-			"name":"Text.002",
+			"name":"Portrait.002",
 			"primitives":[
 				{
 					"attributes":{
 						"POSITION":4,
-						"NORMAL":5
+						"NORMAL":5,
+						"TEXCOORD_0":6
 					},
-					"indices":6
+					"indices":7,
+					"material":1
 				}
 			]
+		}
+	],
+	"textures":[
+		{
+			"sampler":0,
+			"source":0
+		}
+	],
+	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"Portrait",
+			"uri":"Portrait.png"
 		}
 	],
 	"accessors":[
@@ -105,29 +132,35 @@
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":333,
+			"count":100,
 			"max":[
-				0.6341073513031006,
-				0.630566418170929,
-				-0.7492196559906006
+				0.40782126784324646,
+				0.6232717633247375,
+				-0.4697279632091522
 			],
 			"min":[
-				-0.5772345066070557,
-				0.4753701686859131,
-				-1.230824589729309
+				-0.4043234884738922,
+				0.4836927354335785,
+				-1.5203144550323486
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":333,
+			"count":100,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
+			"componentType":5126,
+			"count":100,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":7,
 			"componentType":5123,
-			"count":882,
+			"count":486,
 			"type":"SCALAR"
 		}
 	],
@@ -158,27 +191,41 @@
 		},
 		{
 			"buffer":0,
-			"byteLength":3996,
+			"byteLength":1200,
 			"byteOffset":218108,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3996,
-			"byteOffset":222104,
+			"byteLength":1200,
+			"byteOffset":219308,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1764,
-			"byteOffset":226100,
+			"byteLength":800,
+			"byteOffset":220508,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":972,
+			"byteOffset":221308,
 			"target":34963
+		}
+	],
+	"samplers":[
+		{
+			"magFilter":9729,
+			"minFilter":9987,
+			"wrapS":33071,
+			"wrapT":33071
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":227864,
-			"uri":"round-foil-balloon-text.bin"
+			"byteLength":222280,
+			"uri":"round-foil-balloon-portrait.bin"
 		}
 	]
 }
