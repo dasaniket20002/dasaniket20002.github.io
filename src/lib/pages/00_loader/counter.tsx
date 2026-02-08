@@ -3,25 +3,11 @@ import { useEffect, useState } from "react";
 import { cn, preloadImage, wait } from "../../utils";
 
 const ALL_IMAGES = [
-  "/assets/portrait/Portrait-FG.png",
-  "/assets/portrait/Portrait-BG.png",
-  "/assets/works/blender/antigravity_cmp.png",
   "/assets/works/blender/aquarium_of_life_cmp.png",
   "/assets/works/blender/bathroom_woman_cmp.png",
-  "/assets/works/blender/black_hole_cmp.png",
-  "/assets/works/blender/car_ruins_cmp.png",
-  "/assets/works/blender/cyberpunk_01_cmp.png",
-  "/assets/works/blender/cyberpunk_02_cmp.png",
-  "/assets/works/blender/detained_cmp.png",
-  "/assets/works/blender/hand_and_rose_cmp.png",
   "/assets/works/blender/life_support_cmp.png",
-  "/assets/works/blender/lost_01_cmp.png",
-  "/assets/works/blender/lost_02_cmp.png",
   "/assets/works/blender/lost_03_cmp.png",
-  "/assets/works/blender/omw_cmp.png",
-  "/assets/works/blender/piano_ruins_cmp.png",
   "/assets/works/blender/sunken_cmp.png",
-  "/assets/works/blender/the_door_cmp.png",
 ];
 
 export default function Counter({
