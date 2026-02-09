@@ -63,9 +63,11 @@ const BALLOON_MATERIAL = new MeshPhysicalMaterial({
 export default function FloatingBalloon({
   eventSource,
   className,
+  paused,
 }: {
   eventSource?: RefObject<HTMLElement | null>;
   className?: string;
+  paused?: boolean;
 }) {
   return (
     <Canvas
@@ -84,7 +86,7 @@ export default function FloatingBalloon({
       eventPrefix={eventSource ? "client" : "offset"}
     >
       <Suspense fallback={null}>
-        <Physics debug={DEBUG} gravity={GRAVITY}>
+        <Physics paused={paused} debug={DEBUG} gravity={GRAVITY}>
           <FloatingBalloonComponent />
         </Physics>
       </Suspense>
