@@ -1,12 +1,15 @@
 import { AnimatePresence, useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import ScrollVelocity from "../../components/scroll-velocity";
 import { TextEffect } from "../../components/text-effect";
 import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
+import {
+  ScrollVelocityContainer,
+  ScrollVelocityRow,
+} from "../../components/scroll-velocity";
 
 const FloatingBalloon = lazy(
   () => import("../../components/balloon/floating-balloon"),
@@ -115,30 +118,36 @@ export default function Hero({ className }: { className?: string }) {
         </m.div>
 
         {/* Scrolling Marquee */}
-        {elementsVisible && (
-          <AnimatePresence mode="wait">
-            <m.div
-              initial={{ y: 32, clipPath: "inset(0% 0% 100% 0%)" }}
-              animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="col-span-full row-[-1/-3] flex items-end overflow-x-clip overflow-y-visible py-2 z-3"
-            >
-              <ScrollVelocity
-                texts={[
-                  <p className="trim-text-caps font-medium">
-                    CREATIVE&nbsp;
-                    <span className="italic font-black">DEV</span>
-                    ELOPER&nbsp;
-                  </p>,
-                ]}
-                numCopies={2}
-                velocity={-40}
-                className="text-[max(14vw,9rem)] tracking-tighter text-dark-1 flex items-end"
-                parallaxClassName="overflow-visible"
-              />
-            </m.div>
-          </AnimatePresence>
-        )}
+        <ScrollVelocityContainer
+          className={cn(
+            "col-span-full row-[-1/-3] py-2 z-3 text-[max(14vw,9rem)] text-dark-1 space-y-3 self-end overflow-x-clip overflow-y-visible transition-opacity duration-1000",
+            elementsVisible ? "opacity-100" : "opacity-0",
+          )}
+        >
+          <ScrollVelocityRow
+            baseVelocity={5}
+            direction={1}
+            className="flex items-end overflow-visible"
+          >
+            {/* <p className="trim-text-caps">CREATIVE DEVELOPER</p> */}
+            <p className="trim-text-caps font-medium tracking-[-0.11em] leading-none">
+              CRE
+              <span className="font-black mr-[-0.12em] trim-text-caps">A</span>
+              TIVE&nbsp;
+              <span className="italic font-black trim-text-caps">DEV</span>
+              EL
+              <span className="italic trim-text-caps">0</span>
+              PER&nbsp;
+            </p>
+          </ScrollVelocityRow>
+          <ScrollVelocityRow
+            baseVelocity={60}
+            direction={-1}
+            className="text-sm font-thin"
+          >
+            <p className="mx-8">Scroll Down</p>
+          </ScrollVelocityRow>
+        </ScrollVelocityContainer>
       </div>
     </div>
   );

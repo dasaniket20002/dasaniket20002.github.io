@@ -1,5 +1,7 @@
+"use client";
+
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
-  animate,
   useAnimationFrame,
   useMotionValue,
   useScroll,
@@ -7,183 +9,206 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
+import type { MotionValue } from "motion/react";
 import * as m from "motion/react-m";
-import React, { useRef } from "react";
-import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
 
-interface VelocityMapping {
-  input: [number, number];
-  output: [number, number];
-}
-
-interface VelocityTextProps {
+interface ScrollVelocityRowProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  baseVelocity: number;
-  scrollContainerRef?: React.RefObject<HTMLElement>;
-  className?: string;
-  damping?: number;
-  stiffness?: number;
-  numCopies?: number;
-  velocityMapping?: VelocityMapping;
-  parallaxClassName?: string;
-  scrollerClassName?: string;
-  parallaxStyle?: React.CSSProperties;
-  scrollerStyle?: React.CSSProperties;
+  baseVelocity?: number;
+  direction?: 1 | -1;
+  spannerClassName?: string;
+  itemClassName?: string;
 }
 
-interface ScrollVelocityProps {
-  scrollContainerRef?: React.RefObject<HTMLElement>;
-  texts: React.ReactNode[];
-  velocity?: number;
-  className?: string;
-  damping?: number;
-  stiffness?: number;
-  numCopies?: number;
-  velocityMapping?: VelocityMapping;
-  parallaxClassName?: string;
-  scrollerClassName?: string;
-  parallaxStyle?: React.CSSProperties;
-  scrollerStyle?: React.CSSProperties;
-  containerClassName?: string;
-}
-
-export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
-  scrollContainerRef,
-  texts = [],
-  velocity = 100,
-  className = "",
-  damping = 50,
-  stiffness = 400,
-  numCopies = 6,
-  velocityMapping = { input: [0, 1000], output: [0, 5] },
-  parallaxClassName,
-  scrollerClassName,
-  parallaxStyle,
-  scrollerStyle,
-  containerClassName,
-}) => {
-  function VelocityText({
-    children,
-    baseVelocity = velocity,
-    scrollContainerRef,
-    className = "",
-    damping,
-    stiffness,
-    numCopies,
-    velocityMapping,
-    parallaxClassName,
-    scrollerClassName,
-    parallaxStyle,
-    scrollerStyle,
-  }: VelocityTextProps) {
-    const baseX = useMotionValue(0);
-    const pauseFactor = useMotionValue(1);
-    const scrollOptions = scrollContainerRef
-      ? { container: scrollContainerRef }
-      : {};
-    const { scrollY } = useScroll(scrollOptions);
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, {
-      damping: damping ?? 50,
-      stiffness: stiffness ?? 400,
-    });
-    const velocityFactor = useTransform(
-      smoothVelocity,
-      velocityMapping?.input || [0, 1000],
-      velocityMapping?.output || [0, 5],
-      { clamp: false },
-    );
-
-    const copyRef = useRef<HTMLSpanElement>(null);
-    const { width: copyWidth } = useElementSize(copyRef);
-
-    function wrap(min: number, max: number, v: number): number {
-      const range = max - min;
-      const mod = (((v - min) % range) + range) % range;
-      return mod + min;
-    }
-
-    const x = useTransform(baseX, (v) => {
-      if (copyWidth === 0) return "0px";
-      return `${wrap(-copyWidth, 0, v)}px`;
-    });
-
-    const directionFactor = useRef<number>(1);
-    useAnimationFrame((_, delta) => {
-      const pause = pauseFactor.get();
-      let moveBy =
-        directionFactor.current * baseVelocity * pause * (delta / 1000);
-
-      if (velocityFactor.get() < 0) {
-        directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
-        directionFactor.current = 1;
-      }
-
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
-      baseX.set(baseX.get() + moveBy);
-    });
-
-    const spans = [];
-    for (let i = 0; i < numCopies!; i++) {
-      spans.push(
-        <span
-          className={cn("shrink-0 trim-text-caps", className)}
-          key={i}
-          ref={i === 0 ? copyRef : null}
-        >
-          {children}
-        </span>,
-      );
-    }
-
-    return (
-      <m.div
-        className={cn("relative overflow-hidden", parallaxClassName)}
-        style={parallaxStyle}
-        onHoverStart={() => {
-          animate(pauseFactor, 0, { duration: 0.5, ease: "easeOut" });
-        }}
-        onHoverEnd={() => {
-          animate(pauseFactor, 1, { duration: 0.5, ease: "easeIn" });
-        }}
-      >
-        <m.div
-          className={cn(
-            "flex whitespace-nowrap text-center drop-shadow",
-            scrollerClassName,
-          )}
-          style={{ x, ...scrollerStyle }}
-        >
-          {spans}
-        </m.div>
-      </m.div>
-    );
-  }
-
-  return (
-    <section className={containerClassName}>
-      {texts.map((text, index) => (
-        <VelocityText
-          key={index}
-          className={className}
-          baseVelocity={index % 2 !== 0 ? -velocity : velocity}
-          scrollContainerRef={scrollContainerRef}
-          damping={damping}
-          stiffness={stiffness}
-          numCopies={numCopies}
-          velocityMapping={velocityMapping}
-          parallaxClassName={parallaxClassName}
-          scrollerClassName={scrollerClassName}
-          parallaxStyle={parallaxStyle}
-          scrollerStyle={scrollerStyle}
-        >
-          {text}&nbsp;
-        </VelocityText>
-      ))}
-    </section>
-  );
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min;
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 };
 
-export default ScrollVelocity;
+const ScrollVelocityContext = React.createContext<MotionValue<number> | null>(
+  null,
+);
+
+export function ScrollVelocityContainer({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400,
+  });
+  const velocityFactor = useTransform(smoothVelocity, (v) => {
+    const sign = v < 0 ? -1 : 1;
+    const magnitude = Math.min(5, (Math.abs(v) / 1000) * 5);
+    return sign * magnitude;
+  });
+
+  return (
+    <ScrollVelocityContext.Provider value={velocityFactor}>
+      <div className={cn("relative w-full", className)} {...props}>
+        {children}
+      </div>
+    </ScrollVelocityContext.Provider>
+  );
+}
+
+export function ScrollVelocityRow(props: ScrollVelocityRowProps) {
+  const sharedVelocityFactor = useContext(ScrollVelocityContext);
+  if (sharedVelocityFactor) {
+    return (
+      <ScrollVelocityRowImpl {...props} velocityFactor={sharedVelocityFactor} />
+    );
+  }
+  return <ScrollVelocityRowLocal {...props} />;
+}
+
+interface ScrollVelocityRowImplProps extends ScrollVelocityRowProps {
+  velocityFactor: MotionValue<number>;
+  spannerClassName?: string;
+  itemClassName?: string;
+}
+
+function ScrollVelocityRowImpl({
+  children,
+  baseVelocity = 5,
+  direction = 1,
+  className,
+  velocityFactor,
+  spannerClassName,
+  itemClassName,
+  ...props
+}: ScrollVelocityRowImplProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const blockRef = useRef<HTMLDivElement>(null);
+  const [numCopies, setNumCopies] = useState(1);
+
+  const baseX = useMotionValue(0);
+  const baseDirectionRef = useRef<number>(direction >= 0 ? 1 : -1);
+  const currentDirectionRef = useRef<number>(direction >= 0 ? 1 : -1);
+  const unitWidth = useMotionValue(0);
+
+  const isInViewRef = useRef(true);
+  const isPageVisibleRef = useRef(true);
+  const prefersReducedMotionRef = useRef(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const block = blockRef.current;
+    if (!container || !block) return;
+
+    const updateSizes = () => {
+      const cw = container.offsetWidth || 0;
+      const bw = block.scrollWidth || 0;
+      unitWidth.set(bw);
+      const nextCopies = bw > 0 ? Math.max(3, Math.ceil(cw / bw) + 2) : 1;
+      setNumCopies((prev) => (prev === nextCopies ? prev : nextCopies));
+    };
+
+    updateSizes();
+
+    const ro = new ResizeObserver(updateSizes);
+    ro.observe(container);
+    ro.observe(block);
+
+    const io = new IntersectionObserver(([entry]) => {
+      isInViewRef.current = entry.isIntersecting;
+    });
+    io.observe(container);
+
+    const handleVisibility = () => {
+      isPageVisibleRef.current = document.visibilityState === "visible";
+    };
+    document.addEventListener("visibilitychange", handleVisibility, {
+      passive: true,
+    });
+    handleVisibility();
+
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handlePRM = () => {
+      prefersReducedMotionRef.current = mq.matches;
+    };
+    mq.addEventListener("change", handlePRM);
+    handlePRM();
+
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
+      mq.removeEventListener("change", handlePRM);
+    };
+  }, [children, unitWidth]);
+
+  const x = useTransform([baseX, unitWidth], ([v, bw]) => {
+    const width = Number(bw) || 1;
+    const offset = Number(v) || 0;
+    return `${-wrap(0, width, offset)}px`;
+  });
+
+  useAnimationFrame((_, delta) => {
+    if (!isInViewRef.current || !isPageVisibleRef.current) return;
+    const dt = delta / 1000;
+    const vf = velocityFactor.get();
+    const absVf = Math.min(5, Math.abs(vf));
+    const speedMultiplier = prefersReducedMotionRef.current ? 1 : 1 + absVf;
+
+    if (absVf > 0.1) {
+      const scrollDirection = vf >= 0 ? 1 : -1;
+      currentDirectionRef.current = baseDirectionRef.current * scrollDirection;
+    }
+
+    const bw = unitWidth.get() || 0;
+    if (bw <= 0) return;
+    const pixelsPerSecond = (bw * baseVelocity) / 100;
+    const moveBy =
+      currentDirectionRef.current * pixelsPerSecond * speedMultiplier * dt;
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn("w-full overflow-hidden whitespace-nowrap", className)}
+      {...props}
+    >
+      <m.div
+        className={cn(
+          "inline-flex transform-gpu items-center will-change-transform select-none",
+          spannerClassName,
+        )}
+        style={{ x }}
+      >
+        {Array.from({ length: numCopies }).map((_, i) => (
+          <div
+            key={i}
+            ref={i === 0 ? blockRef : null}
+            aria-hidden={i !== 0}
+            className={cn("inline-flex shrink-0 items-center", itemClassName)}
+          >
+            {children}
+          </div>
+        ))}
+      </m.div>
+    </div>
+  );
+}
+
+function ScrollVelocityRowLocal(props: ScrollVelocityRowProps) {
+  const { scrollY } = useScroll();
+  const localVelocity = useVelocity(scrollY);
+  const localSmoothVelocity = useSpring(localVelocity, {
+    damping: 50,
+    stiffness: 400,
+  });
+  const localVelocityFactor = useTransform(localSmoothVelocity, (v) => {
+    const sign = v < 0 ? -1 : 1;
+    const magnitude = Math.min(5, (Math.abs(v) / 1000) * 5);
+    return sign * magnitude;
+  });
+  return (
+    <ScrollVelocityRowImpl {...props} velocityFactor={localVelocityFactor} />
+  );
+}

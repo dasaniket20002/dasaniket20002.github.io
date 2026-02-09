@@ -25,7 +25,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       icon,
       variant = "dark",
-      magnetic = true,
+      magnetic = false,
       ...motionProps
     },
     ref,
