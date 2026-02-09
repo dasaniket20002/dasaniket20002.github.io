@@ -1,7 +1,8 @@
-import { motion, useInView, type SVGMotionProps } from "motion/react";
+import { useInView, type SVGMotionProps } from "motion/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
+import * as m from "motion/react-m";
 
 export type ArcPathSVGProps = {
   className?: string;
@@ -45,7 +46,7 @@ const ArcPathSVG = forwardRef<SVGSVGElement, ArcPathSVGProps>(
         height={height}
         viewBox={`0 0 ${width} ${height}`}
       >
-        <motion.path
+        <m.path
           {...motionProps}
           d={`M0 0 A${width} ${height} 0 0 1 ${width} ${height}`}
         />
@@ -112,7 +113,7 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
     useImperativeHandle(ref, () => containerRef.current!);
 
     return (
-      <motion.div
+      <m.div
         ref={containerRef}
         {...motionProps}
         data-grid-landscape-converge-quadtant={landscapeConvergeQuadrant}
@@ -511,7 +512,7 @@ const GridGolden = forwardRef<HTMLDivElement, GoldenGridProps>(
         >
           {children}
         </div>
-      </motion.div>
+      </m.div>
     );
   },
 );

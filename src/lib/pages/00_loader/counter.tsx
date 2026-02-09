@@ -1,4 +1,5 @@
-import { animate, motion, useMotionValue, useTransform } from "motion/react";
+import { animate, useMotionValue, useTransform } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useState } from "react";
 import { cn, preloadImage, wait } from "../../utils";
 
@@ -49,11 +50,11 @@ export default function Counter({
   const y = useTransform(count, [0, 100], ["-100%", "0%"]);
 
   return (
-    <motion.p
+    <m.p
       style={{ top, y }}
       className={cn("absolute text-5xl text-center", className)}
     >
       {display}
-    </motion.p>
+    </m.p>
   );
 }

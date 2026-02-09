@@ -1,14 +1,15 @@
 import { IconPlayerTrackNextFilled } from "@tabler/icons-react";
 import { useLenis } from "lenis/react";
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useState } from "react";
+import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../../App";
 import GridGolden from "../../components/grid-golden-34-21";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useWindowSize } from "../../hooks/use-window-size";
 import { cn } from "../../utils";
 import ExperienceItem from "./experience-item";
 import { ExperienceRevealAnimation } from "./experience-reveal-animation";
-import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../../App";
-import { useWindowSize } from "../../hooks/use-window-size";
 
 const Experience = forwardRef<
   HTMLElement,
@@ -19,7 +20,7 @@ const Experience = forwardRef<
   const { lockSnap, unlockSnap } = useStickySnap();
   const containerSize = useWindowSize();
   return (
-    <motion.section
+    <m.section
       ref={ref}
       {...motionProps}
       className={cn(
@@ -88,7 +89,7 @@ const Experience = forwardRef<
           EXPERIENCE
         </h1>
 
-        <motion.button
+        <m.button
           initial={{ rotate: "0deg" }}
           whileHover={{ rotate: "90deg" }}
           transition={{
@@ -113,9 +114,9 @@ const Experience = forwardRef<
           className="group size-full place-items-center place-content-center cursor-pointer row-[2/4]! col-[4/5]!"
         >
           <IconPlayerTrackNextFilled className="size-7/10 group-hover:stroke-dark-1 transition" />
-        </motion.button>
+        </m.button>
       </GridGolden>
-    </motion.section>
+    </m.section>
   );
 });
 

@@ -1,5 +1,6 @@
 import { IconArrowRight, IconSend } from "@tabler/icons-react";
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import {
   forwardRef,
   useImperativeHandle,
@@ -22,7 +23,7 @@ const MessageBox = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
     );
     useImperativeHandle(ref, () => containerRef.current!);
     return (
-      <motion.div
+      <m.div
         ref={containerRef}
         className={cn(
           "bg-light-2 px-1 h-12 rounded-full flex gap-3 items-center",
@@ -30,7 +31,7 @@ const MessageBox = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
         )}
         {...motionProps}
       >
-        <motion.button
+        <m.button
           drag="x"
           dragConstraints={containerRef}
           whileTap={{ cursor: "grabbing", scale: 1.1 }}
@@ -38,7 +39,7 @@ const MessageBox = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
           className="bg-dark-2 h-8/10 aspect-square rounded-full"
         >
           <IconArrowRight className="size-4 stroke-light-2 place-self-center" />
-        </motion.button>
+        </m.button>
         <input
           type="text"
           placeholder="Message..."
@@ -56,7 +57,7 @@ const MessageBox = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
         >
           <IconSend className="size-4 stroke-light-2 place-self-center" />
         </a>
-      </motion.div>
+      </m.div>
     );
   },
 );

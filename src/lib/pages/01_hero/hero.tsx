@@ -1,4 +1,5 @@
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, useInView } from "motion/react";
+import * as m from "motion/react-m";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import ScrollVelocity from "../../components/scroll-velocity";
 import { TextEffect } from "../../components/text-effect";
@@ -42,7 +43,7 @@ export default function Hero({ className }: { className?: string }) {
       {/* Balloon Canvas */}
       {elementsVisible && (
         <AnimatePresence mode="popLayout">
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: "easeInOut" }}
@@ -51,7 +52,7 @@ export default function Hero({ className }: { className?: string }) {
             <Suspense fallback={null}>
               <FloatingBalloon eventSource={containerRef} paused={!isInView} />
             </Suspense>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       )}
 
@@ -100,9 +101,9 @@ export default function Hero({ className }: { className?: string }) {
           India
         </TextEffect>
 
-        <motion.div className="row-[2/-2] col-[2/-2] bg-light-1 grid grid-rows-subgrid grid-cols-subgrid shadow-xl">
+        <m.div className="row-[2/-2] col-[2/-2] bg-light-1 grid grid-rows-subgrid grid-cols-subgrid shadow-xl">
           <HeroTagLine className="row-[1/-2] col-[1/-2] size-min whitespace-nowrap" />
-          <motion.div
+          <m.div
             initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
             animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
             transition={{ delay: 1, ease: "easeInOut" }}
@@ -110,13 +111,13 @@ export default function Hero({ className }: { className?: string }) {
           >
             <HeroSkillsList className="place-items-end" />
             <HeroCTA className="w-min" />
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
 
         {/* Scrolling Marquee */}
         {elementsVisible && (
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               initial={{ y: 32, clipPath: "inset(0% 0% 100% 0%)" }}
               animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
               transition={{ duration: 0.5, ease: "easeOut" }}
@@ -135,7 +136,7 @@ export default function Hero({ className }: { className?: string }) {
                 className="text-[max(14vw,9rem)] tracking-tighter text-dark-1 flex items-end"
                 parallaxClassName="overflow-visible"
               />
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         )}
       </div>

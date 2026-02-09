@@ -4,7 +4,7 @@ import {
   IconExternalLink,
   IconLocation,
 } from "@tabler/icons-react";
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import {
   MorphingDialog,
   MorphingDialogClose,
@@ -160,7 +160,7 @@ const ExperienceItem = ({
 
             <MorphingDialogDescription className="col-span-full grid grid-cols-subgrid gap-y-2 tracking-wider text-light-2 pr-12">
               {description.map((d, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   className="grid grid-cols-subgrid col-span-full"
                   initial={{ opacity: 0, y: 24 }}
@@ -173,7 +173,7 @@ const ExperienceItem = ({
                 >
                   <IconArrowForward className="size-4 mt-0.5 place-self-end self-start" />
                   <p className="col-span-2">{d}</p>
-                </motion.div>
+                </m.div>
               ))}
               <div className="grid grid-cols-subgrid col-span-full items-center pt-6">
                 <IconExternalLink className="size-4 place-self-end self-center" />

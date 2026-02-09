@@ -1,13 +1,14 @@
 "use client";
-import { AnimatePresence, motion } from "motion/react";
 import type {
   TargetAndTransition,
   Transition,
   Variant,
   Variants,
 } from "motion/react";
-import { cn } from "../utils";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import React from "react";
+import { cn } from "../utils";
 
 export type PresetType =
   | "blur"
@@ -145,30 +146,30 @@ const AnimationComponent: React.FC<{
 }> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
   const content =
     per === "line" ? (
-      <motion.span variants={variants} className="block">
+      <m.span variants={variants} className="block">
         {segment}
-      </motion.span>
+      </m.span>
     ) : per === "word" ? (
-      <motion.span
+      <m.span
         aria-hidden="true"
         variants={variants}
         className="inline-block whitespace-pre"
       >
         {segment}
-      </motion.span>
+      </m.span>
     ) : (
-      <motion.span className="inline-block whitespace-pre">
+      <m.span className="inline-block whitespace-pre">
         {segment.split("").map((char, charIndex) => (
-          <motion.span
+          <m.span
             key={`char-${charIndex}`}
             aria-hidden="true"
             variants={variants}
             className="inline-block whitespace-pre"
           >
             {char}
-          </motion.span>
+          </m.span>
         ))}
-      </motion.span>
+      </m.span>
     );
 
   if (!segmentWrapperClassName) {
@@ -249,7 +250,7 @@ export function TextEffect({
   style,
 }: TextEffectProps) {
   const segments = splitText(children, per);
-  const MotionTag = motion[as as keyof typeof motion] as typeof motion.div;
+  const MotionTag = m[as as keyof typeof m] as typeof m.div;
 
   const baseVariants = preset
     ? presetVariants[preset]

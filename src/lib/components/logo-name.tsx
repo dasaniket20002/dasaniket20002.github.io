@@ -1,10 +1,10 @@
 import {
   AnimatePresence,
-  motion,
   stagger,
   type HTMLMotionProps,
   type Variants,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useState } from "react";
 import { cn } from "../utils";
 
@@ -45,7 +45,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
     const [hovered, setHovered] = useState(false);
 
     return (
-      <motion.section
+      <m.section
         ref={ref}
         {...motionProps}
         className={cn(
@@ -63,7 +63,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
 
           <AnimatePresence mode="wait">
             {hovered && (
-              <motion.section
+              <m.section
                 variants={CONTAINER_VARIANTS}
                 initial="hidden"
                 animate="visible"
@@ -71,7 +71,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
                 className="flex"
               >
                 {NAME_1_SPLIT.map((char, i) => (
-                  <motion.span
+                  <m.span
                     layout
                     key={i}
                     variants={LETTER_VARIANTS}
@@ -79,9 +79,9 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
                     className="origin-bottom-left! -mx-[0.025em] trim-text-caps h-min"
                   >
                     {char}
-                  </motion.span>
+                  </m.span>
                 ))}
-              </motion.section>
+              </m.section>
             )}
           </AnimatePresence>
         </div>
@@ -89,7 +89,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
         {/* --- Dash --- */}
         <AnimatePresence initial={false} mode="wait">
           {!hovered && (
-            <motion.span
+            <m.span
               layout
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: "2ch", opacity: 1 }}
@@ -107,7 +107,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
 
           <AnimatePresence mode="wait">
             {hovered && (
-              <motion.section
+              <m.section
                 variants={CONTAINER_VARIANTS}
                 initial="hidden"
                 animate="visible"
@@ -115,7 +115,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
                 className="flex"
               >
                 {NAME_2_SPLIT.map((char, i) => (
-                  <motion.span
+                  <m.span
                     layout
                     key={i}
                     variants={LETTER_VARIANTS}
@@ -123,13 +123,13 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
                     className="origin-bottom-left! -mx-[0.025em] trim-text-caps h-min"
                   >
                     {char}
-                  </motion.span>
+                  </m.span>
                 ))}
-              </motion.section>
+              </m.section>
             )}
           </AnimatePresence>
         </div>
-      </motion.section>
+      </m.section>
     );
   },
 );

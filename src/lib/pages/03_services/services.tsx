@@ -1,5 +1,6 @@
 import { IconPlayerTrackPrevFilled } from "@tabler/icons-react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence } from "motion/react";
+import * as m from "motion/react-m";
 import { useState } from "react";
 import AnimatedTicker from "../../components/animated-ticker";
 import GridGolden from "../../components/grid-golden-34-21";
@@ -31,7 +32,7 @@ export default function Services({ className }: { className?: string }) {
           landscapeConvergeQuadrant="top-right"
           portraitConvergeQuadrant="top-right"
         >
-          <motion.div className="grid grid-rows-8 grid-cols-8 gap-3 p-3">
+          <m.div className="grid grid-rows-8 grid-cols-8 gap-3 p-3">
             <ServiceCell
               className={cn(
                 "z-1",
@@ -50,11 +51,11 @@ export default function Services({ className }: { className?: string }) {
               setHoverState={setHoverState}
               title="UI/UX Design"
               skills={["User Flow", "Wireframes", "Interactive Prototypes"]}
-              description="I design interfaces that balance logic and emotion. They are intuitive from the first click, easy to use, and keep users engaged - helping brands build stronger connections."
+              description="I design interfaces that balance logic and em. They are intuitive from the first click, easy to use, and keep users engaged - helping brands build stronger connections."
             />
             <AnimatePresence mode="wait">
               {hoverState.isHovered && hoverState.hoverCell === 1 && (
-                <motion.div
+                <m.div
                   className="row-[4/9] col-[4/9] grid grid-cols-subgrid grid-rows-subgrid"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -180,7 +181,7 @@ export default function Services({ className }: { className?: string }) {
                       />
                     </svg>
                   </span>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -210,7 +211,7 @@ export default function Services({ className }: { className?: string }) {
             />
             <AnimatePresence mode="wait">
               {hoverState.isHovered && hoverState.hoverCell === 2 && (
-                <motion.div
+                <m.div
                   className="row-[4/9] col-[1/6] grid grid-cols-subgrid grid-rows-subgrid"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -374,7 +375,7 @@ export default function Services({ className }: { className?: string }) {
                       />
                     </svg>
                   </span>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -400,7 +401,7 @@ export default function Services({ className }: { className?: string }) {
             />
             <AnimatePresence mode="wait">
               {hoverState.isHovered && hoverState.hoverCell === 3 && (
-                <motion.div
+                <m.div
                   className="row-[1/6] col-[4/9] grid grid-cols-subgrid grid-rows-subgrid"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -705,7 +706,7 @@ export default function Services({ className }: { className?: string }) {
                       />
                     </svg>
                   </span>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
 
@@ -731,7 +732,7 @@ export default function Services({ className }: { className?: string }) {
             />
             <AnimatePresence mode="wait">
               {hoverState.isHovered && hoverState.hoverCell === 4 && (
-                <motion.div
+                <m.div
                   className="row-[1/6] col-[1/6] grid grid-cols-subgrid grid-rows-subgrid"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -849,10 +850,10 @@ export default function Services({ className }: { className?: string }) {
                       />
                     </svg>
                   </span>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
-          </motion.div>
+          </m.div>
           <div />
           <div className="size-full place-content-center place-items-center">
             <AnimatedTicker

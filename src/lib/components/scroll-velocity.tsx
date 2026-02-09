@@ -1,6 +1,5 @@
 import {
   animate,
-  motion,
   useAnimationFrame,
   useMotionValue,
   useScroll,
@@ -8,6 +7,7 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
+import * as m from "motion/react-m";
 import React, { useRef } from "react";
 import { useElementSize } from "../hooks/use-element-size";
 import { cn } from "../utils";
@@ -139,7 +139,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     }
 
     return (
-      <motion.div
+      <m.div
         className={cn("relative overflow-hidden", parallaxClassName)}
         style={parallaxStyle}
         onHoverStart={() => {
@@ -149,7 +149,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
           animate(pauseFactor, 1, { duration: 0.5, ease: "easeIn" });
         }}
       >
-        <motion.div
+        <m.div
           className={cn(
             "flex whitespace-nowrap text-center drop-shadow",
             scrollerClassName,
@@ -157,8 +157,8 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
           style={{ x, ...scrollerStyle }}
         >
           {spans}
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
     );
   }
 

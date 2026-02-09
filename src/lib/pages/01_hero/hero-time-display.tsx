@@ -1,7 +1,7 @@
 "use client";
 
+import * as m from "motion/react-m";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 import AnimatedTicker from "../../components/animated-ticker";
 import { cn, getISTParts } from "../../utils";
 
@@ -68,7 +68,7 @@ export default function HeroTimeDisplay({
         <AnimatedTicker value={hourForTicker} fixedPlaces={2} />
 
         {/* Blinking colon */}
-        <motion.span
+        <m.span
           aria-hidden="true"
           className="w-[1ch] text-center pb-0.5"
           animate={{ opacity: [1, 0, 1] }}
@@ -80,7 +80,7 @@ export default function HeroTimeDisplay({
           }}
         >
           :
-        </motion.span>
+        </m.span>
 
         {/* Minutes */}
         <AnimatedTicker value={minuteForTicker} fixedPlaces={2} />

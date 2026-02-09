@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef } from "react";
 import LogoName from "../../components/logo-name";
 import Counter from "./counter";
@@ -9,7 +9,7 @@ type LoaderProps = { onComplete: () => void };
 const Loader = forwardRef<HTMLDivElement, LoaderProps>(
   ({ onComplete }, ref) => {
     return (
-      <motion.div
+      <m.div
         ref={ref}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -33,7 +33,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
           </div>
           <Message className="text-light-2 text-end w-full" />
         </div>
-      </motion.div>
+      </m.div>
     );
   },
 );

@@ -1,4 +1,5 @@
-import { AnimatePresence, motion, type HTMLMotionProps } from "motion/react";
+import { AnimatePresence, type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useCallback, useState } from "react";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
@@ -50,7 +51,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     );
 
     return (
-      <motion.a
+      <m.a
         ref={ref}
         href={href}
         className={cn(
@@ -71,7 +72,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       >
         <AnimatePresence mode="popLayout">
           {__hovered && (
-            <motion.span
+            <m.span
               key="underline"
               initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
               animate={{
@@ -93,7 +94,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
             />
           )}
           {__hovered && (
-            <motion.span
+            <m.span
               key="background"
               initial={{ clipPath: "inset(0 100% 0 0)" }}
               animate={{ clipPath: "inset(0 0% 0 0)" }}
@@ -108,7 +109,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           )}
         </AnimatePresence>
         <TextRoll hovered={__hovered}>{children}</TextRoll>
-      </motion.a>
+      </m.a>
     );
   },
 );

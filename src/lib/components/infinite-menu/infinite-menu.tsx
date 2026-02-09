@@ -8,13 +8,13 @@ import {
 import { converter, type Rgb } from "culori";
 import { useLenis } from "lenis/react";
 import {
-  motion,
   useAnimationFrame,
   useInView,
   useMotionValue,
   useMotionValueEvent,
   useTransform,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useMemo, useRef, useState, type FC } from "react";
 import { Matrix4, Quaternion, Vector2, Vector3 } from "three";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
@@ -1215,7 +1215,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
   const isInView = useInView(canvasRef, { margin: "-50% 0% -50% 0%" });
 
   return (
-    <motion.div
+    <m.div
       animate={{ opacity: isInView ? 1 : 0, scale: isInView ? 1 : 0.8 }}
       transition={{ duration: 0.5, ease: "anticipate" }}
       className={cn("relative size-full", className)}
@@ -1227,7 +1227,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
       />
       {activeItem && (
         <div className="absolute inset-0 pointer-events-none">
-          <motion.span
+          <m.span
             className="absolute top-12 left-1/2 -translate-x-1/2 flex gap-2 transition-opacity"
             initial={{ rotate: "0deg", x: 0, opacity: 0 }}
             animate={{
@@ -1245,9 +1245,9 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
             <IconArrowRampLeft2 className="size-4 stroke-dark-1 -rotate-90" />
             <IconHandGrab className="size-6 stroke-dark-1 -mt-2" />
             <IconArrowRampRight2 className="size-4 stroke-dark-1 rotate-90" />
-          </motion.span>
+          </m.span>
 
-          <motion.div
+          <m.div
             className="absolute top-1/2 -translate-y-1/2 left-16 min-w-sm max-w-lg"
             style={{
               opacity,
@@ -1272,9 +1272,9 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
             >
               {activeItem.description}
             </p>
-          </motion.div>
+          </m.div>
 
-          <motion.span
+          <m.span
             className="absolute top-1/2 -translate-y-1/2 right-16"
             style={{
               opacity,
@@ -1283,7 +1283,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
               transitionDuration,
             }}
           >
-            <motion.button
+            <m.button
               initial={{ rotate: "0deg", scale: 1 }}
               whileHover={{ rotate: "-90deg", scale: 1.1 }}
               transition={{
@@ -1306,10 +1306,10 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
               className="group size-24 place-items-center cursor-pointer"
             >
               <IconPlayerTrackPrevFilled className="size-full stroke-dark-2 group-hover:stroke-dark-1 transition" />
-            </motion.button>
-          </motion.span>
+            </m.button>
+          </m.span>
 
-          <motion.span
+          <m.span
             className="absolute left-1/2 -translate-x-1/2 z-2"
             style={{
               opacity,
@@ -1319,18 +1319,18 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
               scale: buttonScale,
             }}
           >
-            <motion.button
+            <m.button
               onClick={handleButtonClick}
               className="size-16 place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
               initial={{ scale: 1, transition: { duration: 0.1 } }}
               whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
             >
               <IconArrowUpRight className="stroke-2 stroke-light-2" />
-            </motion.button>
-          </motion.span>
+            </m.button>
+          </m.span>
         </div>
       )}
-    </motion.div>
+    </m.div>
   );
 };
 

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useState } from "react";
 import { cn, randomRange } from "../../utils";
 
@@ -41,7 +41,7 @@ export default function Message({ className }: { className?: string }) {
   }, []);
 
   return (
-    <motion.p
+    <m.p
       initial={{ scaleY: 0, opacity: 0 }}
       animate={{ scaleY: 1, opacity: 1 }}
       key={message}
@@ -49,6 +49,6 @@ export default function Message({ className }: { className?: string }) {
       layout
     >
       {message}
-    </motion.p>
+    </m.p>
   );
 }

@@ -1,5 +1,7 @@
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
 import HorizontalDivider from "../../components/horizontal-divider";
+import { IconHandClick } from "@tabler/icons-react";
+import * as m from "motion/react-m";
 import {
   MorphingDialog,
   MorphingDialogClose,
@@ -11,7 +13,6 @@ import {
   MorphingDialogTrigger,
 } from "../../components/morphing-dialog";
 import { cn } from "../../utils";
-import { IconHandClick } from "@tabler/icons-react";
 
 type ServiceCellProps = {
   className?: string;
@@ -39,7 +40,7 @@ const ServiceCell = ({
   ...motionProps
 }: ServiceCellProps) => {
   return (
-    <motion.div
+    <m.div
       {...motionProps}
       layout
       onMouseEnter={() =>
@@ -69,7 +70,7 @@ const ServiceCell = ({
             </MorphingDialogSubtitle>
           </div>
           <div className="absolute inset-0 overflow-hidden [corner-shape:squircle] rounded-4xl perspective-distant -z-1">
-            <motion.span
+            <m.span
               animate={{
                 rotateX: hoverState.isHovered
                   ? hoverState.hoverCell === cellNum
@@ -84,7 +85,7 @@ const ServiceCell = ({
               }}
               className="absolute inset-0 transform-3d origin-bottom-right bg-light-2 opacity-50"
             />
-            <motion.span
+            <m.span
               animate={{
                 rotateX: hoverState.isHovered
                   ? hoverState.hoverCell === cellNum
@@ -99,12 +100,12 @@ const ServiceCell = ({
               }}
               className="absolute inset-0 transform-3d origin-bottom-right bg-dark-1"
             />
-            <motion.span
+            <m.span
               layout
               className="absolute bottom-4 left-1/2 -translate-x-1/2 flex size-4"
             >
               <IconHandClick className="stroke-1 stroke-light-2" />
-            </motion.span>
+            </m.span>
           </div>
         </MorphingDialogTrigger>
 
@@ -146,7 +147,7 @@ const ServiceCell = ({
           </MorphingDialogContent>
         </MorphingDialogContainer>
       </MorphingDialog>
-    </motion.div>
+    </m.div>
   );
 };
 

@@ -1,9 +1,9 @@
 import {
   AnimatePresence,
-  motion,
   useDragControls,
   type HTMLMotionProps,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useState } from "react";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
@@ -34,7 +34,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const dragControls = useDragControls();
 
     return (
-      <motion.button
+      <m.button
         ref={ref}
         onClick={onClick}
         className={cn(
@@ -70,7 +70,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         </TextRoll>
         <AnimatePresence mode="popLayout">
           {icon && hovered && (
-            <motion.section
+            <m.section
               key="icon"
               initial={{ width: 0, opacity: 0, scale: 0 }}
               animate={{ width: "auto", opacity: 1, scale: 1 }}
@@ -78,10 +78,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               transition={{ ease: "backOut" }}
             >
               {icon}
-            </motion.section>
+            </m.section>
           )}
         </AnimatePresence>
-      </motion.button>
+      </m.button>
     );
   },
 );

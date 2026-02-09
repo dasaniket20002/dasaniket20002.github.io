@@ -1,4 +1,5 @@
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef } from "react";
 import { cn } from "../utils";
 
@@ -16,7 +17,7 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
     ref,
   ) => {
     return (
-      <motion.div
+      <m.div
         ref={ref}
         {...motionProps}
         className={cn(
@@ -55,7 +56,7 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
           </h1>
         </div>
         {children}
-      </motion.div>
+      </m.div>
     );
   },
 );

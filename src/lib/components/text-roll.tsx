@@ -1,8 +1,5 @@
-import {
-  motion,
-  useAnimationControls,
-  type HTMLMotionProps,
-} from "motion/react";
+import { useAnimationControls, type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useCallback, useEffect, useRef } from "react";
 import { cn } from "../utils";
 
@@ -37,7 +34,7 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
     }, [hovered, handleHover]);
 
     return (
-      <motion.span
+      <m.span
         ref={ref}
         onMouseEnter={() => {
           if (hovered === undefined) handleHover();
@@ -54,7 +51,7 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
         {/* Row 1: The Original Text */}
         <span className="flex h-[calc(1em+1px)] leading-[calc(1em+1px)]">
           {characters.map((char, i) => (
-            <motion.span
+            <m.span
               key={`char1-${i}`}
               custom={i}
               animate={controls}
@@ -62,14 +59,14 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
               className="inline-block"
             >
               {char === " " ? "\u00A0" : char}
-            </motion.span>
+            </m.span>
           ))}
         </span>
 
         {/* Row 2: The Coming-from-bottom Text */}
         <span className="flex h-[calc(1em+1px)] leading-[calc(1em+1px)]">
           {characters.map((char, i) => (
-            <motion.span
+            <m.span
               key={`char2-${i}`}
               custom={i}
               animate={controls}
@@ -77,10 +74,10 @@ const TextRoll = forwardRef<HTMLSpanElement, TextRollProps>(
               className="inline-block"
             >
               {char === " " ? "\u00A0" : char}
-            </motion.span>
+            </m.span>
           ))}
         </span>
-      </motion.span>
+      </m.span>
     );
   },
 );

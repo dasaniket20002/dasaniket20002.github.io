@@ -1,11 +1,11 @@
 import {
-  motion,
   MotionValue,
   useMotionTemplate,
   useScroll,
   useTransform,
   type HTMLMotionProps,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useMemo } from "react";
 import { cn } from "../utils";
 
@@ -43,12 +43,12 @@ const Char = ({
   const filter = useMotionTemplate`blur(${blur})`;
 
   return (
-    <motion.span
+    <m.span
       style={{ opacity, filter }}
       className={cn(isHighlighted && "text-light-2")}
     >
       {children}
-    </motion.span>
+    </m.span>
   );
 };
 
@@ -80,7 +80,7 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
       [0, displaySplit.length],
     );
     return (
-      <motion.div
+      <m.div
         ref={ref}
         className={cn("sticky top-0", className)}
         {...motionProps}
@@ -97,7 +97,7 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
             </Char>
           ))}
         </p>
-      </motion.div>
+      </m.div>
     );
   },
 );

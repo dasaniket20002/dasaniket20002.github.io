@@ -1,6 +1,7 @@
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { cn } from "../../utils";
+import { useMotionValue, useSpring, useTransform } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect } from "react";
+import { cn } from "../../utils";
 
 export function ExperienceRevealAnimation({
   className,
@@ -40,14 +41,11 @@ export function ExperienceRevealAnimation({
 
   return (
     <div className={cn("relative grid grid-cols-3 items-center", className)}>
-      <motion.section
+      <m.section
         className="relative h-full col-[2/3] overflow-hidden"
         style={{ x: elementX }}
       >
-        <motion.section
-          className="absolute inset-0 z-1"
-          style={{ x: codeElementX }}
-        >
+        <m.section className="absolute inset-0 z-1" style={{ x: codeElementX }}>
           <svg
             width="129"
             height="100"
@@ -220,11 +218,8 @@ export function ExperienceRevealAnimation({
               fill="#734636"
             />
           </svg>
-        </motion.section>
-        <motion.section
-          className="absolute inset-0 z-1"
-          style={{ x: gameElementX }}
-        >
+        </m.section>
+        <m.section className="absolute inset-0 z-1" style={{ x: gameElementX }}>
           <svg
             width="129"
             height="100"
@@ -460,7 +455,7 @@ export function ExperienceRevealAnimation({
               fill="#734636"
             />
           </svg>
-        </motion.section>
+        </m.section>
         <section className="relative size-full">
           <svg
             width="129"
@@ -502,7 +497,7 @@ export function ExperienceRevealAnimation({
             />
           </svg>
         </section>
-      </motion.section>
+      </m.section>
     </div>
   );
 }

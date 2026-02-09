@@ -1,12 +1,12 @@
 import { useLenis } from "lenis/react";
 import {
   AnimatePresence,
-  motion,
   stagger,
   // useMotionValueEvent,
   // useScroll,
   type Variants,
 } from "motion/react";
+import * as m from "motion/react-m";
 import {
   forwardRef,
   useEffect,
@@ -74,7 +74,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         className,
       )}
     >
-      <motion.span
+      <m.span
         className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
         initial={false}
         animate={{
@@ -105,7 +105,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
 
       <AnimatePresence mode="wait">
         {!hidden && (
-          <motion.nav
+          <m.nav
             variants={CONTAINER_VARIANTS}
             initial="hidden"
             animate="visible"
@@ -116,11 +116,11 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             )}
           >
             {NAV_LINKS.map((l, i) => (
-              <motion.section key={i} variants={LINK_VARIANTS}>
+              <m.section key={i} variants={LINK_VARIANTS}>
                 <Link href={l.href} children={l.name} theme={bgTheme} />
-              </motion.section>
+              </m.section>
             ))}
-          </motion.nav>
+          </m.nav>
         )}
       </AnimatePresence>
     </header>

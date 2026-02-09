@@ -5,7 +5,8 @@ import {
   IconBrandThreejs,
   IconBrandVite,
 } from "@tabler/icons-react";
-import { motion, useInView, type HTMLMotionProps } from "motion/react";
+import { useInView, type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import Link from "../../components/link";
 import { cn } from "../../utils";
@@ -18,7 +19,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     const isInView = useInView(containerRef, { margin: "-50% 0% -50% 0%" });
 
     return (
-      <motion.section
+      <m.section
         ref={containerRef}
         className={cn(
           "grid grid-rows-4 grid-cols-5 px-4 md:px-16 py-2",
@@ -26,7 +27,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
         )}
         {...motionProps}
       >
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isInView ? 0.25 : 0 }}
           className="col-span-full row-span-full grid grid-cols-subgrid grid-rows-subgrid mask-radial-at-center mask-radial-closest-corner mask-radial-from-0% pointer-events-none"
@@ -34,8 +35,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           <div className="row-[1/2] col-[2/3] border-r border-dark-1" />
           <div className="row-[2/3] col-[2/3] border-r border-l border-dark-1" />
           <div className="row-[3/5] col-[1/3] border-t border-r border-dark-1" />
-        </motion.div>
-        <motion.div
+        </m.div>
+        <m.div
           initial={{ opacity: 0.1, filter: "blur(2px)" }}
           animate={{
             opacity: isInView ? 1 : 0.1,
@@ -79,7 +80,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
 
             <IconBrandFramerMotion className="size-4 stroke-1 place-self-center" />
             <Link
-              href="https://motion.dev/"
+              href="https://m.dev/"
               theme="dark"
               className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
             >
@@ -106,7 +107,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           </div>
 
           <div className="row-span-full col-[3/6] max-w-lg w-full flex flex-col gap-3 py-8 text-dark-2 place-self-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, filter: "blur(2px)", y: -10 }}
               animate={{
                 opacity: isInView ? 1 : 0,
@@ -117,9 +118,9 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               className="bg-light-2 py-1 px-2 text-xs w-min flex flex-col gap-0.5 items-center self-center rounded shadow"
             >
               <span className="font-light tracking-wider">Today</span>
-            </motion.div>
+            </m.div>
 
-            <motion.span
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -142,8 +143,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
-            <motion.span
+            </m.span>
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -178,8 +179,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
-            <motion.span
+            </m.span>
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -204,8 +205,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
-            <motion.span
+            </m.span>
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -236,8 +237,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
-            <motion.span
+            </m.span>
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -262,8 +263,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
-            <motion.span
+            </m.span>
+            <m.span
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
@@ -291,7 +292,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                   "minute",
                 )}
               </p>
-            </motion.span>
+            </m.span>
 
             <MessageBox
               initial={{ opacity: 0, filter: "blur(2px)", y: 10 }}
@@ -304,8 +305,8 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               className="mt-4"
             />
           </div>
-        </motion.div>
-      </motion.section>
+        </m.div>
+      </m.section>
     );
   },
 );

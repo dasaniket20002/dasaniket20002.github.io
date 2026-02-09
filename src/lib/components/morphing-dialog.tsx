@@ -8,12 +8,12 @@ import React, {
   useState,
 } from "react";
 import {
-  motion,
   AnimatePresence,
   MotionConfig,
   type Transition,
   type Variant,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { createPortal } from "react-dom";
 import { cn } from "../utils";
 import { IconX } from "@tabler/icons-react";
@@ -111,7 +111,7 @@ function MorphingDialogTrigger({
   );
 
   return (
-    <motion.button
+    <m.button
       ref={triggerRef}
       layoutId={disableLayoutAnimation ? undefined : `dialog-${uniqueId}`}
       className={cn("relative cursor-pointer", className)}
@@ -125,7 +125,7 @@ function MorphingDialogTrigger({
       type="button"
     >
       {children}
-    </motion.button>
+    </m.button>
   );
 }
 
@@ -204,7 +204,7 @@ function MorphingDialogContent({
   });
 
   return (
-    <motion.div
+    <m.div
       ref={containerRef}
       layoutId={`dialog-${uniqueId}`}
       className={cn("overflow-hidden", className)}
@@ -215,7 +215,7 @@ function MorphingDialogContent({
       aria-describedby={`motion-ui-morphing-dialog-description-${uniqueId}`}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -232,7 +232,7 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
     <AnimatePresence initial={false} mode="wait">
       {isOpen && (
         <>
-          <motion.div
+          <m.div
             key={`backdrop-${uniqueId}`}
             // className="fixed inset-0 h-full w-full z-9998 bg-dark-2/40 backdrop-blur-xs"
             className="fixed inset-0 z-99 bg-size-[4px_4px] backdrop-blur-xs bg-[radial-gradient(transparent_1px,var(--color-dark-2)_1px)]"
@@ -266,7 +266,7 @@ function MorphingDialogTitle({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.h1
+    <m.h1
       layoutId={
         disableLayoutAnimation
           ? undefined
@@ -277,7 +277,7 @@ function MorphingDialogTitle({
       layout
     >
       {children}
-    </motion.h1>
+    </m.h1>
   );
 }
 
@@ -297,7 +297,7 @@ function MorphingDialogSubtitle({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.p
+    <m.p
       layoutId={
         disableLayoutAnimation
           ? undefined
@@ -307,7 +307,7 @@ function MorphingDialogSubtitle({
       style={style}
     >
       {children}
-    </motion.p>
+    </m.p>
   );
 }
 
@@ -329,7 +329,7 @@ function MorphingDialogSpan({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.span
+    <m.span
       layoutId={
         disableLayoutAnimation
           ? undefined
@@ -340,7 +340,7 @@ function MorphingDialogSpan({
       layout
     >
       {children}
-    </motion.span>
+    </m.span>
   );
 }
 
@@ -366,7 +366,7 @@ function MorphingDialogDescription({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.div
+    <m.div
       key={`dialog-description-${uniqueId}`}
       layoutId={
         disableLayoutAnimation
@@ -382,7 +382,7 @@ function MorphingDialogDescription({
       transition={transition}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -402,18 +402,18 @@ function MorphingDialogImage({
   const { uniqueId } = useMorphingDialog();
 
   return (
-    <motion.div
+    <m.div
       className={className}
       layoutId={`dialog-img-container-${uniqueId}`}
       style={style}
     >
-      <motion.img
+      <m.img
         src={src}
         alt={alt}
         layoutId={`dialog-img-${uniqueId}`}
         className="size-full object-contain"
       />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -439,7 +439,7 @@ function MorphingDialogClose({
   }, [setIsOpen]);
 
   return (
-    <motion.button
+    <m.button
       onClick={handleClose}
       type="button"
       aria-label="Close dialog"
@@ -451,7 +451,7 @@ function MorphingDialogClose({
       variants={variants}
     >
       {children || <IconX size={18} />}
-    </motion.button>
+    </m.button>
   );
 }
 

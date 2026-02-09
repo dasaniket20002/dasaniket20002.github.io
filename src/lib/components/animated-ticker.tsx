@@ -1,10 +1,10 @@
 import {
   AnimatePresence,
   LayoutGroup,
-  motion,
   useSpring,
   useTransform,
 } from "motion/react";
+import * as m from "motion/react-m";
 import { useEffect, useRef, useState } from "react";
 import type { MotionValue } from "motion/react";
 import { cn } from "../utils";
@@ -26,10 +26,7 @@ export default function AnimatedTicker({
 
   return (
     <LayoutGroup>
-      <motion.div
-        layout
-        className={cn("flex gap-px overflow-hidden", className)}
-      >
+      <m.div layout className={cn("flex gap-px overflow-hidden", className)}>
         <AnimatePresence initial={false} mode="popLayout">
           {/* Render Integer Digits */}
           {String(integerPart)
@@ -46,9 +43,9 @@ export default function AnimatedTicker({
         {showDecimals && (
           <>
             {/* Static Decimal Point */}
-            <motion.div layout className="w-[1ch] text-center">
+            <m.div layout className="w-[1ch] text-center">
               .
-            </motion.div>
+            </m.div>
 
             <AnimatePresence initial={false} mode="popLayout">
               {/* Render Decimal Digit */}
@@ -62,7 +59,7 @@ export default function AnimatedTicker({
             </AnimatePresence>
           </>
         )}
-      </motion.div>
+      </m.div>
     </LayoutGroup>
   );
 }
@@ -77,7 +74,7 @@ function Digit({ value }: { value: number }) {
   }, [animatedValue, value]);
 
   return (
-    <motion.div
+    <m.div
       layout
       style={{ height }}
       className="relative w-[1ch]"
@@ -94,7 +91,7 @@ function Digit({ value }: { value: number }) {
           setHeight={setHeight}
         />
       ))}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -128,12 +125,8 @@ function Number({
   }, [setHeight]);
 
   return (
-    <motion.section
-      ref={digitRef}
-      style={{ y }}
-      className="absolute tabular-nums"
-    >
+    <m.section ref={digitRef} style={{ y }} className="absolute tabular-nums">
       {number}
-    </motion.section>
+    </m.section>
   );
 }

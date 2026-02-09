@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useAnimationControls } from "motion/react";
+import { useAnimationControls } from "motion/react";
+import * as m from "motion/react-m";
 
 export type MenuItemData = {
   link: string;
@@ -196,16 +197,16 @@ const MenuItem: React.FC<MenuItemProps> = ({
       </a>
 
       {/* Outer marquee wrapper — animated on Y for edge-aware reveal/hide */}
-      <motion.div
+      <m.div
         className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none"
         animate={marqueeControls}
         initial={{ y: "101%" }}
         style={{ backgroundColor: marqueeBgColor }}
       >
         {/* Inner Y wrapper — counter-animated on Y for the sliding effect */}
-        <motion.div className="h-full" animate={innerControls}>
+        <m.div className="h-full" animate={innerControls}>
           {/* Scrolling content — continuously animated on X */}
-          <motion.div
+          <m.div
             ref={marqueeContentRef}
             className="h-full w-fit flex"
             animate={contentWidth > 0 ? { x: -contentWidth } : undefined}
@@ -233,9 +234,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
                 />
               </div>
             ))}
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </m.div>
+        </m.div>
+      </m.div>
     </div>
   );
 };

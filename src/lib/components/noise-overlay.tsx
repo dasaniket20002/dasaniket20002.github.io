@@ -1,10 +1,5 @@
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useVelocity,
-} from "motion/react";
+import { useScroll, useSpring, useTransform, useVelocity } from "motion/react";
+import * as m from "motion/react-m";
 import { useMemo } from "react";
 import { useWindowSize } from "../hooks/use-window-size";
 
@@ -38,12 +33,7 @@ export default function NoiseOverlay() {
           />
         </filter>
 
-        <motion.rect
-          width="100%"
-          height="100%"
-          fill="#000"
-          style={{ opacity }}
-        />
+        <m.rect width="100%" height="100%" fill="#000" style={{ opacity }} />
         <rect width="100%" height="100%" filter="url(#noise)" opacity="0.25" />
       </svg>
     </div>

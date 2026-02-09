@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 
@@ -17,7 +17,7 @@ export default function Contact({ className }: { className?: string }) {
         className="place-content-center place-items-center"
         ref={registerSection}
       >
-        <motion.p
+        <m.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ ease: "backOut", delay: 0.1 }}
@@ -25,13 +25,13 @@ export default function Contact({ className }: { className?: string }) {
           className="text-center text-8xl font-think-loved"
         >
           Okay, you need a job as well I guess.
-        </motion.p>
+        </m.p>
       </section>
       <section
         className="place-content-center place-items-center"
         ref={registerSection}
       >
-        <motion.p
+        <m.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ ease: "backOut", delay: 0.1 }}
@@ -39,7 +39,7 @@ export default function Contact({ className }: { className?: string }) {
           className="text-center text-8xl font-think-loved"
         >
           Me too buddy :")
-        </motion.p>
+        </m.p>
       </section>
     </SectionContainer>
   );

@@ -1,4 +1,5 @@
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils";
 
@@ -44,12 +45,8 @@ const SVGText = forwardRef<HTMLSpanElement, SVGTextProps>(
     }, [children, className]);
 
     return (
-      <motion.span
-        ref={ref}
-        className={cn("relative", className)}
-        {...motionProps}
-      >
-        <motion.svg
+      <m.span ref={ref} className={cn("relative", className)} {...motionProps}>
+        <m.svg
           viewBox={`${boxDimm.x} ${boxDimm.y} ${boxDimm.w} ${boxDimm.h}`}
           width={boxDimm.w}
           height={boxDimm.h}
@@ -66,10 +63,10 @@ const SVGText = forwardRef<HTMLSpanElement, SVGTextProps>(
           >
             {children}
           </text>
-        </motion.svg>
-      </motion.span>
+        </m.svg>
+      </m.span>
     );
-  }
+  },
 );
 
 export default SVGText;

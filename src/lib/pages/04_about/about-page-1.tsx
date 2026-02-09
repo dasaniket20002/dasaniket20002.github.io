@@ -1,4 +1,5 @@
-import { motion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps } from "motion/react";
+import * as m from "motion/react-m";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import ScrollRevealText from "../../components/scroll-reveal-text";
 import { cn } from "../../utils";
@@ -13,7 +14,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     useImperativeHandle(ref, () => containerRef.current!);
 
     return (
-      <motion.section
+      <m.section
         ref={containerRef}
         className={cn("relative h-[200vh]!", className)}
         {...motionProps}
@@ -27,7 +28,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           viewport={{ amount: "all" }}
           className="px-16 pt-[calc(var(--header-height)+var(--min-section-header-height))] md:pt-[calc(var(--header-height)+var(--section-header-height))]"
         />
-      </motion.section>
+      </m.section>
     );
   },
 );
