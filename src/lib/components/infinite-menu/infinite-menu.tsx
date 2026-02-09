@@ -16,7 +16,7 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useMemo, useRef, useState, type FC } from "react";
-import { Matrix4, Quaternion, Vector2, Vector3 } from "three";
+import * as THREE from "three";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 import { cn, getColorPropertyValue } from "../../utils";
 import discFragShaderSource from "./infinite-menu-fs.glsl?raw";
@@ -35,14 +35,14 @@ class Face {
 }
 
 class Vertex {
-  public position: Vector3;
-  public normal: Vector3;
-  public uv: Vector2;
+  public position: THREE.Vector3;
+  public normal: THREE.Vector3;
+  public uv: THREE.Vector2;
 
   constructor(x: number, y: number, z: number) {
-    this.position = new Vector3(x, y, z);
-    this.normal = new Vector3();
-    this.uv = new Vector2();
+    this.position = new THREE.Vector3(x, y, z);
+    this.normal = new THREE.Vector3();
+    this.uv = new THREE.Vector2();
   }
 }
 
@@ -412,21 +412,21 @@ class ArcballControl {
   private updateCallback: UpdateCallback;
 
   public isPointerDown = false;
-  public orientation = new Quaternion();
-  public pointerRotation = new Quaternion();
+  public orientation = new THREE.Quaternion();
+  public pointerRotation = new THREE.Quaternion();
   public rotationVelocity = 0;
-  public rotationAxis = new Vector3(1, 0, 0);
+  public rotationAxis = new THREE.Vector3(1, 0, 0);
 
-  public snapDirection = new Vector3(0, 0, -1);
-  public snapTargetDirection: Vector3 | null = null;
+  public snapDirection = new THREE.Vector3(0, 0, -1);
+  public snapTargetDirection: THREE.Vector3 | null = null;
 
-  private pointerPos = new Vector2();
-  private previousPointerPos = new Vector2();
+  private pointerPos = new THREE.Vector2();
+  private previousPointerPos = new THREE.Vector2();
   private _rotationVelocity = 0;
-  private _combinedQuat = new Quaternion();
+  private _combinedQuat = new THREE.Quaternion();
 
   private readonly EPSILON = 0.1;
-  private readonly IDENTITY_QUAT = new Quaternion();
+  private readonly IDENTITY_QUAT = new THREE.Quaternion();
 
   constructor(canvas: HTMLCanvasElement, updateCallback?: UpdateCallback) {
     this.canvas = canvas;
@@ -454,19 +454,19 @@ class ArcballControl {
   public update(deltaTime: number, targetFrameDuration = 16): void {
     const timeScale = deltaTime / targetFrameDuration + 0.00001;
     let angleFactor = timeScale;
-    const snapRotation = new Quaternion();
+    const snapRotation = new THREE.Quaternion();
 
     if (this.isPointerDown) {
       const INTENSITY = 0.3 * timeScale;
       const ANGLE_AMPLIFICATION = 5 / timeScale;
-      const midPointerPos = new Vector2()
+      const midPointerPos = new THREE.Vector2()
         .copy(this.pointerPos)
         .sub(this.previousPointerPos)
         .multiplyScalar(INTENSITY);
 
       if (midPointerPos.lengthSq() > this.EPSILON) {
         // Add previous to mid to simulate drag path
-        const temp = new Vector2()
+        const temp = new THREE.Vector2()
           .copy(this.previousPointerPos)
           .add(midPointerPos);
 
@@ -497,7 +497,7 @@ class ArcballControl {
       }
     }
 
-    const combinedQuat = new Quaternion()
+    const combinedQuat = new THREE.Quaternion()
       .copy(snapRotation)
       .multiply(this.pointerRotation);
 
@@ -526,19 +526,19 @@ class ArcballControl {
   }
 
   private quatFromVectors(
-    a: Vector3,
-    b: Vector3,
-    out: Quaternion,
+    a: THREE.Vector3,
+    b: THREE.Vector3,
+    out: THREE.Quaternion,
     angleFactor = 1,
-  ): { q: Quaternion; axis: Vector3; angle: number } {
-    const axis = new Vector3().crossVectors(a, b).normalize();
+  ): { q: THREE.Quaternion; axis: THREE.Vector3; angle: number } {
+    const axis = new THREE.Vector3().crossVectors(a, b).normalize();
     const d = Math.max(-1, Math.min(1, a.dot(b)));
     const angle = Math.acos(d) * angleFactor;
     out.setFromAxisAngle(axis, angle);
     return { q: out, axis, angle };
   }
 
-  private project(pos: Vector2): Vector3 {
+  private project(pos: THREE.Vector2): THREE.Vector3 {
     const r = 2;
     const w = this.canvas.clientWidth;
     const h = this.canvas.clientHeight;
@@ -555,7 +555,7 @@ class ArcballControl {
     } else {
       z = rSq / Math.sqrt(xySq);
     }
-    return new Vector3(-x, y, z);
+    return new THREE.Vector3(-x, y, z);
   }
 }
 
@@ -571,17 +571,17 @@ type MovementChangeCallback = (isMoving: boolean) => void;
 type InitCallback = (instance: InfiniteGridMenu) => void;
 
 interface Camera {
-  matrix: Matrix4;
+  matrix: THREE.Matrix4;
   near: number;
   far: number;
   fov: number;
   aspect: number;
-  position: Vector3;
-  up: Vector3;
+  position: THREE.Vector3;
+  up: THREE.Vector3;
   matrices: {
-    view: Matrix4;
-    projection: Matrix4;
-    inversProjection: Matrix4;
+    view: THREE.Matrix4;
+    projection: THREE.Matrix4;
+    inversProjection: THREE.Matrix4;
   };
 }
 
@@ -597,7 +597,7 @@ class InfiniteGridMenu {
   };
   private icoGeo!: IcosahedronGeometry;
   private discGeo!: DiscGeometry;
-  private worldMatrix = new Matrix4();
+  private worldMatrix = new THREE.Matrix4();
   private tex: WebGLTexture | null = null;
   private control!: ArcballControl;
 
@@ -617,8 +617,8 @@ class InfiniteGridMenu {
     uAtlasSize: WebGLUniformLocation | null;
   };
 
-  private viewportSize = new Vector2();
-  private drawBufferSize = new Vector2();
+  private viewportSize = new THREE.Vector2();
+  private drawBufferSize = new THREE.Vector2();
 
   private discInstances!: {
     matricesArray: Float32Array;
@@ -626,7 +626,7 @@ class InfiniteGridMenu {
     buffer: WebGLBuffer | null;
   };
 
-  private instancePositions: Vector3[] = [];
+  private instancePositions: THREE.Vector3[] = [];
   private DISC_INSTANCE_COUNT = 0;
   private atlasSize = 1;
 
@@ -641,17 +641,17 @@ class InfiniteGridMenu {
   private SPHERE_RADIUS = 2;
 
   public camera: Camera = {
-    matrix: new Matrix4(),
+    matrix: new THREE.Matrix4(),
     near: 0.1,
     far: 40,
     fov: Math.PI / 4,
     aspect: 1,
-    position: new Vector3(0, 0, 3),
-    up: new Vector3(0, 1, 0),
+    position: new THREE.Vector3(0, 0, 3),
+    up: new THREE.Vector3(0, 1, 0),
     matrices: {
-      view: new Matrix4(),
-      projection: new Matrix4(),
-      inversProjection: new Matrix4(),
+      view: new THREE.Matrix4(),
+      projection: new THREE.Matrix4(),
+      inversProjection: new THREE.Matrix4(),
     },
   };
 
@@ -861,7 +861,7 @@ class InfiniteGridMenu {
         i * 16 * 4,
         16,
       );
-      const identity = new Matrix4();
+      const identity = new THREE.Matrix4();
       instanceMatrixArray.set(identity.elements);
       matrices.push(instanceMatrixArray);
     }
@@ -909,7 +909,7 @@ class InfiniteGridMenu {
     const scale = 0.25;
     const SCALE_INTENSITY = 0.6;
 
-    const tempMat = new Matrix4();
+    const tempMat = new THREE.Matrix4();
 
     positions.forEach((p, ndx) => {
       const s =
@@ -921,14 +921,18 @@ class InfiniteGridMenu {
       // Translation -p
       tempMat.makeTranslation(-p.x, -p.y, -p.z);
 
-      const m1 = new Matrix4().makeTranslation(-p.x, -p.y, -p.z);
-      const m2 = new Matrix4().lookAt(
-        new Vector3(0, 0, 0),
+      const m1 = new THREE.Matrix4().makeTranslation(-p.x, -p.y, -p.z);
+      const m2 = new THREE.Matrix4().lookAt(
+        new THREE.Vector3(0, 0, 0),
         p,
-        new Vector3(0, 1, 0),
+        new THREE.Vector3(0, 1, 0),
       );
-      const m3 = new Matrix4().makeScale(finalScale, finalScale, finalScale);
-      const m4 = new Matrix4().makeTranslation(0, 0, -this.SPHERE_RADIUS);
+      const m3 = new THREE.Matrix4().makeScale(
+        finalScale,
+        finalScale,
+        finalScale,
+      );
+      const m4 = new THREE.Matrix4().makeTranslation(0, 0, -this.SPHERE_RADIUS);
 
       // Combine: m1 * m2 * m3 * m4
       tempMat.copy(m1).multiply(m2).multiply(m3).multiply(m4);
@@ -1015,7 +1019,7 @@ class InfiniteGridMenu {
   private updateCameraMatrix(): void {
     this.camera.matrix.lookAt(
       this.camera.position,
-      new Vector3(0, 0, 0),
+      new THREE.Vector3(0, 0, 0),
       this.camera.up,
     );
     this.camera.matrix.setPosition(this.camera.position);
@@ -1104,7 +1108,7 @@ class InfiniteGridMenu {
     return nearestVertexIndex;
   }
 
-  private getVertexWorldPosition(index: number): Vector3 {
+  private getVertexWorldPosition(index: number): THREE.Vector3 {
     const nearestVertexPos = this.instancePositions[index];
     return nearestVertexPos.clone().applyQuaternion(this.control.orientation);
   }

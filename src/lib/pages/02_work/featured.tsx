@@ -1,8 +1,11 @@
 import { type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
-import { forwardRef } from "react";
-import InfiniteMenu from "../../components/infinite-menu/infinite-menu";
+import { forwardRef, lazy, Suspense } from "react";
 import { cn } from "../../utils";
+
+const InfiniteMenu = lazy(
+  () => import("../../components/infinite-menu/infinite-menu"),
+);
 
 const Featured = forwardRef<
   HTMLElement,
@@ -14,10 +17,12 @@ const Featured = forwardRef<
       {...motionProps}
       className={cn("relative size-full", className)}
     >
-      <InfiniteMenu
-        scale={1}
-        className="mask-t-from-80% mask-b-from-90% mask-l-from-95% mask-r-from-95%"
-      />
+      <Suspense fallback={null}>
+        <InfiniteMenu
+          scale={1}
+          className="mask-t-from-80% mask-b-from-90% mask-l-from-95% mask-r-from-95%"
+        />
+      </Suspense>
     </m.section>
   );
 });
