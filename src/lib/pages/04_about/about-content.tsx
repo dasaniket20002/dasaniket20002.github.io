@@ -22,20 +22,17 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
       <m.section
         ref={containerRef}
         className={cn(
-          "grid grid-rows-4 grid-cols-5 px-4 md:px-16 py-2",
+          "grid grid-cols-[8rem_1fr_1fr_8rem] grid-rows-[var(--min-section-header-height)_1fr_1fr] md:grid-rows-[var(--section-header-height)_1fr_1fr]",
           className,
         )}
         {...motionProps}
       >
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isInView ? 0.25 : 0 }}
-          className="col-span-full row-span-full grid grid-cols-subgrid grid-rows-subgrid mask-radial-at-center mask-radial-closest-corner mask-radial-from-0% pointer-events-none"
-        >
-          <div className="row-[1/2] col-[2/3] border-r border-dark-1" />
-          <div className="row-[2/3] col-[2/3] border-r border-l border-dark-1" />
-          <div className="row-[3/5] col-[1/3] border-t border-r border-dark-1" />
-        </m.div>
+        <div className="col-span-full row-span-full grid grid-cols-subgrid grid-rows-subgrid opacity-25 mask-t-from-95% mask-b-from-95% mask-l-from-95% mask-r-from-95% pointer-events-none">
+          <div className="row-[2/3] col-[1/2] border-r border-b border-dark-1" />
+          <div className="row-[2/3] col-[3/5] border-l border-b border-dark-1" />
+          <div className="row-[3/4] col-[3/5] border-l border-dark-1" />
+        </div>
+
         <m.div
           initial={{ opacity: 0.1, filter: "blur(2px)" }}
           animate={{
@@ -44,69 +41,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           }}
           className="col-span-full row-span-full grid grid-rows-subgrid grid-cols-subgrid gap-4"
         >
-          <div className="row-[1/3] col-[1/2] h-8/10 aspect-square overflow-hidden rounded-lg shadow-2xl flex items-center place-self-end mx-8">
-            <img
-              src="/assets/portrait/Portrait-FULL.png"
-              alt="Portrait"
-              className="object-contain"
-            />
-          </div>
-          <h1 className="row-[1/2] col-[2/3] font-light text-4xl leading-4 [&>span]:font-normal [&>span]:tracking-tight [&>span]:text-5xl self-end">
-            Hi!
-            <br />
-            I'm <span>Aniket Das</span>.
-          </h1>
-          <div className="row-[2/3] col-[2/3] grid grid-cols-[2rem_1fr] gap-y-0.5 gap-x-1 h-min py-4 z-1">
-            <span className="relative size-2 place-self-center bg-success rounded-full before:absolute before:-inset-px before:rounded-full before:bg-success before:blur-xs before:animate-pulse before:duration-1000" />
-            <h2 className="py-2 font-light">Active Tech</h2>
-
-            <IconBrandVite className="size-4 stroke-1 place-self-center" />
-            <Link
-              href="https://vite.dev/"
-              theme="dark"
-              className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
-            >
-              Vite
-            </Link>
-
-            <IconBrandReact className="size-4 stroke-1 place-self-center" />
-            <Link
-              href="https://react.dev/"
-              theme="dark"
-              className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
-            >
-              React
-            </Link>
-
-            <IconBrandFramerMotion className="size-4 stroke-1 place-self-center" />
-            <Link
-              href="https://m.dev/"
-              theme="dark"
-              className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
-            >
-              Motion
-            </Link>
-
-            <IconBrandTailwind className="size-4 stroke-1 place-self-center" />
-            <Link
-              href="https://tailwindcss.com/"
-              theme="dark"
-              className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
-            >
-              Tailwind CSS
-            </Link>
-
-            <IconBrandThreejs className="size-4 stroke-1 place-self-center" />
-            <Link
-              href="https://r3f.docs.pmnd.rs/getting-started/introduction"
-              theme="dark"
-              className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
-            >
-              React Three Fiber
-            </Link>
-          </div>
-
-          <div className="row-span-full col-[3/6] max-w-lg w-full flex flex-col gap-3 py-8 text-dark-2 place-self-center">
+          <div className="row-span-full col-[2/3] max-w-lg w-full flex flex-col gap-3 py-8 text-dark-2 place-self-center">
             <m.div
               initial={{ opacity: 0, filter: "blur(2px)", y: -10 }}
               animate={{
@@ -136,7 +71,9 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               transition={{ delay: 0.5 }}
               className="self-end bg-dark-1 px-3 py-1 rounded space-y-1 ml-4 origin-bottom-right"
             >
-              <p className="text-sm font-light tracking-wider">So tell me...</p>
+              <p className="text-sm font-light tracking-wider">
+                So tell me about urself...
+              </p>
               <p className="text-xs text-end font-light tracking-wide opacity-75">
                 {new Intl.RelativeTimeFormat("en", { numeric: "auto" }).format(
                   -3,
@@ -304,6 +241,76 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               transition={{ delay: 0.25 }}
               className="mt-4"
             />
+          </div>
+
+          <div className="row-[2/3] col-[3/4] @container-[size] flex items-end gap-8">
+            <div className="cqw-landscape:h-8/10 cqw-portrait:w-8/10 aspect-square overflow-hidden rounded-lg shadow-2xl flex items-center">
+              <img
+                src="/assets/portrait/Portrait-FULL.png"
+                alt="Portrait"
+                className="object-contain"
+              />
+            </div>
+            <div>
+              <h1 className="px-2 font-light text-4xl leading-4">
+                Hi!
+                <br />
+                I'm{" "}
+                <span className="font-normal tracking-tight text-5xl">
+                  Aniket Das
+                </span>
+                .
+              </h1>
+              <div className="grid grid-cols-[2rem_1fr] gap-y-0.5 gap-x-1 h-min py-4 z-1">
+                <span className="relative size-2 place-self-center bg-success rounded-full before:absolute before:-inset-px before:rounded-full before:bg-success before:blur-xs before:animate-pulse before:duration-1000" />
+                <h2 className="py-2 font-light">Active Tech</h2>
+
+                <IconBrandVite className="size-4 stroke-1 place-self-center" />
+                <Link
+                  href="https://vite.dev/"
+                  theme="dark"
+                  className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
+                >
+                  Vite
+                </Link>
+
+                <IconBrandReact className="size-4 stroke-1 place-self-center" />
+                <Link
+                  href="https://react.dev/"
+                  theme="dark"
+                  className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
+                >
+                  React
+                </Link>
+
+                <IconBrandFramerMotion className="size-4 stroke-1 place-self-center" />
+                <Link
+                  href="https://m.dev/"
+                  theme="dark"
+                  className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
+                >
+                  Motion
+                </Link>
+
+                <IconBrandTailwind className="size-4 stroke-1 place-self-center" />
+                <Link
+                  href="https://tailwindcss.com/"
+                  theme="dark"
+                  className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
+                >
+                  Tailwind CSS
+                </Link>
+
+                <IconBrandThreejs className="size-4 stroke-1 place-self-center" />
+                <Link
+                  href="https://r3f.docs.pmnd.rs/getting-started/introduction"
+                  theme="dark"
+                  className="w-min whitespace-nowrap font-thin tracking-wider -ml-1"
+                >
+                  React Three Fiber
+                </Link>
+              </div>
+            </div>
           </div>
         </m.div>
       </m.section>

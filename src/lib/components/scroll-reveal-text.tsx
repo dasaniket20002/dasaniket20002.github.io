@@ -42,9 +42,16 @@ const Char = ({
   const blur = useTransform(progress, [index, index + 1], ["1px", "0px"]);
   const filter = useMotionTemplate`blur(${blur})`;
 
+  const wdth = useTransform(progress, [index, index + 1], [85, 125]);
+  const ytlc = useTransform(progress, [index, index + 1], [440, 540]);
+  const wght = useTransform(progress, [index, index + 1], [300, 800]);
+  const ital = useTransform(progress, [index, index + 1], [0, 1]);
+
+  const fontVariationSettings = useMotionTemplate`'wdth' ${wdth}, 'YTLC' ${ytlc}, 'wght' ${wght}, 'ital' ${ital}`;
+
   return (
     <m.span
-      style={{ opacity, filter }}
+      style={{ opacity, filter, fontVariationSettings }}
       className={cn(isHighlighted && "text-light-2")}
     >
       {children}
@@ -79,13 +86,19 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
       [0, 1],
       [0, displaySplit.length],
     );
+    const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
     return (
       <m.div
         ref={ref}
-        className={cn("sticky top-0", className)}
+        className={cn("sticky top-0 h-full flex gap-6", className)}
         {...motionProps}
       >
-        <p className="relative font-think-loved text-7xl text-dark-1 whitespace-pre-wrap">
+        <m.div
+          className="w-px h-full bg-light-2 mask-t-from-0% mask-b-from-0%"
+          style={{ height: progress }}
+        />
+        <p className="relative text-7xl text-dark-1 whitespace-pre-wrap tracking-tighter leading-tight">
           {displaySplit.map((char, index) => (
             <Char
               key={index}

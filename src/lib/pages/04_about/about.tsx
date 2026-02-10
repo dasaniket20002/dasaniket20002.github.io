@@ -2,7 +2,6 @@ import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 import AboutContent from "./about-content";
 import AboutPage1 from "./about-page-1";
-import AboutPage2 from "./about-page-2";
 
 export default function About({ className }: { className?: string }) {
   const { registerSection } = useStickySnap();
@@ -16,7 +15,6 @@ export default function About({ className }: { className?: string }) {
       className={className}
     >
       <AboutPage1 ref={registerSection} />
-      <AboutPage2 ref={registerSection} />
       <AboutContent ref={registerSection} />
     </SectionContainer>
   );

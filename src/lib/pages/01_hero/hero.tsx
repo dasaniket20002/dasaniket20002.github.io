@@ -1,6 +1,7 @@
-import { AnimatePresence, useInView } from "motion/react";
+import { useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import Link from "../../components/link";
 import {
   ScrollVelocityContainer,
   ScrollVelocityRow,
@@ -10,7 +11,6 @@ import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
-import Link from "../../components/link";
 
 const FloatingBalloon = lazy(
   () => import("../../components/balloon/floating-balloon"),
@@ -47,18 +47,11 @@ export default function Hero({ className }: { className?: string }) {
     >
       {/* Balloon Canvas */}
       {elementsVisible && (
-        <AnimatePresence mode="popLayout">
-          <m.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-            className="relative row-span-full col-span-full z-2 pointer-events-none mask-b-from-95%"
-          >
-            <Suspense fallback={null}>
-              <FloatingBalloon eventSource={containerRef} inView={isInView} />
-            </Suspense>
-          </m.div>
-        </AnimatePresence>
+        <div className="relative row-span-full col-span-full z-2 pointer-events-none mask-b-from-95%">
+          <Suspense fallback={null}>
+            <FloatingBalloon eventSource={containerRef} inView={isInView} />
+          </Suspense>
+        </div>
       )}
 
       {/* Borders */}
@@ -110,15 +103,6 @@ export default function Hero({ className }: { className?: string }) {
           India
         </Link>
 
-        {/* <TextEffect
-          per="char"
-          as="h2"
-          delay={0.25}
-          className="overflow-hidden row-[1/2] col-[-2/-3] text-sm font-light text-dark-1 text-end tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
-        >
-          Kolkata
-        </TextEffect> */}
-
         <m.div className="row-[2/-2] col-[2/-2] bg-light-1 grid grid-rows-subgrid grid-cols-subgrid shadow-xl">
           <HeroTagLine className="row-[1/-2] col-[1/-2] size-min whitespace-nowrap" />
           <m.div
@@ -136,13 +120,8 @@ export default function Hero({ className }: { className?: string }) {
         <ScrollVelocityContainer
           className="col-span-full row-[-1/-3] py-2 z-3 text-[max(14vw,9rem)] text-dark-1 space-y-3 self-end overflow-x-clip overflow-y-visible"
           initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
-          animate={{
-            y: elementsVisible ? 0 : 24,
-            clipPath: elementsVisible
-              ? "inset(0% 0% 0% 0%)"
-              : "inset(0% 0% 100% 0%)",
-          }}
-          transition={{ duration: 0.25, ease: "easeIn" }}
+          animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+          transition={{ delay: 1, duration: 0.75, ease: "easeIn" }}
         >
           <ScrollVelocityRow
             baseVelocity={5}

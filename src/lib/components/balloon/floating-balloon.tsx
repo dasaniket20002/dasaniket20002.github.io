@@ -81,7 +81,7 @@ export default function FloatingBalloon({
       {!inView && <DisableRender />}
       <Suspense fallback={null}>
         <Physics paused={!inView} debug={DEBUG} gravity={GRAVITY}>
-          {inView && <FloatingBalloonComponent />}
+          <FloatingBalloonComponent />
         </Physics>
       </Suspense>
 

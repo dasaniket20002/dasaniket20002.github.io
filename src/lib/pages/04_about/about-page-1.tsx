@@ -5,7 +5,7 @@ import ScrollRevealText from "../../components/scroll-reveal-text";
 import { cn } from "../../utils";
 
 const DISPLAY =
-  "/ DESIGN IS NOT \n JUST DECORATION, \n BUT A TOOL FOR EMOTION \n AND INFLUENCE. /";
+  "| DESIGN is not \n  just DECORATION, \n  but a tool for EMOTION \n  and INFLUENCE. |";
 const HIGHLIGHTS = ["DESIGN", "DECORATION", "EMOTION", "INFLUENCE"];
 
 const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
@@ -16,7 +16,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     return (
       <m.section
         ref={containerRef}
-        className={cn("relative h-[200vh]!", className)}
+        className={cn("relative h-[300vh]! px-32", className)}
         {...motionProps}
       >
         <ScrollRevealText
@@ -25,8 +25,11 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           containerRef={containerRef}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ amount: "all" }}
-          className="px-16 pt-[calc(var(--header-height)+var(--min-section-header-height))] md:pt-[calc(var(--header-height)+var(--section-header-height))]"
+          viewport={{ amount: "some" }}
+          className={cn(
+            "pt-[calc(var(--header-height)+var(--min-section-header-height))] md:pt-[calc(var(--header-height)+var(--section-header-height))]",
+            "h-[calc(100vh-var(--section-header-height))]",
+          )}
         />
       </m.section>
     );
