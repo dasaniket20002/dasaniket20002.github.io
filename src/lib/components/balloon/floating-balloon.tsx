@@ -31,6 +31,8 @@ declare module "@react-three/fiber" {
   }
 }
 
+const DisableRender = () => useFrame(() => null, 1000);
+
 const DEBUG = false;
 const GRAVITY: THREE.Vector3Tuple = [0, 4, 0];
 
@@ -53,11 +55,11 @@ const BALLOON_MATERIAL = new THREE.MeshPhysicalMaterial({
 export default function FloatingBalloon({
   eventSource,
   className,
-  paused,
+  inView,
 }: {
   eventSource?: RefObject<HTMLElement | null>;
   className?: string;
-  paused?: boolean;
+  inView?: boolean;
 }) {
   return (
     <Canvas
@@ -67,21 +69,23 @@ export default function FloatingBalloon({
         stencil: false,
         depth: false,
         antialias: true,
-        powerPreference: "high-performance",
+        // powerPreference: "high-performance",
       }}
       camera={{ position: [0, 0, 10], fov: 24, near: 1, far: 100 }}
       onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
       className={className}
       eventSource={eventSource as RefObject<HTMLElement>}
       eventPrefix={eventSource ? "client" : "offset"}
+      frameloop="demand"
     >
+      {!inView && <DisableRender />}
       <Suspense fallback={null}>
-        <Physics paused={paused} debug={DEBUG} gravity={GRAVITY}>
-          <FloatingBalloonComponent />
+        <Physics paused={!inView} debug={DEBUG} gravity={GRAVITY}>
+          {inView && <FloatingBalloonComponent />}
         </Physics>
       </Suspense>
 
-      <FloatingBalloonLightsAndEffects />
+      {inView && <FloatingBalloonLightsAndEffects />}
     </Canvas>
   );
 }

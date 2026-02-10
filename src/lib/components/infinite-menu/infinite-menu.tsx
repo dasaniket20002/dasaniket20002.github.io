@@ -664,6 +664,8 @@ class InfiniteGridMenu {
   private onMovementChange: MovementChangeCallback;
   private clearColor: Rgb;
 
+  private _rafId: number | null = null;
+
   constructor(
     canvas: HTMLCanvasElement,
     items: MenuItem[],
@@ -707,7 +709,22 @@ class InfiniteGridMenu {
     this.animate(this._deltaTime);
     this.render();
 
-    requestAnimationFrame((t) => this.run(t));
+    this._rafId = requestAnimationFrame((t) => this.run(t));
+  }
+
+  public start(): void {
+    if (this._rafId !== null) return; // already running
+    this._rafId = requestAnimationFrame((t) => {
+      this._time = t; // reset time base to avoid a huge delta spike
+      this.run(t);
+    });
+  }
+
+  public stop(): void {
+    if (this._rafId !== null) {
+      cancelAnimationFrame(this._rafId);
+      this._rafId = null;
+    }
   }
 
   private init(onInit?: InitCallback): void {
@@ -1136,6 +1153,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
   className,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sketchRef = useRef<InfiniteGridMenu | null>(null);
   const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
   const isMoving = useMotionValue(0);
   const bgColor = useMemo(
@@ -1164,19 +1182,17 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
         scale,
         bgColor,
       );
+      sketchRef.current = sketch;
     }
 
-    const handleResize = () => {
-      if (sketch) {
-        sketch.resize();
-      }
-    };
-
+    const handleResize = () => sketch?.resize();
     window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      sketch?.stop();
+      sketchRef.current = null;
     };
   }, [bgColor, isMoving, items, scale]);
 
@@ -1217,6 +1233,16 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
   const { lockSnap, unlockSnap } = useStickySnap();
 
   const isInView = useInView(canvasRef, { margin: "-50% 0% -50% 0%" });
+
+  useEffect(() => {
+    const sketch = sketchRef.current;
+    if (!sketch) return;
+    if (isInView) {
+      sketch.start();
+    } else {
+      sketch.stop();
+    }
+  }, [isInView]);
 
   return (
     <m.div

@@ -38,7 +38,7 @@ export default function Hero({ className }: { className?: string }) {
       data-bg-theme="light"
       id="top"
       className={cn(
-        "h-[calc(100vh-var(--header-height))] w-full relative grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-[8rem_1fr_1fr_1fr_8rem] select-none",
+        "h-[calc(100vh-var(--header-height))] w-full relative grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-[8rem_1fr_1fr_1fr_8rem]",
         "bg-linear-to-b from-light-1 via-light-2 to-light-1",
         className,
       )}
@@ -53,7 +53,7 @@ export default function Hero({ className }: { className?: string }) {
             className="relative row-span-full col-span-full z-2 pointer-events-none mask-b-from-95%"
           >
             <Suspense fallback={null}>
-              <FloatingBalloon eventSource={containerRef} paused={!isInView} />
+              <FloatingBalloon eventSource={containerRef} inView={isInView} />
             </Suspense>
           </m.div>
         </AnimatePresence>
