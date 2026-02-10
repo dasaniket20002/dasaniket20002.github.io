@@ -10,6 +10,7 @@ import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
+import Link from "../../components/link";
 
 const FloatingBalloon = lazy(
   () => import("../../components/balloon/floating-balloon"),
@@ -87,23 +88,36 @@ export default function Hero({ className }: { className?: string }) {
           I'm Aniket Das.
         </TextEffect>
 
-        <TextEffect
+        <Link
+          href={"https://earth.google.com/web/search/Kolkata,+West+Bengal"}
+          showBG={false}
+          className="overflow-hidden row-[1/2] col-[-2/-3] text-sm font-light text-dark-1 tracking-wide place-self-end uppercase mx-6 trim-text-caps w-min"
+          initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
+          animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+          transition={{ delay: 0.6, ease: "easeInOut" }}
+        >
+          Kolkata
+        </Link>
+
+        <Link
+          href={"https://earth.google.com/web/search/Kolkata,+West+Bengal"}
+          showBG={false}
+          className="overflow-hidden row-[1/2] col-[-1/-2] text-sm font-light text-dark-1 tracking-wide self-end uppercase mx-6 trim-text-caps w-min"
+          initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
+          animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
+          transition={{ delay: 0.65, ease: "easeInOut" }}
+        >
+          India
+        </Link>
+
+        {/* <TextEffect
           per="char"
           as="h2"
           delay={0.25}
           className="overflow-hidden row-[1/2] col-[-2/-3] text-sm font-light text-dark-1 text-end tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
         >
           Kolkata
-        </TextEffect>
-
-        <TextEffect
-          per="char"
-          as="h2"
-          delay={0.25}
-          className="overflow-hidden row-[1/2] col-[-1/-2] text-sm font-light text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
-        >
-          India
-        </TextEffect>
+        </TextEffect> */}
 
         <m.div className="row-[2/-2] col-[2/-2] bg-light-1 grid grid-rows-subgrid grid-cols-subgrid shadow-xl">
           <HeroTagLine className="row-[1/-2] col-[1/-2] size-min whitespace-nowrap" />

@@ -130,7 +130,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
           >
             <h1
               className={cn(
-                "font-think-loved text-5xl fill-light-2 stroke-dark-2 stroke-8 trim-text-caps",
+                "font-black font-width-110 uppercase text-5xl fill-light-2 stroke-dark-2 stroke-8 trim-text-caps",
                 "text-shadow-[0px_0px_4px_var(--tw-text-shadow-color),0px_0px_4px_var(--tw-text-shadow-color),0px_0px_16px_var(--tw-text-shadow-color)] text-shadow-dark-2",
               )}
             >
@@ -138,7 +138,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
             </h1>
             <p
               className={cn(
-                "text-xl text-light-2 trim-text-caps",
+                "text-xl text-light-2 trim-text-caps text-end",
                 "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2",
               )}
             >

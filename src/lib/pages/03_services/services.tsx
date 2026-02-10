@@ -1,13 +1,12 @@
-import { IconPlayerTrackPrevFilled } from "@tabler/icons-react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { useState } from "react";
 import AnimatedTicker from "../../components/animated-ticker";
-import GridGolden from "../../components/grid-golden-34-21";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 import { cn } from "../../utils";
 import ServiceCell from "./service-cell";
+import TextPressure from "../../components/text-pressure";
 
 export default function Services({ className }: { className?: string }) {
   const { registerSection } = useStickySnap();
@@ -25,14 +24,34 @@ export default function Services({ className }: { className?: string }) {
       className={className}
     >
       <section
-        className="place-content-center place-items-center @container-[size] p-1"
+        className={cn(
+          "@container-[size]",
+          "size-full grid grid-cols-[8rem_1fr_1fr_8rem]",
+          "grid-rows-[var(--min-section-header-height)_1fr_var(--min-section-header-height)] md:grid-rows-[var(--section-header-height)_1fr_1fr_var(--section-header-height)]",
+        )}
         ref={registerSection}
       >
-        <GridGolden
-          landscapeConvergeQuadrant="top-right"
-          portraitConvergeQuadrant="top-right"
-        >
-          <m.div className="grid grid-rows-8 grid-cols-8 gap-3 p-3">
+        <div className="row-span-full col-span-full grid grid-cols-subgrid grid-rows-subgrid opacity-75 mask-t-from-95% mask-b-from-95% mask-l-from-95% mask-r-from-95% pointer-events-none">
+          <div className="row-span-full col-[1/2] border-r border-light-2" />
+          <div className="row-[1/-2] col-[-1/-2] border-l border-light-2" />
+        </div>
+
+        <div className="row-[1/2] col-[2/3] place-items-end px-4 pt-4 overflow-clip">
+          <AnimatedTicker
+            value={hoverState.hoverCell}
+            fixedPlaces={1}
+            showDecimals={false}
+            className="text-8xl text-light-2 font-light font-width-120 justify-end items-end opacity-50"
+          />
+        </div>
+
+        <div className="relative row-[2/-1] col-[2/-2] size-full flex gap-6">
+          <TextPressure
+            writingMode="vertical-rl"
+            className="flex-none text-7xl place-self-end px-12 opacity-50"
+            textColor="var(--color-light-2)"
+          />
+          <div className="grid grid-rows-8 grid-cols-8 gap-1.5 place-self-center p-1.5 aspect-square cqw-landscape:h-full cqw-portrait:w-full flex-1">
             <ServiceCell
               className={cn(
                 "z-1",
@@ -853,24 +872,13 @@ export default function Services({ className }: { className?: string }) {
                 </m.div>
               )}
             </AnimatePresence>
-          </m.div>
-          <div />
-          <div className="size-full place-content-center place-items-center">
-            <AnimatedTicker
-              value={hoverState.hoverCell}
-              fixedPlaces={1}
-              showDecimals={false}
-              className="text-9xl text-light-2 font-think-loved"
-            />
           </div>
-          <div />
-          <a
-            href="#"
-            className="group/icon size-full place-content-center place-items-center cursor-pointer hover:-rotate-90 transition"
-          >
-            <IconPlayerTrackPrevFilled className="size-5/10 fill-dark-1 group-hover/icon:scale-120 group-hover/icon:stroke-light-2 transition" />
-          </a>
-        </GridGolden>
+          <TextPressure
+            writingMode="vertical-lr"
+            className="flex-none text-7xl px-12 opacity-50"
+            textColor="var(--color-light-2)"
+          />
+        </div>
       </section>
     </SectionContainer>
   );

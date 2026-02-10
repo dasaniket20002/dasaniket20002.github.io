@@ -16,6 +16,7 @@ type LinkProps = {
   underlineThickness?: number;
   hovered?: boolean;
   setHovered?: (h: boolean) => void;
+  showBG?: boolean;
 } & HTMLMotionProps<"a">;
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
@@ -28,6 +29,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       underlineThickness = 1,
       hovered,
       setHovered,
+      showBG = true,
       ...motionProps
     },
     ref,
@@ -104,7 +106,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               )}
             />
           )}
-          {__hovered && (
+          {__hovered && showBG && (
             <m.span
               key="background"
               initial={{ clipPath: "inset(0 100% 0 0)" }}

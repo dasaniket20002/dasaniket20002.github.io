@@ -43,19 +43,19 @@ const ServiceCell = ({
     <m.div
       {...motionProps}
       layout
-      onMouseEnter={() =>
+      onPointerEnter={() =>
         setHoverState({ isHovered: true, hoverCell: cellNum })
       }
-      onMouseLeave={() => setHoverState({ isHovered: false, hoverCell: 0 })}
+      onPointerLeave={() => setHoverState({ isHovered: false, hoverCell: 0 })}
       className={cn(
-        "group size-full [corner-shape:squircle] rounded-4xl border border-light-2/50 flex items-center justify-center",
+        "group size-full [corner-shape:squircle] rounded-2xl border border-light-2/50 flex items-center justify-center",
         className,
       )}
     >
       <MorphingDialog>
         <MorphingDialogTrigger className="size-full flex justify-center">
           <div className="flex flex-col justify-center items-center gap-10">
-            <MorphingDialogTitle className="font-think-loved text-xl md:text-3xl whitespace-nowrap w-min">
+            <MorphingDialogTitle className="font-black uppercase tracking-tighter text-xl md:text-3xl whitespace-nowrap w-min">
               {title}
             </MorphingDialogTitle>
             <MorphingDialogSubtitle className="text-dark-2 text-2xl font-medium italic text-start w-min flex flex-col gap-1">
@@ -111,7 +111,7 @@ const ServiceCell = ({
 
         <MorphingDialogContainer>
           <MorphingDialogContent className="p-6 pointer-events-auto relative aspect-square flex flex-col gap-6 [corner-shape:squircle] rounded-4xl shadow-2xl border border-dark-1 bg-light-1 m-4 w-full sm:w-lg">
-            <MorphingDialogTitle className="font-think-loved text-dark-1 text-xl md:text-3xl whitespace-nowrap w-min">
+            <MorphingDialogTitle className="font-black uppercase tracking-tighter text-dark-1 text-xl md:text-3xl whitespace-nowrap w-min">
               {title}
             </MorphingDialogTitle>
             <HorizontalDivider />

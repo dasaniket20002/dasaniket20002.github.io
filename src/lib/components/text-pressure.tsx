@@ -37,7 +37,7 @@ const getAttr = (
 };
 
 const TextPressure: React.FC<TextPressureProps> = ({
-  text = "Compressa",
+  text = "NUNITO SANS",
   width = true,
   weight = true,
   italic = true,

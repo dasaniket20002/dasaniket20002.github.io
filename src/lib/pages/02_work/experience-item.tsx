@@ -70,7 +70,7 @@ const ExperienceItem = ({
           />
           <MorphingDialogTitle
             className={cn(
-              "font-think-loved text-6xl whitespace-break-spaces text-start capitalize size-min self-center",
+              "font-black font-width-110 uppercase tracking-tighter text-6xl whitespace-break-spaces text-start size-min self-center",
               titleClassName,
             )}
           >
@@ -127,7 +127,7 @@ const ExperienceItem = ({
               alt={imgAlt}
               className="bg-dark-1 h-8/10 aspect-square rounded-lg place-items-center place-content-center p-4 place-self-end self-center"
             />
-            <MorphingDialogTitle className="font-think-loved text-light-2 text-xl md:text-3xl whitespace-pre-line text-start capitalize size-min self-center">
+            <MorphingDialogTitle className="font-black font-width-110 uppercase tracking-tighter text-light-2 text-xl md:text-3xl whitespace-pre-line text-start size-min self-center">
               {title.replaceAll(" ", "\n")}
             </MorphingDialogTitle>
 
