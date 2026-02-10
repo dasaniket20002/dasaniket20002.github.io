@@ -22,39 +22,85 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
         {...motionProps}
         className={cn(
           "relative",
-          "[&>section]:h-[calc(100vh-var(--min-section-header-height))] [&>section]:md:h-[calc(100vh-var(--section-header-height))]",
-          theme === "light" && "[&>section]:bg-dark-2 [&>section]:text-light-2",
-          theme === "dark" && "[&>section]:bg-light-1 [&>section]:text-dark-1",
+          "[&>section]:h-[calc(100vh-var(--header-height))]",
+          theme === "light" && "[&>section]:text-light-2 bg-dark-2",
+          theme === "dark" && "[&>section]:text-dark-1 bg-light-1",
           className,
         )}
       >
         <div
           data-bg-theme={theme}
           className={cn(
-            "flex justify-between items-end px-4 md:px-16 font-think-loved sticky top-0 pt-(--header-height) z-90 h-(--min-section-header-height) md:h-(--section-header-height)",
-            theme === "light" && "bg-light-1",
-            theme === "dark" && "bg-dark-2",
+            "grid grid-cols-[8rem_1fr_1fr_8rem]",
+            "grid-rows-[var(--header-height)_var(--min-section-header-height)]",
+            "md:grid-rows-[var(--header-height)_var(--section-header-height)]",
+            "uppercase sticky top-0 z-90 pointer-events-none",
           )}
         >
-          <h2
+          <div
             className={cn(
-              "text-xl md:text-4xl trim-text-caps -mb-px mask-b-from-50% opacity-80",
-              theme === "light" && "text-light-2",
-              theme === "dark" && "text-dark-1",
+              "col-span-full row-[1/2]",
+              theme === "light" && "bg-light-1",
+              theme === "dark" && "bg-dark-2",
             )}
-          >
-            {subTitle}
-          </h2>
-          <h1
+          />
+          <div
             className={cn(
-              "text-5xl md:text-8xl trim-text-caps -mb-px",
-              theme === "light" && "text-dark-2",
-              theme === "dark" && "text-light-1",
+              "col-[1/2] row-[2/3] rounded-br-[6px]",
+              theme === "light" && "bg-light-1",
+              theme === "dark" && "bg-dark-2",
             )}
-          >
-            {title}
-          </h1>
+          />
+          <div
+            className={cn(
+              "col-[-1/-2] row-[2/3]",
+              theme === "light" && "bg-light-1",
+              theme === "dark" && "bg-dark-2",
+            )}
+          />
+          <div className="row-[2/3] col-[2/3] size-full">
+            <svg className="size-full">
+              <defs>
+                <mask id={`cover-mask-${title}`}>
+                  <rect width="100%" height="100%" fill="white" />
+                  <rect width="100%" height="100%" fill="black" rx="8" ry="8" />
+                  <rect width="100%" height="50%" fill="black" y="50%" />
+                </mask>
+              </defs>
+              <rect
+                width="100%"
+                height="100%"
+                mask={`url(#cover-mask-${title})`}
+                className={cn(
+                  theme === "light" && "fill-light-1",
+                  theme === "dark" && "fill-dark-2",
+                )}
+              />
+            </svg>
+          </div>
+          <div className="row-[2/3] col-[3/4] size-full rounded-bl-[6px] overflow-hidden">
+            <svg className="size-full text-5xl md:text-8xl text-end font-black tracking-[-0.5rem] font-width-115 trim-text-caps">
+              <defs>
+                <mask id={`text-mask-${title}`}>
+                  <rect width="100%" height="100%" fill="white" />
+                  <text x="2%" y="100%" textAnchor="start" fill="black">
+                    {title}
+                  </text>
+                </mask>
+              </defs>
+              <rect
+                width="100%"
+                height="100%"
+                mask={`url(#text-mask-${title})`}
+                className={cn(
+                  theme === "light" && "fill-light-1",
+                  theme === "dark" && "fill-dark-2",
+                )}
+              />
+            </svg>
+          </div>
         </div>
+
         {children}
       </m.div>
     );

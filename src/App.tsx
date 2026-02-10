@@ -22,8 +22,8 @@ import { LazyMotion } from "motion/react";
 const loadFeatures = () => import("./lib/features").then((res) => res.default);
 
 export const HEADER_HEIGHT = 40;
-export const SECTION_HEADER_HEIGHT = 108;
-export const MIN_SECTION_HEADER_HEIGHT = 72;
+export const SECTION_HEADER_HEIGHT = 96;
+export const MIN_SECTION_HEADER_HEIGHT = 48;
 
 export const DEBUG_HIDE_SKETCHES = false;
 const RENDER_SOLO = false;
@@ -52,12 +52,7 @@ function App() {
         <StickySnapProvider>
           <NoiseOverlay />
           {RENDER_SOLO ? (
-            <>
-              {/* <div className="relative h-screen bg-linear-to-b from-[color-mix(in_oklch,var(--color-light-2),black_10%)] to-light-1">
-              <FloatingBalloon />
-            </div>
-            <div className="relative h-screen"></div> */}
-            </>
+            <></>
           ) : (
             <AnimatePresence mode="wait">
               {isLoading ? (

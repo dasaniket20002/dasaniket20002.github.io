@@ -18,10 +18,7 @@ const Featured = forwardRef<
       className={cn("relative size-full", className)}
     >
       <Suspense fallback={null}>
-        <InfiniteMenu
-          scale={1}
-          className="mask-t-from-80% mask-b-from-90% mask-l-from-95% mask-r-from-95%"
-        />
+        <InfiniteMenu scale={1} />
       </Suspense>
     </m.section>
   );

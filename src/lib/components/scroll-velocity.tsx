@@ -9,7 +9,7 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
-import type { MotionValue } from "motion/react";
+import type { HTMLMotionProps, MotionValue } from "motion/react";
 import * as m from "motion/react-m";
 import { cn } from "../utils";
 
@@ -33,8 +33,8 @@ const ScrollVelocityContext = React.createContext<MotionValue<number> | null>(
 export function ScrollVelocityContainer({
   children,
   className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+  ...motionProps
+}: HTMLMotionProps<"div">) {
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, {
@@ -49,9 +49,9 @@ export function ScrollVelocityContainer({
 
   return (
     <ScrollVelocityContext.Provider value={velocityFactor}>
-      <div className={cn("relative w-full", className)} {...props}>
+      <m.div className={cn("relative w-full", className)} {...motionProps}>
         {children}
-      </div>
+      </m.div>
     </ScrollVelocityContext.Provider>
   );
 }

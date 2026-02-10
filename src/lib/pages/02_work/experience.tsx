@@ -1,121 +1,83 @@
-import { IconPlayerTrackNextFilled } from "@tabler/icons-react";
-import { useLenis } from "lenis/react";
 import { type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
-import { forwardRef, useState } from "react";
-import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../../App";
-import GridGolden from "../../components/grid-golden-34-21";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
-import { useWindowSize } from "../../hooks/use-window-size";
+import { forwardRef } from "react";
+import TextPressure from "../../components/text-pressure";
 import { cn } from "../../utils";
 import ExperienceItem from "./experience-item";
-import { ExperienceRevealAnimation } from "./experience-reveal-animation";
 
 const Experience = forwardRef<
   HTMLElement,
   { className?: string } & HTMLMotionProps<"section">
 >(({ className, ...motionProps }, ref) => {
-  const [hoverLocation, setHoverLocation] = useState<"code" | "game">();
-  const lenis = useLenis();
-  const { lockSnap, unlockSnap } = useStickySnap();
-  const containerSize = useWindowSize();
   return (
     <m.section
       ref={ref}
       {...motionProps}
       className={cn(
-        "place-content-center place-items-center @container-[size] w-full px-8 py-1",
+        "grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-6",
         className,
       )}
     >
-      <GridGolden
-        landscapeConvergeQuadrant="top-left"
-        portraitConvergeQuadrant="top-left"
-        borderTheme="dark"
-      >
-        <div className="relative size-full flex flex-col gap-8 p-4">
-          <ExperienceItem
-            imgSrc="assets/logos/JMAN Group.png"
-            imgAlt="JMAN Group"
-            title="Software Developer"
-            company="JMAN Group Pvt.Ltd."
-            url="https://jmangroup.com/"
-            location="Chennai, India (On-site)"
-            period="Jul/2024 - Sep/2025"
-            description={[
-              "Built a skills tracking platform enabling employees to register skills and project managers to identify suitable team members for ongoing projects.",
-              "Developed the frontend for an AI-powered product using modern web technologies, with a Python backend.",
-              "Automated Single Customer View (SCV) using Databricks, PySpark, and Splink, improving data unification across multiple CRMs.",
-              "Enhanced and maintained a Data Cube application with SQL backend and Power BI frontend, optimizing performance and supporting a client during a major exit process.",
-              "Collaborated in a fast-paced environment to fix legacy bugs, integrate new client features, and deliver consistent value across project phases.",
-            ]}
-            className="row-start-2 flex-2 flex"
-            triggerClassName="px-16 py-12 place-content-center"
-            imgClassName="h-8/10"
-            titleClassName="text-6xl"
-            subtitleClassName="text-2xl"
-            footerClassName="text-base"
-            onMouseEnter={() => setHoverLocation("code")}
-            onMouseLeave={() => setHoverLocation(undefined)}
-          />
-          <ExperienceRevealAnimation hoverLocation={hoverLocation} />
-        </div>
-        <div className="relative size-full flex flex-col gap-4 p-4">
-          <ExperienceItem
-            imgSrc="assets/logos/IDZ Digital.png"
-            imgAlt="IDZ Digital"
-            title="Game Developer"
-            company="IDZ Digital Pvt.Ltd."
-            url="https://www.idzdigital.com/"
-            location="Mumbai, India (Remote)"
-            period="Jun/2023 - Oct/2023"
-            description={[
-              "Developed and optimized ragdoll and rope physics systems for Unity, enabling smooth simulation and rendering of multiple physics segments.",
-              "Improved understanding of Unity's physics engine and C# scripting while collaborating in a distributed team.",
-              "Built a 3D projection tool for painting and interacting with 3D objects via 2D screen input.",
-              "Strengthened communication and teamwork skills through remote collaboration.",
-            ]}
-            className="flex flex-1"
-            triggerClassName="px-6 py-4 place-content-center"
-            imgClassName="h-8/10 p-5"
-            titleClassName="text-5xl"
-            subtitleClassName="text-xl"
-            footerClassName="text-base"
-            onMouseEnter={() => setHoverLocation("game")}
-            onMouseLeave={() => setHoverLocation(undefined)}
-          />
-        </div>
-        <h1 className="text-3xl md:text-5xl font-think-loved row-[1/2]! col-[1/5]! place-self-center">
-          EXPERIENCE
-        </h1>
+      <div className="row-span-full col-span-full grid grid-cols-subgrid grid-rows-subgrid opacity-25 mask-t-from-95% mask-b-from-95% mask-l-from-95% mask-r-from-95% pointer-events-none">
+        <div className="row-span-full col-[1/2] border-r border-b border-dark-1" />
+        <div className="row-span-full col-[-1/-2] border-l border-b border-dark-1" />
+        <div className="row-[1/4] col-[1/4] border-r border-b border-dark-1" />
+        <div className="row-[4/7] col-[1/4] border-r border-dark-1" />
+      </div>
+      <div className="row-span-full col-[2/-2] grid grid-cols-subgrid grid-rows-subgrid p-1 gap-2">
+        <ExperienceItem
+          imgSrc="assets/logos/JMAN Group.png"
+          imgAlt="JMAN Group"
+          title="Software Developer"
+          company="JMAN Group Pvt.Ltd."
+          url="https://jmangroup.com/"
+          location="Chennai, India (On-site)"
+          period="Jul/2024 - Sep/2025"
+          description={[
+            "Built a skills tracking platform enabling employees to register skills and project managers to identify suitable team members for ongoing projects.",
+            "Developed the frontend for an AI-powered product using modern web technologies, with a Python backend.",
+            "Automated Single Customer View (SCV) using Databricks, PySpark, and Splink, improving data unification across multiple CRMs.",
+            "Enhanced and maintained a Data Cube application with SQL backend and Power BI frontend, optimizing performance and supporting a client during a major exit process.",
+            "Collaborated in a fast-paced environment to fix legacy bugs, integrate new client features, and deliver consistent value across project phases.",
+          ]}
+          className="row-[1/4] col-[1/3] flex"
+          triggerClassName="px-16 py-12 place-content-center"
+          imgClassName="h-8/10"
+          titleClassName="text-6xl"
+          subtitleClassName="text-2xl"
+          footerClassName="text-base"
+        />
+        <ExperienceItem
+          imgSrc="assets/logos/IDZ Digital.png"
+          imgAlt="IDZ Digital"
+          title="Game Developer"
+          company="IDZ Digital Pvt.Ltd."
+          url="https://www.idzdigital.com/"
+          location="Mumbai, India (Remote)"
+          period="Jun/2023 - Oct/2023"
+          description={[
+            "Developed and optimized ragdoll and rope physics systems for Unity, enabling smooth simulation and rendering of multiple physics segments.",
+            "Improved understanding of Unity's physics engine and C# scripting while collaborating in a distributed team.",
+            "Built a 3D projection tool for painting and interacting with 3D objects via 2D screen input.",
+            "Strengthened communication and teamwork skills through remote collaboration.",
+          ]}
+          className="row-[4/7] col-[1/3] flex"
+          triggerClassName="px-16 py-12 place-content-center"
+          imgClassName="h-8/10"
+          titleClassName="text-6xl"
+          subtitleClassName="text-2xl"
+          footerClassName="text-base"
+        />
 
-        <m.button
-          initial={{ rotate: "0deg" }}
-          whileHover={{ rotate: "90deg" }}
-          transition={{
-            ease: "anticipate",
-            duration: 0.25,
-            type: "spring",
-            bounce: 0.5,
-          }}
-          onClick={(e) => {
-            e.preventDefault();
-            lockSnap();
-            lenis?.scrollTo("#work-featured", {
-              onComplete: unlockSnap,
-              lock: true,
-              offset:
-                -1 *
-                (containerSize.width > containerSize.height
-                  ? SECTION_HEADER_HEIGHT
-                  : MIN_SECTION_HEADER_HEIGHT),
-            });
-          }}
-          className="group size-full place-items-center place-content-center cursor-pointer row-[2/4]! col-[4/5]!"
-        >
-          <IconPlayerTrackNextFilled className="size-7/10 group-hover:stroke-dark-1 transition" />
-        </m.button>
-      </GridGolden>
+        <div className="relative size-full row-span-full col-[3/4] pt-(--min-section-header-height) md:pt-(--section-header-height)">
+          <TextPressure
+            text="EXPERIENCE"
+            writingMode="vertical-rl"
+            className="text-9xl"
+            textColor="var(--color-light-1)"
+          />
+        </div>
+      </div>
     </m.section>
   );
 });

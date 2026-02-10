@@ -1,10 +1,12 @@
+import { useLenis } from "lenis/react";
 import { AnimatePresence, type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useCallback, useState } from "react";
+import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../App";
+import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useWindowSize } from "../hooks/use-window-size";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
-import { useLenis } from "lenis/react";
-import { useStickySnap } from "../hooks/use-sticky-snap";
 
 type LinkProps = {
   href: string;
@@ -37,6 +39,8 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     const __hovered = hovered === undefined ? _hovered : hovered;
     const __setHovered = setHovered ? setHovered : _setHovered;
 
+    const { width: windowWidth } = useWindowSize();
+
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
@@ -44,10 +48,17 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           window.open(href, "_blank");
         } else {
           lockSnap();
-          lenis?.scrollTo(href, { onComplete: unlockSnap, lock: true });
+          lenis?.scrollTo(href, {
+            onComplete: unlockSnap,
+            lock: true,
+            offset:
+              windowWidth >= 768
+                ? SECTION_HEADER_HEIGHT
+                : MIN_SECTION_HEADER_HEIGHT,
+          });
         }
       },
-      [href, lenis, lockSnap, unlockSnap],
+      [href, lenis, lockSnap, unlockSnap, windowWidth],
     );
 
     return (

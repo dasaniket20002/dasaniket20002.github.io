@@ -38,7 +38,8 @@ export default function Hero({ className }: { className?: string }) {
       data-bg-theme="light"
       id="top"
       className={cn(
-        "h-[calc(100vh-var(--header-height))] w-full relative grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-[8rem_1fr_1fr_1fr_8rem]",
+        "h-[calc(100vh-var(--header-height))] w-full relative",
+        "grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-[8rem_1fr_1fr_1fr_8rem]",
         "bg-linear-to-b from-light-1 via-light-2 to-light-1",
         className,
       )}
@@ -119,10 +120,15 @@ export default function Hero({ className }: { className?: string }) {
 
         {/* Scrolling Marquee */}
         <ScrollVelocityContainer
-          className={cn(
-            "col-span-full row-[-1/-3] py-2 z-3 text-[max(14vw,9rem)] text-dark-1 space-y-3 self-end overflow-x-clip overflow-y-visible transition-opacity duration-1000",
-            elementsVisible ? "opacity-100" : "opacity-0",
-          )}
+          className="col-span-full row-[-1/-3] py-2 z-3 text-[max(14vw,9rem)] text-dark-1 space-y-3 self-end overflow-x-clip overflow-y-visible"
+          initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
+          animate={{
+            y: elementsVisible ? 0 : 24,
+            clipPath: elementsVisible
+              ? "inset(0% 0% 0% 0%)"
+              : "inset(0% 0% 100% 0%)",
+          }}
+          transition={{ duration: 0.25, ease: "easeIn" }}
         >
           <ScrollVelocityRow
             baseVelocity={5}
