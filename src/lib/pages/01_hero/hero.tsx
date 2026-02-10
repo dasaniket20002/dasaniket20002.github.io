@@ -1,15 +1,15 @@
 import { AnimatePresence, useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import {
+  ScrollVelocityContainer,
+  ScrollVelocityRow,
+} from "../../components/scroll-velocity";
 import { TextEffect } from "../../components/text-effect";
 import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
-import {
-  ScrollVelocityContainer,
-  ScrollVelocityRow,
-} from "../../components/scroll-velocity";
 
 const FloatingBalloon = lazy(
   () => import("../../components/balloon/floating-balloon"),
@@ -73,7 +73,7 @@ export default function Hero({ className }: { className?: string }) {
           per="char"
           as="h2"
           delay={0.25}
-          className="overflow-hidden row-[1/2] col-[1/2] text-2xl font-thin text-dark-1 tracking-wide place-self-end uppercase px-6 py-2 trim-text-caps"
+          className="overflow-hidden row-[1/2] col-[1/2] text-2xl font-light text-dark-1 tracking-wide place-self-end uppercase px-6 py-2 trim-text-caps"
         >
           Hi!
         </TextEffect>
@@ -81,7 +81,7 @@ export default function Hero({ className }: { className?: string }) {
           per="char"
           as="h2"
           delay={0.25}
-          className="overflow-hidden row-[1/2] col-[2/3] text-2xl font-thin text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
+          className="overflow-hidden row-[1/2] col-[2/3] text-2xl font-light text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
         >
           I'm Aniket Das.
         </TextEffect>
@@ -90,7 +90,7 @@ export default function Hero({ className }: { className?: string }) {
           per="char"
           as="h2"
           delay={0.25}
-          className="overflow-hidden row-[1/2] col-[-2/-3] text-sm font-thin text-dark-1 text-end tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
+          className="overflow-hidden row-[1/2] col-[-2/-3] text-sm font-light text-dark-1 text-end tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
         >
           Kolkata
         </TextEffect>
@@ -99,7 +99,7 @@ export default function Hero({ className }: { className?: string }) {
           per="char"
           as="h2"
           delay={0.25}
-          className="overflow-hidden row-[1/2] col-[-1/-2] text-sm font-thin text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
+          className="overflow-hidden row-[1/2] col-[-1/-2] text-sm font-light text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
         >
           India
         </TextEffect>
@@ -129,16 +129,17 @@ export default function Hero({ className }: { className?: string }) {
             direction={1}
             className="flex items-end overflow-visible"
           >
-            {/* <p className="trim-text-caps">CREATIVE DEVELOPER</p> */}
-            <p className="trim-text-caps font-medium tracking-[-0.11em] leading-none">
-              CRE
+            <p className="sr-only">CREATIVE DEVELOPER</p>
+            <div className="trim-text-caps font-medium tracking-[-0.11em] leading-none font-width-110">
+              <span className="italic trim-text-caps font-light">C</span>
+              RE
               <span className="font-black mr-[-0.12em] trim-text-caps">A</span>
               TIVE&nbsp;
               <span className="italic font-black trim-text-caps">DEV</span>
               EL
               <span className="italic trim-text-caps">0</span>
               PER&nbsp;
-            </p>
+            </div>
           </ScrollVelocityRow>
           <ScrollVelocityRow
             baseVelocity={60}

@@ -5,7 +5,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative pl-6 pt-4 uppercase tracking-tight font-light text-[max(1.618rem,1.618vw)] text-dark-1 -space-y-2",
+        "relative pl-6 pt-4 uppercase tracking-tighter font-normal text-[max(1.618rem,1.618vw)] text-dark-1 -space-y-2 font-width-105",
         className,
       )}
     >
@@ -21,7 +21,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
         per="word"
         as="h1"
         delay={0.725}
-        className="overflow-hidden italic font-normal text-[max(2.427rem,2.427vw)] tracking-normal"
+        className="overflow-hidden italic font-semibold text-[max(2.427rem,2.427vw)] tracking-tight font-width-110"
       >
         technical architecture
       </TextEffect>
@@ -33,7 +33,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
           per="word"
           as="h1"
           delay={0.85}
-          className="italic font-normal text-[max(2.427rem,2.427vw)] tracking-normal"
+          className="italic font-semibold text-[max(2.427rem,2.427vw)] tracking-tight font-width-110"
         >
           visual storytelling.
         </TextEffect>

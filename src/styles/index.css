@@ -1,10 +1,33 @@
-@import "./fonts.css";
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wdth,wght,YTLC@0,6..12,75..125,200..1000,440..540;1,6..12,75..125,200..1000,440..540&display=swap");
+@font-face {
+  font-family: "Think Loved";
+  src: url("/fonts/think-loved/ThinkLoved.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
+
+@property --font-width {
+  syntax: "<number>";
+  initial-value: 100; /* 75 to 125 */
+  inherits: false;
+}
+@property --font-lowercase-height {
+  syntax: "<number>"; /* 440 to 540 */
+  initial-value: 540;
+  inherits: false;
+}
 
 :root {
   font-synthesis: none;
   font-variant-ligatures: common-ligatures discretionary-ligatures;
   text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+  font-variation-settings:
+    "wdth" var(--font-width),
+    "YTLC" var(--font-lowercase-height);
 
   margin: 0;
   padding: 0;
@@ -22,6 +45,7 @@
 @theme {
   --font-helvetica: "Helvetica Neue", sans-serif;
   --font-think-loved: "Think Loved", sans-serif;
+  --font-sans: "Nunito Sans", sans-serif;
 
   --color-light-1: var(--light-1);
   --color-light-2: var(--light-2);
@@ -36,7 +60,7 @@
 }
 
 body {
-  @apply bg-light-1 font-helvetica antialiased;
+  @apply bg-light-1 font-sans antialiased;
 }
 
 * {
@@ -45,6 +69,21 @@ body {
 }
 *::-webkit-scrollbar {
   display: none;
+}
+
+@utility font-width-* {
+  --font-width: --value(integer); /* 75 to 125 */
+  font-variation-settings:
+    "wdth" var(--font-width),
+    "YTLC" var(--font-lowercase-height);
+  /* "wght" var(--tw-font-weight); */
+}
+@utility font-lowercase-height-* {
+  --font-lowercase-height: --value(integer); /* 440 to 540 */
+  font-variation-settings:
+    "wdth" var(--font-width),
+    "YTLC" var(--font-lowercase-height);
+  /* "wght" var(--tw-font-weight); */
 }
 
 @utility trim-text-caps {
