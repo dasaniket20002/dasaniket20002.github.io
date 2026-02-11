@@ -1,5 +1,3 @@
-import { useScroll, useSpring, useTransform, useVelocity } from "motion/react";
-import * as m from "motion/react-m";
 import { useMemo } from "react";
 import { useWindowSize } from "../hooks/use-window-size";
 
@@ -8,12 +6,6 @@ export default function NoiseOverlay() {
   const vb = useMemo(
     () => ({ w: width || 100, h: height || 100 }),
     [width, height],
-  );
-  const { scrollY } = useScroll();
-  const scrollVelocity = useVelocity(scrollY);
-  const opacity = useSpring(
-    useTransform(scrollVelocity, [-5000, -1000, 1000, 5000], [0.5, 0, 0, 0.5]),
-    { visualDuration: 0.1 },
   );
 
   return (
@@ -32,8 +24,6 @@ export default function NoiseOverlay() {
             stitchTiles="stitch"
           />
         </filter>
-
-        <m.rect width="100%" height="100%" fill="#000" style={{ opacity }} />
         <rect width="100%" height="100%" filter="url(#noise)" opacity="0.25" />
       </svg>
     </div>

@@ -95,7 +95,7 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
         {...motionProps}
       >
         <m.div
-          className="w-px h-full bg-light-2 mask-t-from-0% mask-b-from-0%"
+          className="w-px h-full bg-dark-1 mask-t-from-0% mask-b-from-0%"
           style={{ height: progress }}
         />
         <p className="relative text-7xl text-dark-1 whitespace-pre-wrap tracking-tighter leading-tight">

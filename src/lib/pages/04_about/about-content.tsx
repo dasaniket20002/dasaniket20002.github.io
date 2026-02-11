@@ -243,7 +243,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
             />
           </div>
 
-          <div className="row-[2/3] col-[3/4] @container-[size] flex items-end gap-8">
+          <div className="row-[2/3] col-[3/4] @container-[size] flex items-end gap-8 p-3">
             <div className="cqw-landscape:h-8/10 cqw-portrait:w-8/10 aspect-square overflow-hidden rounded-lg shadow-2xl flex items-center">
               <img
                 src="/assets/portrait/Portrait-FULL.png"

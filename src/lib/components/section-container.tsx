@@ -22,7 +22,7 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
         {...motionProps}
         className={cn(
           "relative",
-          "[&>section]:h-[calc(100vh-var(--header-height))]",
+          "[&>section]:h-[calc(100dvh-var(--header-height))]",
           theme === "light" && "[&>section]:text-light-2 bg-dark-2",
           theme === "dark" && "[&>section]:text-dark-1 bg-light-1",
           className,

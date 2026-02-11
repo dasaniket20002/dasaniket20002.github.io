@@ -16,7 +16,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     return (
       <m.section
         ref={containerRef}
-        className={cn("relative h-[300vh]! px-32", className)}
+        className={cn("relative h-[300dvh]! px-32", className)}
         {...motionProps}
       >
         <ScrollRevealText
@@ -28,7 +28,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           viewport={{ amount: "some" }}
           className={cn(
             "pt-[calc(var(--header-height)+var(--min-section-header-height))] md:pt-[calc(var(--header-height)+var(--section-header-height))]",
-            "h-[calc(100vh-var(--section-header-height))]",
+            "h-[calc(100dvh-var(--section-header-height))]",
           )}
         />
       </m.section>

@@ -136,17 +136,35 @@ export const findOptimalSquareTiling = (width: number, height: number) => {
   };
 };
 
-export const preloadImage = (src: string) => {
-  return new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.onload = function () {
-      resolve(img);
-    };
-    img.onerror = img.onabort = function () {
-      reject();
-    };
-    img.src = src;
-  });
+export const preloadWithProgress = async (
+  urls: string[],
+  onProgress: (p: number) => void,
+) => {
+  let loadedBytes = 0;
+  let totalBytes = 0;
+
+  const sizes = await Promise.all(
+    urls.map(async (url) => {
+      const res = await fetch(url, { method: "HEAD" });
+      return Number(res.headers.get("Content-Length")) || 0;
+    }),
+  );
+
+  totalBytes = sizes.reduce((a, b) => a + b, 0);
+
+  await Promise.all(
+    urls.map(async (url) => {
+      const res = await fetch(url);
+      const reader = res.body!.getReader();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        loadedBytes += value.length;
+        onProgress(Math.round((loadedBytes / totalBytes) * 100));
+      }
+    }),
+  );
 };
 
 export const getColorPropertyValue = (

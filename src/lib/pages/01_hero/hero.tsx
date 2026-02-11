@@ -11,6 +11,7 @@ import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
+import { useStickySnap } from "../../hooks/use-sticky-snap";
 
 const FloatingBalloon = lazy(
   () => import("../../components/balloon/floating-balloon"),
@@ -22,6 +23,8 @@ export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [elementsVisible, setElementsVisible] = useState<boolean>(false);
   const isInView = useInView(containerRef, { margin: "-50% 0% -50% 0%" });
+
+  const { registerSection } = useStickySnap();
 
   useEffect(() => {
     const t = setTimeout(
@@ -35,11 +38,14 @@ export default function Hero({ className }: { className?: string }) {
 
   return (
     <div
-      ref={containerRef}
+      ref={(r) => {
+        containerRef.current = r;
+        registerSection(r, { useDefaultHeaderHeight: false });
+      }}
       data-bg-theme="light"
-      id="top"
+      id="hero"
       className={cn(
-        "h-[calc(100vh-var(--header-height))] w-full relative",
+        "h-[calc(100dvh-var(--header-height))] w-full relative",
         "grid grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem] grid-rows-[8rem_1fr_1fr_1fr_8rem]",
         "bg-linear-to-b from-light-1 via-light-2 to-light-1",
         className,

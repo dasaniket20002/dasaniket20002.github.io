@@ -39,7 +39,10 @@ export function StickySnapProvider({
     ) => {
       if (!el) return;
 
-      const offset = (options?.offset ?? 0) + HEADER_HEIGHT;
+      let offset = options?.offset ?? 0;
+      if (options.useDefaultHeaderHeight) {
+        offset += HEADER_HEIGHT;
+      }
 
       const exists = sectionsRef.current.some((s) => s.el === el);
 
@@ -48,7 +51,6 @@ export function StickySnapProvider({
       }
     },
     [],
-    // [windowWidth],
   );
 
   const lockSnap = useCallback(() => {

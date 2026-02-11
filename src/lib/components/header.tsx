@@ -1,11 +1,5 @@
 import { useLenis } from "lenis/react";
-import {
-  AnimatePresence,
-  stagger,
-  // useMotionValueEvent,
-  // useScroll,
-  type Variants,
-} from "motion/react";
+import { AnimatePresence, stagger, type Variants } from "motion/react";
 import * as m from "motion/react-m";
 import {
   forwardRef,
@@ -45,13 +39,6 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const headerRef = useRef<HTMLElement>(null);
   const [hidden, setHidden] = useState(true);
   const bgTheme = useBGTheme(headerRef);
-  // const { scrollY } = useScroll();
-
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   const previous = scrollY.getPrevious() ?? 0;
-  //   if (latest - previous > 10) setHidden(true);
-  //   if (previous - latest > 5) setHidden(false);
-  // });
 
   const { lockSnap, unlockSnap } = useStickySnap();
   const lenis = useLenis();
@@ -97,7 +84,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             onClick={(e) => {
               e.preventDefault();
               lockSnap();
-              lenis?.scrollTo("#top", { onComplete: unlockSnap, lock: true });
+              lenis?.scrollTo("#hero", { onComplete: unlockSnap, lock: true });
             }}
           />
         )}
