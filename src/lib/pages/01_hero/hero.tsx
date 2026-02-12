@@ -1,43 +1,24 @@
-import { useInView } from "motion/react";
 import * as m from "motion/react-m";
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "../../components/link";
 import {
   ScrollVelocityContainer,
   ScrollVelocityRow,
 } from "../../components/scroll-velocity";
 import { TextEffect } from "../../components/text-effect";
-import { cn } from "../../utils";
-import HeroCTA from "./hero-cta";
-import HeroSkillsList from "./hero-skills-list";
-import HeroTagLine from "./hero-tag-line";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 import { useWindowSize } from "../../hooks/use-window-size";
+import { cn } from "../../utils";
+import HeroCTA from "./hero-cta";
 import HeroGallery from "./hero-gallery";
-
-const FloatingBalloon = lazy(
-  () => import("../../components/balloon/floating-balloon"),
-);
-
-const ELEMENTS_INITIAL_DELAY = 1500;
+import HeroSkillsList from "./hero-skills-list";
+import HeroTagLine from "./hero-tag-line";
 
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [elementsVisible, setElementsVisible] = useState<boolean>(false);
-  const isInView = useInView(containerRef, { margin: "-50% 0% -50% 0%" });
   const { width: windowWidth } = useWindowSize();
 
   const { registerSection } = useStickySnap();
-
-  useEffect(() => {
-    const t = setTimeout(
-      () => setElementsVisible(true),
-      ELEMENTS_INITIAL_DELAY,
-    );
-    return () => {
-      if (t) clearTimeout(t);
-    };
-  }, []);
 
   return (
     <div
@@ -56,15 +37,6 @@ export default function Hero({ className }: { className?: string }) {
         className,
       )}
     >
-      {/* Balloon Canvas */}
-      {/* {elementsVisible && windowWidth > 768 && (
-        <div className="relative row-span-full col-span-full z-2 pointer-events-none mask-b-from-95%">
-          <Suspense fallback={null}>
-            <FloatingBalloon eventSource={containerRef} inView={isInView} />
-          </Suspense>
-        </div>
-      )} */}
-
       {/* Borders */}
       <div className="row-span-full col-span-full grid grid-cols-subgrid grid-rows-subgrid opacity-75 mask-t-from-95% mask-b-from-95% mask-l-from-95% mask-r-from-95% pointer-events-none">
         <div className="row-[1/2] col-[1/2] border-r border-b border-light-2" />
@@ -126,7 +98,7 @@ export default function Hero({ className }: { className?: string }) {
           <m.div
             initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
             animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
-            transition={{ delay: 1.15, duration: 0.5, ease: "easeInOut" }}
+            transition={{ delay: 1.25, duration: 0.5, ease: "easeInOut" }}
             className="row-[2/4] col-span-full size-full space-y-2 md:place-content-end"
           >
             <HeroSkillsList className="place-items-end" />
