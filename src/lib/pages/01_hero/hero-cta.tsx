@@ -8,18 +8,13 @@ export default function HeroCTA({ className }: { className?: string }) {
   const lenis = useLenis();
   const { lockSnap, unlockSnap } = useStickySnap();
   return (
-    <div
-      className={cn(
-        "h-full flex flex-col gap-6 items-end px-6 py-4",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col gap-6 items-end px-6 py-4", className)}>
       <div className="flex gap-8 items-center">
         <Button
           variant="light"
           text="Know More"
           icon={<IconArrowDown className="stroke-2" />}
-          className="flex-none w-min bg-transparent"
+          className="flex-none w-min text-xl md:text-base"
           onClick={(e) => {
             e.preventDefault();
             lockSnap();
@@ -30,7 +25,7 @@ export default function HeroCTA({ className }: { className?: string }) {
           variant="dark"
           text="Let's Connect"
           icon={<IconArrowRight className="stroke-2" />}
-          className="flex-none w-min"
+          className="flex-none w-min text-xl md:text-base"
           onClick={(e) => {
             e.preventDefault();
             lockSnap();
@@ -38,7 +33,7 @@ export default function HeroCTA({ className }: { className?: string }) {
           }}
         />
       </div>
-      <section className="text-sm font-thin tracking-wider place-content-end text-light-2 flex flex-col items-end">
+      <section className="text-2xl md:text-sm font-thin tracking-wider place-content-end text-light-2 flex flex-col items-end">
         <p>Or email me @</p>
         <a
           href={`mailto:${PRIMARY_EMAIL}`}

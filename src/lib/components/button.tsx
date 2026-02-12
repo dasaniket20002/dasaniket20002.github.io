@@ -41,9 +41,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "group/button min-w-42 max-w-96 h-12",
           "flex gap-2 items-center justify-center shadow-2xl",
           variant === "dark" &&
-            "bg-dark-1 text-light-2 border-3 border-dark-1 hover:bg-transparent hover:text-dark-1",
-          variant === "light" &&
-            "bg-light-1 text-dark-1 border-3 border-dark-1",
+            "bg-dark-1 text-light-2 border border-dark-1 hover:bg-transparent hover:text-dark-1",
+          variant === "light" && "bg-light-1 text-dark-1 border border-dark-1",
           "cursor-pointer [&>svg]:size-4 transition-colors duration-150",
           className,
         )}

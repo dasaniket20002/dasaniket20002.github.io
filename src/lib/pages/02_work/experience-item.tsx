@@ -52,11 +52,11 @@ const ExperienceItem = ({
   description: string[];
 } & React.ComponentProps<"div">) => {
   return (
-    <div className={cn("relative size-full", className)} {...divProps}>
+    <div className={cn("relative size-full flex", className)} {...divProps}>
       <MorphingDialog>
         <MorphingDialogTrigger
           className={cn(
-            "group w-full grid grid-cols-[auto_1fr] gap-x-8 gap-y-2 rounded-lg transition-[shadow,color,border] hover:shadow-2xl border border-transparent hover:border-light-2/10",
+            "group w-full grid grid-cols-[auto_1fr] gap-x-8 gap-y-2 px-16 py-12 place-content-center rounded-lg transition-[shadow,color,border] hover:shadow-2xl border border-transparent hover:border-light-2/10",
             triggerClassName,
           )}
         >
@@ -64,13 +64,13 @@ const ExperienceItem = ({
             src={imgSrc}
             alt={imgAlt}
             className={cn(
-              "bg-dark-1 h-8/10 aspect-square rounded-lg place-items-center place-content-center p-4 self-center",
+              "bg-dark-1 h-28 aspect-square rounded-lg place-items-center place-content-center p-4 self-center",
               imgClassName,
             )}
           />
           <MorphingDialogTitle
             className={cn(
-              "font-black font-width-110 uppercase tracking-tighter text-6xl whitespace-break-spaces text-start size-min self-center",
+              "font-black font-width-110 uppercase tracking-tighter text-5xl whitespace-break-spaces text-start size-min self-center",
               titleClassName,
             )}
           >
@@ -78,7 +78,7 @@ const ExperienceItem = ({
           </MorphingDialogTitle>
           <MorphingDialogSubtitle
             className={cn(
-              "tracking-wider text-start text-2xl whitespace-nowrap col-span-full size-min col-start-2 text-dark-1 group-hover:text-light-2 transition-colors",
+              "tracking-wider text-start text-3xl whitespace-nowrap col-span-full size-min col-start-2 text-dark-1 group-hover:text-light-2 transition-colors",
               subtitleClassName,
             )}
           >
@@ -87,7 +87,7 @@ const ExperienceItem = ({
 
           <div
             className={cn(
-              "col-span-full grid grid-cols-subgrid gap-y-2 py-6 text-dark-1 text-base tracking-wide group-hover:text-light-2 transition-colors",
+              "col-span-full grid grid-cols-subgrid gap-y-2 py-6 text-dark-1 text-xl tracking-wide group-hover:text-light-2 transition-colors",
               footerClassName,
             )}
           >
@@ -95,7 +95,7 @@ const ExperienceItem = ({
               identifier={"location-icon"}
               className="size-min self-center place-self-center"
             >
-              <IconLocation className="size-4 self-center place-self-center" />
+              <IconLocation className="size-5 self-center place-self-center" />
             </MorphingDialogSpan>
             <MorphingDialogSpan
               identifier={"location"}
@@ -107,7 +107,7 @@ const ExperienceItem = ({
               identifier={"period-icon"}
               className="size-min self-center place-self-center"
             >
-              <IconCalendar className="size-4 self-center place-self-center" />
+              <IconCalendar className="size-5 self-center place-self-center" />
             </MorphingDialogSpan>
             <MorphingDialogSpan
               identifier={"period"}
@@ -125,13 +125,13 @@ const ExperienceItem = ({
             <MorphingDialogImage
               src={imgSrc}
               alt={imgAlt}
-              className="bg-dark-1 h-8/10 aspect-square rounded-lg place-items-center place-content-center p-4 place-self-end self-center"
+              className="bg-dark-1 h-24 aspect-square rounded-lg place-items-center place-content-center p-4 place-self-end self-center"
             />
-            <MorphingDialogTitle className="font-black font-width-110 uppercase tracking-tighter text-light-2 text-xl md:text-3xl whitespace-pre-line text-start size-min self-center">
+            <MorphingDialogTitle className="font-black font-width-110 uppercase tracking-tighter text-light-2 text-3xl whitespace-pre-line text-start size-min self-center">
               {title.replaceAll(" ", "\n")}
             </MorphingDialogTitle>
 
-            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 self-center items-center size-min py-6 text-light-2 tracking-wider font-light text-xs">
+            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 self-center items-center size-min py-6 text-light-2 tracking-wider font-light text-sm">
               <MorphingDialogSpan
                 identifier={"location-icon"}
                 className="size-min self-center place-self-center"
@@ -158,7 +158,7 @@ const ExperienceItem = ({
               </MorphingDialogSpan>
             </div>
 
-            <MorphingDialogDescription className="col-span-full grid grid-cols-subgrid gap-y-2 tracking-wider text-light-2 pr-12">
+            <MorphingDialogDescription className="col-span-full grid grid-cols-subgrid gap-y-2 tracking-wider text-light-2 text-base pr-12">
               {description.map((d, i) => (
                 <m.div
                   key={i}
@@ -183,7 +183,7 @@ const ExperienceItem = ({
                   rel="noopener noreferrer"
                   className="text-xs font-thin tracking-wider w-min col-span-2"
                 >
-                  <MorphingDialogSubtitle className="tracking-wider text-start text-sm whitespace-nowrap col-span-full size-min text-light-2 place-self-center self-start">
+                  <MorphingDialogSubtitle className="tracking-wider text-start text-base whitespace-nowrap col-span-full size-min text-light-2 place-self-center self-start">
                     {company}
                   </MorphingDialogSubtitle>
                 </a>

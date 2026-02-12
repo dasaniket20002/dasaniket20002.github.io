@@ -52,6 +52,17 @@ const BALLOON_MATERIAL = new THREE.MeshPhysicalMaterial({
   side: THREE.DoubleSide,
 });
 
+const BALLOON_HOLDER_MATERIAL = new THREE.MeshPhysicalMaterial({
+  color: BALLOON_COLOR,
+  roughness: 0.14,
+  metalness: 0.74,
+  reflectivity: 0.83,
+  iridescence: 0.9,
+  iridescenceIOR: 1.82,
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.12,
+});
+
 export default function FloatingBalloon({
   eventSource,
   className,
@@ -283,7 +294,7 @@ function FloatingBalloonComponent() {
           colliders={false}
         >
           <BallCollider args={[0.05]} />
-          <mesh material={BALLOON_MATERIAL}>
+          <mesh material={BALLOON_HOLDER_MATERIAL}>
             <sphereGeometry args={[0.05]} />
           </mesh>
         </RigidBody>
@@ -320,9 +331,9 @@ function FloatingBalloonComponent() {
           transparent
           args={[
             {
-              opacity: 0.75,
+              opacity: 0.5,
               color: "gray",
-              lineWidth: 0.05,
+              lineWidth: 0.04,
               resolution: new THREE.Vector2(width, height),
             },
           ]}

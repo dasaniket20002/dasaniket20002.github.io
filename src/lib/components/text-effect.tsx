@@ -7,7 +7,7 @@ import type {
 } from "motion/react";
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
-import React from "react";
+import React, { useMemo } from "react";
 import { cn } from "../utils";
 
 export type PresetType =
@@ -23,6 +23,12 @@ export type PerType = "word" | "char" | "line";
 export type TextEffectVariant = {
   container?: Variants;
   item?: Variants;
+};
+
+export type TokenStyle = {
+  match: string;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export type TextEffectProps = {
@@ -42,6 +48,7 @@ export type TextEffectProps = {
   containerTransition?: Transition;
   segmentTransition?: Transition;
   style?: React.CSSProperties;
+  tokenStyles?: TokenStyle[];
 };
 
 const defaultStaggerTimes: Record<PerType, number> = {
@@ -138,54 +145,138 @@ const presetVariants: Record<
   },
 };
 
+// ── Token styling helpers ──────────────────────────────────────────────
+
+function escapeRegExp(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * For `per="line"` – parse the full line string and wrap matched
+ * substrings in styled <span>s.  Longer matches are prioritised.
+ */
+function renderStyledText(
+  text: string,
+  tokenStyles?: TokenStyle[],
+): React.ReactNode {
+  if (!tokenStyles || tokenStyles.length === 0) return text;
+
+  const sorted = [...tokenStyles].sort(
+    (a, b) => b.match.length - a.match.length,
+  );
+
+  const pattern = sorted.map((t) => escapeRegExp(t.match)).join("|");
+  const regex = new RegExp(`(${pattern})`, "gi");
+  const parts = text.split(regex);
+
+  return parts.map((part, i) => {
+    const token = sorted.find(
+      (t) => t.match.toLowerCase() === part.toLowerCase(),
+    );
+    if (token) {
+      return (
+        <span key={i} className={token.className} style={token.style}>
+          {part}
+        </span>
+      );
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
+}
+
+/**
+ * For `per="word"` / `per="char"` – build a map from every individual
+ * word inside every `match` string to its TokenStyle so that multi-word
+ * matches like "compelling visuals" resolve for each word independently.
+ */
+function buildWordStyleMap(
+  tokenStyles?: TokenStyle[],
+): Map<string, TokenStyle> | undefined {
+  if (!tokenStyles || tokenStyles.length === 0) return undefined;
+
+  const map = new Map<string, TokenStyle>();
+  for (const token of tokenStyles) {
+    for (const word of token.match.split(/\s+/)) {
+      if (word) map.set(word.toLowerCase(), token);
+    }
+  }
+  return map;
+}
+
+function lookupWordStyle(
+  word: string,
+  map?: Map<string, TokenStyle>,
+): TokenStyle | undefined {
+  if (!map) return undefined;
+  return map.get(word.trim().toLowerCase());
+}
+
+// ── AnimationComponent ─────────────────────────────────────────────────
+
 const AnimationComponent: React.FC<{
   segment: string;
   variants: Variants;
-  per: "line" | "word" | "char";
+  per: PerType;
   segmentWrapperClassName?: string;
-}> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
-  const content =
-    per === "line" ? (
-      <m.span variants={variants} className="block">
-        {segment}
-      </m.span>
-    ) : per === "word" ? (
-      <m.span
-        aria-hidden="true"
-        variants={variants}
-        className="inline-block whitespace-pre"
-      >
-        {segment}
-      </m.span>
-    ) : (
-      <m.span className="inline-block whitespace-pre">
-        {segment.split("").map((char, charIndex) => (
-          <m.span
-            key={`char-${charIndex}`}
-            aria-hidden="true"
-            variants={variants}
-            className="inline-block whitespace-pre"
-          >
-            {char}
-          </m.span>
-        ))}
-      </m.span>
+  tokenStyles?: TokenStyle[];
+  wordStyleMap?: Map<string, TokenStyle>;
+}> = React.memo(
+  ({
+    segment,
+    variants,
+    per,
+    segmentWrapperClassName,
+    tokenStyles,
+    wordStyleMap,
+  }) => {
+    const matched =
+      per !== "line" ? lookupWordStyle(segment, wordStyleMap) : undefined;
+
+    const content =
+      per === "line" ? (
+        <m.span variants={variants} className="block">
+          {renderStyledText(segment, tokenStyles)}
+        </m.span>
+      ) : per === "word" ? (
+        <m.span
+          aria-hidden="true"
+          variants={variants}
+          className={cn("inline-block whitespace-pre", matched?.className)}
+          style={matched?.style}
+        >
+          {segment}
+        </m.span>
+      ) : (
+        <m.span className="inline-block whitespace-pre">
+          {segment.split("").map((char, charIndex) => (
+            <m.span
+              key={`char-${charIndex}`}
+              aria-hidden="true"
+              variants={variants}
+              className={cn("inline-block whitespace-pre", matched?.className)}
+              style={matched?.style}
+            >
+              {char}
+            </m.span>
+          ))}
+        </m.span>
+      );
+
+    if (!segmentWrapperClassName) return content;
+
+    const defaultWrapperClassName = per === "line" ? "block" : "inline-block";
+
+    return (
+      <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
+        {content}
+      </span>
     );
-
-  if (!segmentWrapperClassName) {
-    return content;
-  }
-
-  const defaultWrapperClassName = per === "line" ? "block" : "inline-block";
-
-  return (
-    <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
-      {content}
-    </span>
-  );
-});
+  },
+);
 
 AnimationComponent.displayName = "AnimationComponent";
+
+// ── Utilities ──────────────────────────────────────────────────────────
 
 const splitText = (text: string, per: PerType) => {
   if (per === "line") return text.split("\n");
@@ -231,6 +322,8 @@ const createVariantsWithTransition = (
   };
 };
 
+// ── TextEffect ─────────────────────────────────────────────────────────
+
 export function TextEffect({
   children,
   per = "word",
@@ -248,6 +341,7 @@ export function TextEffect({
   containerTransition,
   segmentTransition,
   style,
+  tokenStyles,
 }: TextEffectProps) {
   const segments = splitText(children, per);
   const MotionTag = m[as as keyof typeof m] as typeof m.div;
@@ -257,7 +351,6 @@ export function TextEffect({
     : { container: defaultContainerVariants, item: defaultItemVariants };
 
   const stagger = defaultStaggerTimes[per] / speedReveal;
-
   const baseDuration = 0.3 / speedSegment;
 
   const customStagger = hasTransition(variants?.container?.visible ?? {})
@@ -289,6 +382,11 @@ export function TextEffect({
     }),
   };
 
+  const wordStyleMap = useMemo(
+    () => buildWordStyleMap(tokenStyles),
+    [tokenStyles],
+  );
+
   return (
     <AnimatePresence mode="popLayout">
       {trigger && (
@@ -310,6 +408,8 @@ export function TextEffect({
               variants={computedVariants.item}
               per={per}
               segmentWrapperClassName={segmentWrapperClassName}
+              tokenStyles={tokenStyles}
+              wordStyleMap={wordStyleMap}
             />
           ))}
         </MotionTag>

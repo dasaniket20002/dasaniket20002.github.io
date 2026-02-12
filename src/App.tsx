@@ -15,7 +15,6 @@ export const HEADER_HEIGHT = 40;
 export const SECTION_HEADER_HEIGHT = 96;
 export const MIN_SECTION_HEADER_HEIGHT = 48;
 
-export const DEBUG_HIDE_SKETCHES = false;
 const RENDER_SOLO = false;
 
 function App() {

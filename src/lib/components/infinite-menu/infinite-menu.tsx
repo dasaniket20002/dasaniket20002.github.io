@@ -118,9 +118,9 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
         className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing mask-t-from-80% mask-b-from-90% mask-l-from-95% mask-r-from-95%"
       />
       {activeItem && (
-        <div className="absolute inset-0 pointer-events-none grid grid-cols-[8rem_1fr_1fr_8rem] grid-rows-[var(--min-section-header-height)_1fr] md:grid-rows-[var(--section-header-height)_1fr]">
+        <div className="absolute inset-0 pointer-events-none grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[var(--min-section-header-height)_1fr] md:grid-rows-[var(--section-header-height)_1fr]">
           <m.div
-            className="row-[1/2] col-[2/3] size-full px-3 py-1 flex flex-col justify-end items-end gap-3"
+            className="row-[2/3] md:row-[1/2] col-[2/4] md:col-[2/3] size-full px-3 py-3 md:py-1 flex flex-col md:justify-end md:items-end gap-3"
             style={{
               opacity,
               pointerEvents,
@@ -138,7 +138,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
             </h1>
             <p
               className={cn(
-                "text-xl text-light-2 trim-text-caps text-end",
+                "text-xl text-light-2 trim-text-caps md:text-end",
                 "text-shadow-[0px_0px_2px_var(--tw-text-shadow-color),0px_0px_2px_var(--tw-text-shadow-color),0px_0px_8px_var(--tw-text-shadow-color)] text-shadow-dark-2",
               )}
             >
@@ -197,7 +197,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
           >
             <m.button
               onClick={handleButtonClick}
-              className="size-18 place-items-center bg-dark-1 border-4 border-dark-2 rounded-full cursor-pointer"
+              className="size-18 place-items-center bg-dark-1 border md:border-3 border-dark-2 rounded-full cursor-pointer"
               initial={{ scale: 1, transition: { duration: 0.1 } }}
               whileHover={{ scale: 1.1, transition: { duration: 0.1 } }}
             >

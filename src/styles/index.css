@@ -20,6 +20,10 @@
   inherits: false;
 }
 
+html {
+  font-size: max(calc(100vw / 1920 * 14), 8px);
+}
+
 :root {
   font-synthesis: none;
   font-variant-ligatures: common-ligatures discretionary-ligatures;

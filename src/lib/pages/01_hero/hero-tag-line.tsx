@@ -5,39 +5,28 @@ export default function HeroTagLine({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative pl-6 pt-4 uppercase tracking-tighter font-normal text-[max(1.618rem,1.618vw)] text-dark-1 -space-y-2 font-width-105",
+        "relative px-6 py-4 uppercase text-dark-1 space-y-8 font-width-105",
         className,
       )}
     >
       <TextEffect
-        per="word"
+        per="line"
         as="h1"
-        delay={0.5}
-        className="overflow-hidden pb-1"
+        delay={0.8}
+        speedSegment={0.5}
+        className="text-4xl tracking-tight leading-relaxed font-normal py-px"
+        tokenStyles={[
+          { match: "clients", className: "text-5xl font-semibold italic" },
+          {
+            match: "compelling visuals",
+            className: "text-5xl font-semibold italic",
+          },
+          { match: "connection", className: "text-5xl font-semibold italic" },
+          { match: "business", className: "text-5xl font-semibold italic" },
+        ]}
       >
-        I bridge the gap between
+        {`I engage clients through\n compelling visuals  that builds a\nstronger connection with\nthe business.`}
       </TextEffect>
-      <TextEffect
-        per="word"
-        as="h1"
-        delay={0.725}
-        className="overflow-hidden italic font-semibold text-[max(2.427rem,2.427vw)] tracking-tight font-width-110"
-      >
-        technical architecture
-      </TextEffect>
-      <span className="flex gap-[1ch] overflow-hidden items-end">
-        <TextEffect per="word" as="h1" delay={0.8} className="mb-1.5">
-          and
-        </TextEffect>
-        <TextEffect
-          per="word"
-          as="h1"
-          delay={0.85}
-          className="italic font-semibold text-[max(2.427rem,2.427vw)] tracking-tight font-width-110"
-        >
-          visual storytelling.
-        </TextEffect>
-      </span>
     </div>
   );
 }

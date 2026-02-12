@@ -57,12 +57,12 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     <header
       ref={headerRef}
       className={cn(
-        "px-4 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-98",
+        "px-8 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-98",
         className,
       )}
     >
       <m.span
-        className="absolute inset-0 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
+        className="absolute inset-0 p-1 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
         initial={false}
         animate={{
           "--header-bg":
@@ -75,7 +75,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         {!hidden && (
           <LogoName
             className={cn(
-              "text-lg md:text-xl cursor-pointer transition-colors z-98",
+              "text-xl cursor-pointer transition-colors z-98",
               bgTheme === "light" ? "text-dark-1" : "text-light-2",
             )}
             initial={{ y: -24, opacity: 0 }}
@@ -98,7 +98,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             animate="visible"
             exit="hidden"
             className={cn(
-              "flex gap-4 md:gap-8 items-center text-sm tracking-wide font-light transition-colors",
+              "flex gap-8 items-center tracking-wide font-width-110 font-light transition-colors",
               bgTheme === "light" ? "text-dark-1" : "text-light-2",
             )}
           >
