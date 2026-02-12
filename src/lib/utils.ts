@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { parse, type Hsv } from "culori";
+import { clamp } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
 export const PRIMARY_EMAIL = "aniket.das.cse24@heritageit.edu.in";
@@ -79,7 +80,7 @@ export function mapRangeClamped(
   outMin: number,
   outMax: number,
 ): number {
-  const clamped = Math.min(Math.max(value, inMin), inMax);
+  const clamped = clamp(inMin, inMax, value);
   return ((clamped - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
