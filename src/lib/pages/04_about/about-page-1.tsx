@@ -5,7 +5,7 @@ import ScrollRevealText from "../../components/scroll-reveal-text";
 import { cn } from "../../utils";
 
 const DISPLAY =
-  "| DESIGN is not \n  just DECORATION, \n  but a tool for EMOTION \n  and INFLUENCE. |";
+  "| DESIGN is not \n just DECORATION, \n but a tool for EMOTION \n and INFLUENCE. |";
 const HIGHLIGHTS = ["DESIGN", "DECORATION", "EMOTION", "INFLUENCE"];
 
 const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
@@ -16,7 +16,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     return (
       <m.section
         ref={containerRef}
-        className={cn("relative h-[300dvh]! px-32", className)}
+        className={cn("relative h-[300dvh]! px-16 md:px-32", className)}
         {...motionProps}
       >
         <ScrollRevealText

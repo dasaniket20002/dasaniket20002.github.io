@@ -22,15 +22,15 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
       <m.section
         ref={containerRef}
         className={cn(
-          "grid grid-cols-[8rem_1fr_1fr_8rem] grid-rows-[var(--min-section-header-height)_1fr_1fr] md:grid-rows-[var(--section-header-height)_1fr_1fr]",
+          "grid grid-cols-[4rem_1fr_1fr_4rem] md:grid-cols-[8rem_1fr_1fr_8rem] grid-rows-[var(--min-section-header-height)_1fr_1fr] md:grid-rows-[var(--section-header-height)_1fr_1fr]",
           className,
         )}
         {...motionProps}
       >
         <div className="col-span-full row-span-full grid grid-cols-subgrid grid-rows-subgrid opacity-25 mask-t-from-95% mask-b-from-95% mask-l-from-95% mask-r-from-95% pointer-events-none">
           <div className="row-[2/3] col-[1/2] border-r border-b border-dark-1" />
-          <div className="row-[2/3] col-[3/5] border-l border-b border-dark-1" />
-          <div className="row-[3/4] col-[3/5] border-l border-dark-1" />
+          <div className="row-[2/3] col-[4/5] md:col-[3/5] border-l border-b border-dark-1" />
+          <div className="row-[3/4] col-[4/5] md:col-[3/5] border-l border-dark-1" />
         </div>
 
         <m.div
@@ -41,7 +41,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
           }}
           className="col-span-full row-span-full grid grid-rows-subgrid grid-cols-subgrid gap-4"
         >
-          <div className="row-span-full col-[2/3] max-w-lg w-full flex flex-col gap-3 py-8 text-dark-2 place-self-center">
+          <div className="row-[3/4] col-[2/4] md:row-span-full md:col-[2/3] max-w-lg w-full h-min flex flex-col gap-3 py-4 md:py-8 mb-16 md:mb-0 text-dark-2 place-self-center">
             <m.div
               initial={{ opacity: 0, filter: "blur(2px)", y: -10 }}
               animate={{
@@ -59,16 +59,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "-10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "-10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.3 }}
               className="self-end bg-dark-1 px-3 py-1 rounded space-y-1 ml-4 origin-bottom-right"
             >
               <p className="text-sm font-light tracking-wider">
@@ -85,16 +83,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 0.35 }}
               className="self-start bg-light-2 px-3 py-2 rounded space-y-2 mr-4 origin-bottom-left"
             >
               <p className="text-xl [&>span]:italic font-thin [&>span]:font-normal tracking-wide px-3 py-2">
@@ -121,16 +117,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "-10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "-10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 0.7 }}
+              transition={{ delay: 0.4 }}
               className="self-end bg-dark-1 px-3 py-1 rounded space-y-1 ml-4 origin-bottom-right"
             >
               <p className="text-sm font-light tracking-wider">
@@ -147,16 +141,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.45 }}
               className="self-start bg-light-2 px-3 py-2 rounded space-y-2 mr-4"
             >
               <p className="text-lg [&>span]:italic font-thin [&>span]:font-normal tracking-wider px-3 py-2">
@@ -179,16 +171,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "-10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "-10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 0.9 }}
+              transition={{ delay: 0.5 }}
               className="self-end bg-dark-1 px-3 py-1 rounded space-y-1 ml-4 origin-bottom-right"
             >
               <p className="text-sm font-light tracking-wider">
@@ -205,16 +195,14 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
               initial={{
                 opacity: 0,
                 filter: "blur(2px)",
-                scaleY: 0.25,
-                rotate: "10deg",
+                scale: 0,
               }}
               animate={{
                 opacity: isInView ? 1 : 0,
                 filter: isInView ? "blur(0px)" : "blur(2px)",
-                scaleY: isInView ? 1 : 0.25,
-                rotate: isInView ? "0deg" : "10deg",
+                scale: isInView ? 1 : 0,
               }}
-              transition={{ delay: 1.0 }}
+              transition={{ delay: 0.55 }}
               className="self-start bg-light-2 px-2 py-1 rounded space-y-1 mr-4 origin-bottom-left"
             >
               <p className="text-sm [&>span]:italic font-thin [&>span]:font-normal tracking-widest px-2 py-1">
@@ -238,21 +226,21 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                 filter: isInView ? "blur(0px)" : "blur(2px)",
                 y: isInView ? 0 : 10,
               }}
-              transition={{ delay: 0.25 }}
+              transition={{ delay: 0.6 }}
               className="mt-4"
             />
           </div>
 
-          <div className="row-[2/3] col-[3/4] @container-[size] flex items-end gap-8 p-3">
-            <div className="cqw-landscape:h-8/10 cqw-portrait:w-8/10 aspect-square overflow-hidden rounded-lg shadow-2xl flex items-center">
+          <div className="row-[2/3] col-[2/4] md:row-[2/3] md:col-[3/4] @container-[size] flex items-center md:items-end gap-8 p-3">
+            <div className="cqw-landscape:h-8/10 cqw-portrait:w-8/10 aspect-square overflow-hidden rounded-lg shadow-2xl flex items-center md:flex-1">
               <img
                 src="/assets/portrait/Portrait-FULL.png"
                 alt="Portrait"
                 className="object-contain"
               />
             </div>
-            <div>
-              <h1 className="px-2 font-light text-4xl leading-4">
+            <div className="md:flex-1 w-full space-y-4">
+              <h1 className="px-2 font-light text-4xl leading-">
                 Hi!
                 <br />
                 I'm{" "}
@@ -261,7 +249,7 @@ const AboutContent = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
                 </span>
                 .
               </h1>
-              <div className="grid grid-cols-[2rem_1fr] gap-y-0.5 gap-x-1 h-min py-4 z-1">
+              <div className="grid grid-cols-[2rem_1fr] gap-y-0.5 gap-x-1 h-min z-1">
                 <span className="relative size-2 place-self-center bg-success rounded-full before:absolute before:-inset-px before:rounded-full before:bg-success before:blur-xs before:animate-pulse before:duration-1000" />
                 <h2 className="py-2 font-light">Active Tech</h2>
 

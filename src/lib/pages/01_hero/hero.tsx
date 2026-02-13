@@ -63,7 +63,7 @@ export default function Hero({ className }: { className?: string }) {
           as="h2"
           delay={0.25}
           speedSegment={0.75}
-          className="overflow-hidden row-[1/2] col-[2/5] text-3xl font-light text-dark-1 tracking-wide self-end uppercase px-6 py-2 trim-text-caps"
+          className="overflow-hidden row-[1/2] col-[2/5] text-3xl font-light text-dark-1 tracking-wide self-end uppercase px-4 py-2 trim-text-caps"
         >
           {`${windowWidth <= 768 ? "Hi!" : ""} I'm Aniket Das.`}
         </TextEffect>
@@ -71,7 +71,7 @@ export default function Hero({ className }: { className?: string }) {
         <Link
           href={"https://earth.google.com/web/search/Kolkata,+West+Bengal"}
           showBG={false}
-          className="overflow-hidden row-[1/2] col-[5/6] text-base font-light text-dark-1 tracking-wide place-self-end uppercase mx-6 trim-text-caps w-min"
+          className="overflow-hidden row-[1/2] col-[5/6] text-base font-light text-dark-1 tracking-wide place-self-end uppercase mx-4 trim-text-caps w-min"
           initial={{ y: 24, clipPath: "inset(0% 0% 100% 0%)" }}
           animate={{ y: 0, clipPath: "inset(0% 0% 0% 0%)" }}
           transition={{ delay: 0.6, ease: "easeInOut" }}

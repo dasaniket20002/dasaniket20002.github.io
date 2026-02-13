@@ -120,7 +120,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({
       {activeItem && (
         <div className="absolute inset-0 pointer-events-none grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[var(--min-section-header-height)_1fr] md:grid-rows-[var(--section-header-height)_1fr]">
           <m.div
-            className="row-[2/3] md:row-[1/2] col-[2/4] md:col-[2/3] size-full px-3 py-3 md:py-1 flex flex-col md:justify-end md:items-end gap-3"
+            className="row-[2/3] md:row-[1/2] col-[2/4] md:col-[2/3] w-full h-min px-3 py-3 md:py-1 flex flex-col md:justify-end md:items-end gap-3"
             style={{
               opacity,
               pointerEvents,

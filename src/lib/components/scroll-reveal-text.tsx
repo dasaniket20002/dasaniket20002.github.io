@@ -98,7 +98,7 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
           className="w-px h-full bg-dark-1 mask-t-from-0% mask-b-from-0%"
           style={{ height: progress }}
         />
-        <p className="relative text-7xl text-dark-1 whitespace-pre-wrap tracking-tighter leading-tight">
+        <p className="relative py-32 text-5xl md:text-7xl text-dark-1 whitespace-pre tracking-tighter leading-snug italic">
           {displaySplit.map((char, index) => (
             <Char
               key={index}

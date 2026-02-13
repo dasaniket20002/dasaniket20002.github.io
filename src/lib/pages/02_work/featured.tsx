@@ -15,7 +15,7 @@ const Featured = forwardRef<
     <m.section
       ref={ref}
       {...motionProps}
-      className={cn("relative size-full touch-none", className)}
+      className={cn("relative size-full", className)}
     >
       <Suspense fallback={null}>
         <InfiniteMenu scale={1} />

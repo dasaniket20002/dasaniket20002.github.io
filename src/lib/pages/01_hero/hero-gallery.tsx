@@ -127,7 +127,7 @@ export default function HeroGallery({ className }: { className?: string }) {
       animate={{ scale: 1, clipPath: "inset(0% 0% 0% 0%)", y: 0 }}
       transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
     >
-      <div className="relative h-full aspect-4/6 rounded-t-[24rem] rounded-b-xl overflow-hidden">
+      <div className="relative h-full aspect-4/6 rounded-t-[24rem] rounded-b-xl overflow-hidden bg-dark-2">
         <m.div style={{ y, scale }} className="relative size-full select-none">
           <AnimatePresence mode="popLayout">
             <m.div
@@ -162,7 +162,7 @@ export default function HeroGallery({ className }: { className?: string }) {
             </m.div>
           </AnimatePresence>
         </m.div>
-        <div className="absolute right-0 bottom-16 left-1/3 h-10">
+        <div className="absolute right-0 bottom-32 md:bottom-24 left-1/3 h-10">
           <div
             onMouseEnter={() => setHoverIntent(true)}
             onMouseLeave={() => setHoverIntent(false)}
