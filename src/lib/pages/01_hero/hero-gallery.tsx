@@ -1,5 +1,10 @@
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
-import { AnimatePresence, useScroll, useTransform } from "motion/react";
+import {
+  AnimatePresence,
+  easeInOut,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import * as m from "motion/react-m";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "../../utils";
@@ -80,8 +85,12 @@ export default function HeroGallery({ className }: { className?: string }) {
     target: containerRef,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"], {
+    ease: easeInOut,
+  });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.25], {
+    ease: easeInOut,
+  });
 
   const [index, setIndex] = useState<number>(0);
   const [hoverIntent, setHoverIntent] = useState<boolean>(true);

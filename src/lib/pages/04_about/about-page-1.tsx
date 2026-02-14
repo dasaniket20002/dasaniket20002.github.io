@@ -16,7 +16,7 @@ const AboutPage1 = forwardRef<HTMLElement, HTMLMotionProps<"section">>(
     return (
       <m.section
         ref={containerRef}
-        className={cn("relative h-[300dvh]! px-16 md:px-32", className)}
+        className={cn("relative h-[200dvh]! px-16 md:px-32", className)}
         {...motionProps}
       >
         <ScrollRevealText

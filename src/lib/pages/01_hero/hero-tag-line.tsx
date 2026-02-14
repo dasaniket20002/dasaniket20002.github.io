@@ -5,7 +5,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative px-6 py-4 uppercase text-dark-1 space-y-8 font-width-105",
+        "relative px-6 py-4 uppercase text-dark-1 space-y-8",
         className,
       )}
     >
@@ -14,7 +14,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
         as="h1"
         delay={0.8}
         speedSegment={0.5}
-        className="text-4xl tracking-tight leading-relaxed font-normal py-px"
+        className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px [text-shadow:0px_0px_2px_var(--tw-text-shadow-color)] text-shadow-light-1"
         tokenStyles={[
           { match: "clients", className: "text-5xl font-semibold italic" },
           {
