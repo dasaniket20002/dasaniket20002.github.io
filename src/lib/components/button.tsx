@@ -26,6 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       variant = "dark",
       magnetic = false,
+      disabled,
       ...motionProps
     },
     ref,
@@ -38,12 +39,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         onClick={onClick}
         className={cn(
-          "group/button min-w-42 max-w-96 h-12",
+          "group/button min-w-42 max-w-96 h-12 rounded-sm pt-1",
           "flex gap-2 items-center justify-center shadow-2xl",
           variant === "dark" &&
             "bg-dark-1 text-light-2 border border-dark-1 hover:bg-transparent hover:text-dark-1",
           variant === "light" && "bg-light-1 text-dark-1 border border-dark-1",
-          "cursor-pointer [&>svg]:size-4 transition-colors duration-150",
+          "cursor-pointer disabled:cursor-not-allowed [&>svg]:size-4 [&>svg]:stroke-1 transition-colors duration-150",
           className,
         )}
         onMouseEnter={(e) => {
@@ -55,20 +56,21 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           dragControls.stop();
         }}
         initial={{ scale: 1 }}
-        whileTap={{ scale: 0.8 }}
+        whileTap={{ scale: disabled ? 1 : 0.8 }}
         drag={magnetic}
         dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
         dragTransition={{ bounceStiffness: 500, bounceDamping: 15 }}
         dragElastic={0.2}
         dragListener={false}
         dragControls={dragControls}
+        disabled={disabled}
         {...motionProps}
       >
-        <TextRoll key="text" hovered={hovered} layout>
+        <TextRoll key="text" hovered={hovered && !disabled} layout>
           {text}
         </TextRoll>
         <AnimatePresence mode="popLayout">
-          {icon && hovered && (
+          {icon && hovered && !disabled && (
             <m.section
               key="icon"
               initial={{ width: 0, opacity: 0, scale: 0 }}

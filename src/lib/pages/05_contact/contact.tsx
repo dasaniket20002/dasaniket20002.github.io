@@ -1,8 +1,10 @@
+import { useState } from "react";
 import SectionContainer from "../../components/section-container";
 import { useStickySnap } from "../../hooks/use-sticky-snap";
 import { cn } from "../../utils";
 import DateRequest from "./date-request";
 import NameRequest from "./name-request";
+import SendAction from "./send-action";
 import ServiceRequest from "./service-request";
 
 export default function Contact({ className }: { className?: string }) {
@@ -40,20 +42,35 @@ export default function Contact({ className }: { className?: string }) {
 }
 
 function Form({ className }: { className?: string }) {
+  const [name, setName] = useState<string>("");
+  const [service, setService] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+
   return (
-    <form className={cn("pt-24 font-width-85 tracking-wide", className)}>
-      <h2 className="relative text-5xl leading-relaxed">
+    <form
+      className={cn(
+        "pt-24 font-width-85 tracking-wide grid grid-cols-4 grid-rows-3",
+        className,
+      )}
+    >
+      <h2 className="relative text-5xl leading-relaxed col-[1/4] row-[1/2] h-min">
         <span className="absolute -left-[1ch] scale-150 italic">"</span>
         Hey, my name is
-        <NameRequest />
+        <NameRequest inputValue={name} setInputValue={setName} />
         and I'm <br className="hidden md:block" />
         looking for
-        <ServiceRequest />
+        <ServiceRequest inputValue={service} setInputValue={setService} />
         services. <br className="hidden md:block" />
         Are you available on
-        <DateRequest /> for a chat?
+        <DateRequest inputValue={date} setInputValue={setDate} /> for a chat?
         <span className="italic">"</span>
       </h2>
+      <SendAction
+        className="col-[1/4] row-[2/3]"
+        name={name}
+        service={service}
+        date={date}
+      />
     </form>
   );
 }

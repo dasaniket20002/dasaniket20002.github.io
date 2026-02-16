@@ -4,6 +4,7 @@ import { AnimatePresence } from "motion/react";
 import { cn } from "../../utils";
 import { IconChevronDown } from "@tabler/icons-react";
 import * as m from "motion/react-m";
+import { useElementSize } from "../../hooks/use-element-size";
 
 const SERVICE_REQUEST_OPTIONS = [
   "UI/UX Design",
@@ -44,7 +45,7 @@ const DropdownOption = memo(function DropdownOption({
       }}
       onClick={() => onSelect(option)}
       className={cn(
-        "relative w-full text-start bg-light-1 cursor-pointer px-[0.5ch] py-3 shadow-2xl",
+        "relative w-full text-start cursor-pointer px-[0.5ch] py-3 text-4xl",
         "before:absolute before:inset-1 before:rounded-md before:transition-colors before:duration-250 hover:before:bg-light-2/25 before:-z-1",
         index === 0 && "rounded-t-md",
         index === totalCount - 1 && "rounded-b-md",
@@ -55,15 +56,24 @@ const DropdownOption = memo(function DropdownOption({
   );
 });
 
-export default function ServiceRequest({ className }: { className?: string }) {
+export default function ServiceRequest({
+  className,
+  inputValue,
+  setInputValue,
+}: {
+  className?: string;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const containerRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [placeholderValueIndex, setPlaceholderValueIndex] = useState(0);
   const [filteredElements, setFilteredElements] = useState<string[]>(
     SERVICE_REQUEST_OPTIONS,
   );
+  const { height: contentHeight } = useElementSize(contentRef);
 
   const filterElements = useCallback((input: string) => {
     const _filteredElements = SERVICE_REQUEST_OPTIONS.filter((req_opt) => {
@@ -102,13 +112,16 @@ export default function ServiceRequest({ className }: { className?: string }) {
       setInputValue(e.target.value);
       filterElements(e.target.value);
     },
-    [filterElements],
+    [filterElements, setInputValue],
   );
 
-  const handleOptionSelect = useCallback((option: string) => {
-    setInputValue(option);
-    setFocused(false);
-  }, []);
+  const handleOptionSelect = useCallback(
+    (option: string) => {
+      setInputValue(option);
+      setFocused(false);
+    },
+    [setInputValue],
+  );
 
   return (
     <span
@@ -153,45 +166,49 @@ export default function ServiceRequest({ className }: { className?: string }) {
           )}
         />
       </span>
-      <span className="absolute bottom-4 left-0 right-0 h-px bg-light-2" />
+      <span className="absolute bottom-4 left-0 right-0 h-px bg-dark-1/75" />
       <m.span
         initial={{ right: "100%" }}
         animate={{ right: hovered ? "0%" : "100%" }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="absolute bottom-4 left-0 h-px bg-dark-1/25"
+        transition={{ duration: 0.5, ease: "anticipate" }}
+        className="absolute bottom-4 left-0 h-px bg-light-2/75"
       />
       <m.span
         initial={{ right: "100%" }}
         animate={{ right: focused ? "0%" : "100%" }}
         transition={{ duration: 0.5, ease: "anticipate" }}
-        className="absolute bottom-4 left-0 h-px bg-dark-1"
+        className="absolute bottom-4 left-0 h-px bg-light-2"
       />
 
+      {/* popover */}
       <m.div
-        initial={{ height: "0rem", opacity: 0 }}
+        layout
+        initial={{ height: 0, opacity: 0 }}
         animate={{
-          height: focused ? "auto" : "0rem",
+          height: focused ? contentHeight : 0,
           opacity: focused ? 1 : 0.25,
           transition: { delay: focused ? 0 : 0.25, type: "spring" },
         }}
         className={cn(
-          "w-full absolute z-10 rounded-md mt-1.5 transition-colors duration-1000",
+          "w-full absolute z-10 rounded-md mt-1.5 transition-colors duration-1000 bg-light-1 shadow-2xl overflow-hidden",
           "[position-anchor:--service-request-select] top-[anchor(bottom)] [justify-self:anchor-center]",
           "[position-try:flip-block_flip-inline] [position-visibility:anchors-visible]",
         )}
       >
-        <AnimatePresence mode="popLayout">
-          {focused &&
-            filteredElements.map((req_opt, i) => (
-              <DropdownOption
-                key={req_opt}
-                option={req_opt}
-                index={i}
-                totalCount={filteredElements.length}
-                onSelect={handleOptionSelect}
-              />
-            ))}
-        </AnimatePresence>
+        <div ref={contentRef} className="flex flex-col">
+          <AnimatePresence mode="popLayout">
+            {focused &&
+              filteredElements.map((req_opt, i) => (
+                <DropdownOption
+                  key={req_opt}
+                  option={req_opt}
+                  index={i}
+                  totalCount={filteredElements.length}
+                  onSelect={handleOptionSelect}
+                />
+              ))}
+          </AnimatePresence>
+        </div>
       </m.div>
     </span>
   );

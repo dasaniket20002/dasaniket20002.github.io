@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import * as m from "motion/react-m";
 import { AnimatePresence } from "motion/react";
+import { useElementSize } from "../../hooks/use-element-size";
 
 const MONTHS = [
   "January",
@@ -109,28 +110,34 @@ const CalendarDayButton = memo(function CalendarDayButton({
   day,
   isToday,
   isSelected,
+  isDisabled,
   delay,
   onSelect,
 }: {
   day: CalendarDay;
   isToday: boolean;
   isSelected: boolean;
+  isDisabled: boolean;
   delay: number;
   onSelect: (date: Date) => void;
 }) {
   return (
     <m.button
       type="button"
+      disabled={isDisabled}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{
-        opacity: 1,
+        opacity: isDisabled ? 0.75 : 1,
         scale: 1,
         transition: { delay, duration: 0.2 },
       }}
+      exit={{ opacity: 0, scale: 0.8, transition: { delay, duration: 0.2 } }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => onSelect(day.date)}
+      onClick={() => {
+        if (!isDisabled) onSelect(day.date);
+      }}
       className={cn(
-        "relative text-base aspect-square rounded-md cursor-pointer tabular-nums",
+        "relative text-base aspect-square rounded-md tabular-nums cursor-pointer disabled:cursor-not-allowed",
         "flex items-center justify-center transition-colors duration-150",
         day.isCurrentMonth ? "text-dark-1" : "text-light-2",
         isToday && !isSelected && "font-black",
@@ -151,14 +158,24 @@ const CalendarDayButton = memo(function CalendarDayButton({
   );
 });
 
-export default function DateRequest({ className }: { className?: string }) {
+export default function DateRequest({
+  className,
+  inputValue,
+  setInputValue,
+}: {
+  className?: string;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const containerRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [inputValue, setInputValue] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [viewDate, setViewDate] = useState(() => new Date());
   const [direction, setDirection] = useState(0);
+
+  const { height: contentHeight } = useElementSize(contentRef);
 
   const viewYear = viewDate.getFullYear();
   const viewMonth = viewDate.getMonth();
@@ -177,15 +194,18 @@ export default function DateRequest({ className }: { className?: string }) {
     );
   }, []);
 
-  const handleDateSelect = useCallback((date: Date) => {
-    setSelectedDate(date);
-    setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
-    const yyyy = String(date.getFullYear());
-    setInputValue(`${mm}/${dd}/${yyyy}`);
-    setFocused(false);
-  }, []);
+  const handleDateSelect = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+      setViewDate(new Date(date.getFullYear(), date.getMonth(), 1));
+      const mm = String(date.getMonth() + 1).padStart(2, "0");
+      const dd = String(date.getDate()).padStart(2, "0");
+      const yyyy = String(date.getFullYear());
+      setInputValue(`${mm}/${dd}/${yyyy}`);
+      setFocused(false);
+    },
+    [setInputValue],
+  );
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -197,7 +217,7 @@ export default function DateRequest({ className }: { className?: string }) {
         setViewDate(new Date(parsed.getFullYear(), parsed.getMonth(), 1));
       }
     },
-    [],
+    [setInputValue],
   );
 
   const handleInputClick = useCallback(() => setFocused(true), []);
@@ -210,7 +230,7 @@ export default function DateRequest({ className }: { className?: string }) {
         setSelectedDate(null);
       }
     }
-  }, [inputValue]);
+  }, [inputValue, setInputValue]);
 
   const handleMouseEnter = useCallback(() => setHovered(true), []);
   const handleMouseLeave = useCallback(() => setHovered(false), []);
@@ -257,25 +277,26 @@ export default function DateRequest({ className }: { className?: string }) {
           )}
         />
       </span>
-      <span className="absolute bottom-4 left-0 right-0 h-px bg-light-2" />
+      <span className="absolute bottom-4 left-0 right-0 h-px bg-dark-1/75" />
       <m.span
         initial={{ right: "100%" }}
         animate={{ right: hovered ? "0%" : "100%" }}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="absolute bottom-4 left-0 h-px bg-dark-1/25"
+        transition={{ duration: 0.5, ease: "anticipate" }}
+        className="absolute bottom-4 left-0 h-px bg-light-2/75"
       />
       <m.span
         initial={{ right: "100%" }}
         animate={{ right: focused ? "0%" : "100%" }}
         transition={{ duration: 0.5, ease: "anticipate" }}
-        className="absolute bottom-4 left-0 h-px bg-dark-1"
+        className="absolute bottom-4 left-0 h-px bg-light-2"
       />
 
       {/* Calendar Popup */}
       <m.div
-        initial={{ height: "0rem", opacity: 0 }}
+        layout
+        initial={{ height: 0, opacity: 0 }}
         animate={{
-          height: focused ? "auto" : "0rem",
+          height: focused ? contentHeight : 0,
           opacity: focused ? 1 : 0.25,
           transition: { delay: focused ? 0 : 0.25, type: "spring" },
         }}
@@ -285,123 +306,126 @@ export default function DateRequest({ className }: { className?: string }) {
           "[position-try:flip-block_flip-inline] [position-visibility:anchors-visible]",
         )}
       >
-        {focused && (
-          <div className="p-3 w-sm">
-            {/* Month / Year Navigation */}
-            <div className="flex items-center justify-between mb-3">
-              <m.button
-                type="button"
-                whileTap={{ scale: 0.9 }}
-                onClick={handlePrevMonth}
-                className="p-1 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
-              >
-                <IconChevronLeft className="size-5 stroke-dark-1" />
-              </m.button>
+        <div ref={contentRef} className="p-3 w-sm flex flex-col gap-2">
+          {focused && (
+            <>
+              {/* Month / Year Navigation */}
+              <div className="flex items-center justify-between mb-3">
+                <m.button
+                  type="button"
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handlePrevMonth}
+                  className="p-1 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
+                >
+                  <IconChevronLeft className="size-5 stroke-dark-1" />
+                </m.button>
 
-              <div className="relative overflow-hidden h-6 flex-1 mx-2">
+                <div className="relative overflow-hidden h-6 flex-1 mx-2">
+                  <AnimatePresence mode="popLayout" custom={direction}>
+                    <m.span
+                      key={`${viewYear}-${viewMonth}`}
+                      custom={direction}
+                      variants={monthSlideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="absolute inset-0 flex items-center justify-center font-bold text-base text-dark-1 tracking-wider"
+                    >
+                      {MONTHS[viewMonth]} {viewYear}
+                    </m.span>
+                  </AnimatePresence>
+                </div>
+
+                <m.button
+                  type="button"
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleNextMonth}
+                  className="p-1 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
+                >
+                  <IconChevronRight className="size-5 stroke-dark-1" />
+                </m.button>
+              </div>
+
+              {/* Weekday Headers */}
+              <div className="grid grid-cols-[2rem_repeat(7,1fr)] gap-px mb-1">
+                <span className="text-sm text-light-2/75 flex items-center justify-center font-bold font-width-75">
+                  Wk
+                </span>
+                {WEEKDAYS.map((day) => (
+                  <span
+                    key={day}
+                    className="text-sm font-bold font-width-75 text-light-2 text-center py-1"
+                  >
+                    {day}
+                  </span>
+                ))}
+              </div>
+
+              <span className="block h-px bg-light-2/50 mb-1" />
+
+              {/* 6-Week Calendar Grid */}
+              <div className="relative">
                 <AnimatePresence mode="popLayout" custom={direction}>
-                  <m.span
-                    key={`${viewYear}-${viewMonth}`}
+                  <m.div
+                    key={`grid-${viewYear}-${viewMonth}`}
                     custom={direction}
                     variants={monthSlideVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="absolute inset-0 flex items-center justify-center font-bold text-base text-dark-1 tracking-wider"
                   >
-                    {MONTHS[viewMonth]} {viewYear}
-                  </m.span>
+                    {calendarWeeks.map((week, wi) => (
+                      <div
+                        key={week.weekNumber}
+                        className="grid grid-cols-[2rem_repeat(7,1fr)] gap-px"
+                      >
+                        <m.span
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{
+                            opacity: 1,
+                            x: 0,
+                            transition: { delay: 0.05 * wi, duration: 0.2 },
+                          }}
+                          className="text-sm text-light-2 flex items-center justify-center tabular-nums"
+                        >
+                          {week.weekNumber}
+                        </m.span>
+                        {week.days.map((day, di) => (
+                          <CalendarDayButton
+                            key={day.date.toISOString()}
+                            day={day}
+                            isToday={isSameDay(day.date, today)}
+                            isSelected={
+                              selectedDate !== null &&
+                              isSameDay(day.date, selectedDate)
+                            }
+                            isDisabled={day.date < today}
+                            delay={0.015 * (wi * 7 + di)}
+                            onSelect={handleDateSelect}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </m.div>
                 </AnimatePresence>
               </div>
 
+              <span className="block h-px bg-light-2/50 mt-1" />
+
+              {/* Today Shortcut */}
               <m.button
                 type="button"
                 whileTap={{ scale: 0.9 }}
-                onClick={handleNextMonth}
-                className="p-1 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
+                onClick={handleTodayClick}
+                className="w-full text-center text-sm font-bold text-dark-1/75 py-3 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
               >
-                <IconChevronRight className="size-5 stroke-dark-1" />
+                Today
               </m.button>
-            </div>
-
-            {/* Weekday Headers */}
-            <div className="grid grid-cols-[2rem_repeat(7,1fr)] gap-px mb-1">
-              <span className="text-sm text-light-2/75 flex items-center justify-center font-bold font-width-75">
-                Wk
-              </span>
-              {WEEKDAYS.map((day) => (
-                <span
-                  key={day}
-                  className="text-sm font-bold font-width-75 text-light-2 text-center py-1"
-                >
-                  {day}
-                </span>
-              ))}
-            </div>
-
-            <span className="block h-px bg-light-2/50 mb-1" />
-
-            {/* 6-Week Calendar Grid */}
-            <div className="relative">
-              <AnimatePresence mode="popLayout" custom={direction}>
-                <m.div
-                  key={`grid-${viewYear}-${viewMonth}`}
-                  custom={direction}
-                  variants={monthSlideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                >
-                  {calendarWeeks.map((week, wi) => (
-                    <div
-                      key={week.weekNumber}
-                      className="grid grid-cols-[2rem_repeat(7,1fr)] gap-px"
-                    >
-                      <m.span
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{
-                          opacity: 1,
-                          x: 0,
-                          transition: { delay: 0.05 * wi, duration: 0.2 },
-                        }}
-                        className="text-sm text-light-2 flex items-center justify-center tabular-nums"
-                      >
-                        {week.weekNumber}
-                      </m.span>
-                      {week.days.map((day, di) => (
-                        <CalendarDayButton
-                          key={day.date.toISOString()}
-                          day={day}
-                          isToday={isSameDay(day.date, today)}
-                          isSelected={
-                            selectedDate !== null &&
-                            isSameDay(day.date, selectedDate)
-                          }
-                          delay={0.015 * (wi * 7 + di)}
-                          onSelect={handleDateSelect}
-                        />
-                      ))}
-                    </div>
-                  ))}
-                </m.div>
-              </AnimatePresence>
-            </div>
-
-            <span className="block h-px bg-light-2/50 mt-1" />
-
-            {/* Today Shortcut */}
-            <m.button
-              type="button"
-              whileTap={{ scale: 0.9 }}
-              onClick={handleTodayClick}
-              className="w-full text-center text-sm font-bold text-dark-1/75 py-3 rounded-md hover:bg-light-2/25 transition-colors cursor-pointer"
-            >
-              Today
-            </m.button>
-          </div>
-        )}
+            </>
+          )}
+        </div>
       </m.div>
     </span>
   );

@@ -9,7 +9,6 @@ import { cn } from "../utils";
 import TextRoll from "./text-roll";
 
 type LinkProps = {
-  href: string;
   children?: string;
   className?: string;
   theme?: "light" | "dark";
@@ -46,6 +45,8 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
+        if (!href) return;
+
         if (href.startsWith("http")) {
           window.open(href, "_blank");
         } else {
@@ -68,7 +69,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         ref={ref}
         href={href}
         className={cn(
-          "relative md:p-1 py-1 flex transition-colors",
+          "relative md:p-1 py-1 flex transition-colors cursor-pointer disabled:cursor-not-allowed",
           theme === "light" && "text-dark-1",
           theme === "dark" && "text-light-2",
           className,
