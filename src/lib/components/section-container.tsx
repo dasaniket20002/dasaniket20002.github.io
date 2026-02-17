@@ -1,8 +1,14 @@
-import { type HTMLMotionProps } from "motion/react";
+import {
+  useMotionTemplate,
+  useScroll,
+  useTransform,
+  type HTMLMotionProps,
+} from "motion/react";
 import * as m from "motion/react-m";
-import { forwardRef } from "react";
-import { cn } from "../utils";
+import { forwardRef, useRef } from "react";
+import { HEADER_HEIGHT } from "../../App";
 import { useWindowSize } from "../hooks/use-window-size";
+import { cn } from "../utils";
 
 export type SectionContainerProps = {
   className?: string;
@@ -17,7 +23,15 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
     { className, children, title, subTitle, theme = "light", ...motionProps },
     ref,
   ) => {
+    const scrollTargetRef = useRef<HTMLDivElement>(null);
     const { width: windowWidth } = useWindowSize();
+    const { scrollYProgress } = useScroll({
+      offset: [`${HEADER_HEIGHT}px end`, `-${HEADER_HEIGHT}px start`],
+      target: scrollTargetRef,
+    });
+    const transformTitle = useTransform(scrollYProgress, [0, 1], ["50%", "0%"]);
+    const _borderRadius = useTransform(scrollYProgress, [0, 1], [64, 8]);
+    const borderRadius = useMotionTemplate`${_borderRadius}px`;
 
     return (
       <m.div
@@ -30,8 +44,10 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
           theme === "dark" && "[&>section]:text-dark-1 bg-light-1",
           className,
         )}
+        style={{ "--animated-rounded": borderRadius } as React.CSSProperties}
       >
         <div
+          ref={scrollTargetRef}
           data-bg-theme={theme}
           className={cn(
             "grid",
@@ -50,14 +66,14 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
           />
           <div
             className={cn(
-              "col-[1/2] row-[2/3] rounded-br-[6px]",
+              "col-[1/2] row-[2/3] rounded-br-(--animated-rounded)",
               theme === "light" && "bg-light-1",
               theme === "dark" && "bg-dark-2",
             )}
           />
           <div
             className={cn(
-              "col-[-1/-2] row-[2/3] rounded-bl-[6px] md:rounded-none",
+              "col-[-1/-2] row-[2/3] rounded-bl-(--animated-rounded) md:rounded-none",
               theme === "light" && "bg-light-1",
               theme === "dark" && "bg-dark-2",
             )}
@@ -67,7 +83,13 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
               <defs>
                 <mask id={`cover-mask-${title}`}>
                   <rect width="100%" height="100%" fill="white" />
-                  <rect width="100%" height="100%" fill="black" rx="8" ry="8" />
+                  <m.rect
+                    width="100%"
+                    height="100%"
+                    fill="black"
+                    rx={_borderRadius}
+                    ry={_borderRadius}
+                  />
                   <rect width="100%" height="50%" fill="black" y="50%" />
                 </mask>
               </defs>
@@ -83,15 +105,48 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
             </svg>
           </div>
 
+          <div data-attr="new" className="absolute top-full size-full">
+            <svg className="size-full">
+              <defs>
+                <mask id={`cover-mask-body-${title}`}>
+                  <rect width="100%" height="100%" fill="white" />
+                  <m.rect
+                    width="100%"
+                    height="100%"
+                    fill="black"
+                    rx={_borderRadius}
+                    ry={_borderRadius}
+                  />
+                  <rect width="100%" height="50%" fill="black" y="50%" />
+                </mask>
+              </defs>
+              <rect
+                width="100%"
+                height="100%"
+                mask={`url(#cover-mask-body-${title})`}
+                className={cn(
+                  theme === "light" && "fill-light-1",
+                  theme === "dark" && "fill-dark-2",
+                )}
+              />
+            </svg>
+          </div>
+
           {windowWidth >= 768 ? (
-            <div className="row-[2/3] col-[3/4] size-full rounded-bl-[6px] overflow-hidden">
+            <div className="row-[2/3] col-[3/4] size-full rounded-bl-(--animated-rounded) overflow-hidden">
               <svg className="size-full text-9xl text-end font-[1000] tracking-[-0.5rem] font-width-125 trim-text-caps">
                 <defs>
                   <mask id={`text-mask-${title}`}>
                     <rect width="100%" height="100%" fill="white" />
-                    <text x="2%" y="100%" textAnchor="start" fill="black">
+                    <m.text
+                      x="2%"
+                      y="100%"
+                      textAnchor="start"
+                      fill="black"
+                      style={{ y: transformTitle }}
+                    >
                       {title}
-                    </text>
+                    </m.text>
                   </mask>
                 </defs>
                 <rect
@@ -107,15 +162,16 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
             </div>
           ) : (
             <div className="row-[2/3] col-[3/4] size-full place-items-end place-content-end">
-              <h1
+              <m.h1
                 className={cn(
                   "text-8xl font-[1000] tracking-[-0.5rem] font-width-125 trim-text-caps px-1",
                   theme === "light" && "text-light-1",
                   theme === "dark" && "text-dark-2",
                 )}
+                style={{ x: transformTitle }}
               >
                 {title}
-              </h1>
+              </m.h1>
             </div>
           )}
         </div>

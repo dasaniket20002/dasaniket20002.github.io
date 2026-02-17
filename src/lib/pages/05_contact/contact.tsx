@@ -20,12 +20,12 @@ export default function Contact({ className }: { className?: string }) {
     >
       <section
         className={cn(
-          "size-full grid grid-cols-[8rem_1fr_1fr_8rem]",
-          "grid-rows-[var(--min-section-header-height)_1fr_var(--min-section-header-height)] md:grid-rows-[var(--section-header-height)_1fr_1fr_var(--section-header-height)]",
+          "size-full grid grid-cols-[4rem_1fr_1fr_4rem] md:grid-cols-[8rem_1fr_1fr_8rem]",
+          "grid-rows-[var(--min-section-header-height)_auto_1fr_var(--min-section-header-height)] md:grid-rows-[var(--section-header-height)_1fr_1fr_var(--section-header-height)]",
         )}
         ref={registerSection}
       >
-        <div className="row-[1/2] col-[2/3] size-full place-content-end pb-1 px-4 space-y-2">
+        <div className="row-[2/3] col-[2/4] md:row-[1/2] md:col-[2/3] size-full place-content-end px-4 pt-16 md:pb-1 md:pt-0 space-y-2">
           <h1 className="text-end font-black font-width-110 uppercase text-5xl">
             <span className="text-light-2">Schedule an</span> appointment{" "}
             <span className="text-light-2">/</span>
@@ -35,7 +35,7 @@ export default function Contact({ className }: { className?: string }) {
             with?
           </p>
         </div>
-        <Form className="row-[2/4] col-[2/4]" />
+        <Form className="row-[3/4] md:row-[2/4] col-[2/4]" />
       </section>
     </SectionContainer>
   );
@@ -49,24 +49,24 @@ function Form({ className }: { className?: string }) {
   return (
     <form
       className={cn(
-        "pt-24 font-width-85 tracking-wide grid grid-cols-4 grid-rows-3",
+        "pt-24 font-width-85 tracking-wide grid grid-cols-4 grid-rows-[auto_1fr] md:grid-rows-3",
         className,
       )}
     >
-      <h2 className="relative text-5xl leading-relaxed col-[1/4] row-[1/2] h-min">
+      <h2 className="relative text-5xl leading-relaxed col-span-full md:col-[1/4] row-[1/2] h-min">
         <span className="absolute -left-[1ch] scale-150 italic">"</span>
         Hey, my name is
         <NameRequest inputValue={name} setInputValue={setName} />
         and I'm <br className="hidden md:block" />
         looking for
         <ServiceRequest inputValue={service} setInputValue={setService} />
-        services. <br className="hidden md:block" />
+        services. <br />
         Are you available on
         <DateRequest inputValue={date} setInputValue={setDate} /> for a chat?
         <span className="italic">"</span>
       </h2>
       <SendAction
-        className="col-[1/4] row-[2/3]"
+        className="col-span-full md:col-[1/4] row-[2/3]"
         name={name}
         service={service}
         date={date}

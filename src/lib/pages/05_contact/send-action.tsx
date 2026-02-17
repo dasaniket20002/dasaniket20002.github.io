@@ -50,17 +50,21 @@ export default function SendAction({
   return (
     <div
       className={cn(
-        "size-full grid grid-cols-3 grid-rows-[auto_1fr] gap-2 p-1",
+        "size-full grid grid-cols-3 grid-rows-[auto_auto_1fr] md:grid-rows-[auto_1fr] gap-2 p-1",
         className,
       )}
     >
       <m.textarea
         ref={textareaRef}
-        initial={{ height: "0px", opacity: 0 }}
-        animate={{ height: open ? "auto" : "0px", opacity: open ? 1 : 0 }}
+        initial={{ height: "0px", padding: "0.75rem", opacity: 0 }}
+        animate={{
+          height: open ? "auto" : "0px",
+          padding: open ? "0.75rem" : "0rem",
+          opacity: open ? 1 : 0,
+        }}
         rows={10}
         id="form-more-description"
-        className="w-full row-span-full col-[1/3] focus:bg-light-2/25 p-3 rounded-lg outline-none border border-dark-1/75 text-xl transition-colors duration-1000 resize-none overflow-y-scroll"
+        className="w-full row-[2/3] col-span-full md:row-span-full md:col-[1/3] focus:bg-light-2/25 rounded-lg outline-none border border-dark-1/75 text-xl transition-colors duration-1000 resize-none overflow-y-scroll"
         placeholder="Enter description here (optional)..."
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -73,14 +77,17 @@ export default function SendAction({
             return !val;
           });
         }}
-        className="flex items-center gap-1 py-3"
+        className="flex items-center gap-1 py-3 row-[1/2] col-span-full md:col-[3/4]"
       >
         <IconChevronRight
-          className={cn("size-5 stroke-1 transition", open && "-rotate-180")}
+          className={cn(
+            "size-5 stroke-1 transition",
+            open && "rotate-90 md:rotate-180",
+          )}
         />
         <Link>Want to add more context?</Link>
       </div>
-      <div className="ml-8 size-full space-y-3">
+      <div className="md:ml-8 place-items-center md:place-items-start size-full space-y-3 row-[3/4] col-span-full md:row-[2/3] md:col-[3/4]">
         <Button
           text="Send enquiry"
           type="button"
