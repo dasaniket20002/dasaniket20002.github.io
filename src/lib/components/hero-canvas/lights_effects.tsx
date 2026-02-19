@@ -33,7 +33,7 @@ export default function LightsAndEffects() {
           args={[-10, 10, 10, -10, 1, 128]}
         />
       </directionalLight>
-      <EffectComposer multisampling={0}>
+      <EffectComposer multisampling={0} enableNormalPass>
         <FXAA />
         <SSAO
           samples={8}

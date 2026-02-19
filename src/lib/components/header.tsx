@@ -4,6 +4,7 @@ import {
   stagger,
   useMotionValueEvent,
   useScroll,
+  useTransform,
   type Variants,
 } from "motion/react";
 import * as m from "motion/react-m";
@@ -17,8 +18,10 @@ import {
 import { useBGTheme } from "../hooks/use-bg-theme";
 import { useStickySnap } from "../hooks/use-sticky-snap";
 import { cn } from "../utils";
+import AnimatedTicker from "./animated-ticker";
 import Link from "./link";
 import LogoName from "./logo-name";
+import { useWindowSize } from "../hooks/use-window-size";
 
 type HeaderProps = { className?: string };
 
@@ -42,6 +45,45 @@ const NAV_LINKS = [
 const HEADER_INITIAL_DELAY = 1000;
 const REVEAL_TRANSITION_DURATION = 0.25;
 
+const ScrollProgressViewer = ({ className }: { className?: string }) => {
+  const { scrollYProgress } = useScroll();
+
+  const top = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
+
+  const [progress, setProgress] = useState(0);
+  scrollYProgress.on("change", (val) => setProgress(Math.round(val * 100)));
+
+  const { width: windowWidth } = useWindowSize();
+
+  return (
+    <div className={cn("flex gap-3", className)}>
+      <div className="relative h-full w-px flex-none">
+        <span className="absolute inset-0 bg-light-d/25" />
+        <m.span
+          className="absolute left-0 right-0 top-0 bg-light-d/75"
+          style={{ height: top }}
+        />
+      </div>
+      {windowWidth >= 768 && (
+        <div className="relative h-full flex-1">
+          <m.div
+            className="h-min flex gap-[0.25ch] items-center absolute"
+            style={{ y, top }}
+          >
+            <AnimatedTicker
+              value={progress}
+              fixedPlaces={3}
+              className="text-base text-light-d w-min"
+            />
+            <p className="text-xs text-light-d font-light">%</p>
+          </m.div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const headerRef = useRef<HTMLElement>(null);
   const [hidden, setHidden] = useState(true);
@@ -51,7 +93,6 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const lenis = useLenis();
 
   const { scrollY } = useScroll();
-
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
     if (latest - previous > 10) setHidden(true);
@@ -72,11 +113,11 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     <header
       ref={headerRef}
       className={cn(
-        "px-16 md:px-32 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98",
+        "px-16 md:px-32 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98 mix-blend-difference",
         className,
       )}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {!hidden && (
           <LogoName
             className={cn(
@@ -99,7 +140,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         )}
       </AnimatePresence>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         {!hidden && (
           <m.nav
             variants={CONTAINER_VARIANTS}
@@ -126,6 +167,8 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
           </m.nav>
         )}
       </AnimatePresence>
+
+      <ScrollProgressViewer className="absolute top-4 right-0 md:right-16 w-12 h-76" />
     </header>
   );
 });

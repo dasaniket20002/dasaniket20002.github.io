@@ -19,7 +19,7 @@ export default function HeroCTA({
           variant="dark"
           text="Know More"
           icon={<IconArrowDown className="stroke-1 size-5" />}
-          className="flex-none w-min text-base"
+          className="flex-1 max-w-48 w-min text-base"
           onClick={(e) => {
             e.preventDefault();
             lockSnap();
@@ -30,7 +30,7 @@ export default function HeroCTA({
           variant="light"
           text="Let's Connect"
           icon={<IconArrowRight className="stroke-1 size-5" />}
-          className="flex-none w-min text-base"
+          className="flex-1 max-w-48 w-min text-base"
           onClick={(e) => {
             e.preventDefault();
             lockSnap();
