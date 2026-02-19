@@ -169,7 +169,13 @@ export const preloadWithProgress = async (
 };
 
 export const getColorPropertyValue = (
-  propertyName: "light-1" | "light-2" | "dark-1" | "dark-2" | "success",
+  propertyName:
+    | "light-l"
+    | "light-d"
+    | "dark-l"
+    | "dark-d"
+    | "accent"
+    | "success",
 ) => {
   const oklchString = window
     .getComputedStyle(document.documentElement)

@@ -1,5 +1,11 @@
 import { useLenis } from "lenis/react";
-import { AnimatePresence, stagger, type Variants } from "motion/react";
+import {
+  AnimatePresence,
+  stagger,
+  useMotionValueEvent,
+  useScroll,
+  type Variants,
+} from "motion/react";
 import * as m from "motion/react-m";
 import {
   forwardRef,
@@ -16,14 +22,16 @@ import LogoName from "./logo-name";
 
 type HeaderProps = { className?: string };
 
+const REVEAL_TRANSITION_DURATION = 0.5;
+
 const LINK_VARIANTS: Variants = {
-  hidden: { y: -24, opacity: 0 },
-  visible: { y: 0, opacity: 1 },
+  hidden: { x: 24, opacity: 0 },
+  visible: { x: 0, opacity: 1 },
 };
 
 const CONTAINER_VARIANTS: Variants = {
-  hidden: { transition: { delayChildren: stagger(0.05, { from: 1 }) } },
-  visible: { transition: { delayChildren: stagger(0.05, { from: -1 }) } },
+  hidden: { transition: { delayChildren: stagger(0.1, { from: 1 }) } },
+  visible: { transition: { delayChildren: stagger(0.1, { from: -1 }) } },
 };
 
 const NAV_LINKS = [
@@ -33,7 +41,7 @@ const NAV_LINKS = [
   { name: "Contact", href: "#contact" },
 ];
 
-const HEADER_INITIAL_DELAY = 1500;
+const HEADER_INITIAL_DELAY = 1000;
 
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const headerRef = useRef<HTMLElement>(null);
@@ -42,6 +50,14 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
 
   const { lockSnap, unlockSnap } = useStickySnap();
   const lenis = useLenis();
+
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest - previous > 10) setHidden(true);
+    if (previous - latest > 5) setHidden(false);
+  });
 
   useEffect(() => {
     const t = setTimeout(() => setHidden(false), HEADER_INITIAL_DELAY);
@@ -57,30 +73,25 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     <header
       ref={headerRef}
       className={cn(
-        "px-8 md:px-16 h-(--header-height) flex gap-4 md:gap-8 justify-between items-center z-98",
+        "px-8 md:px-16 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98",
         className,
       )}
     >
-      <m.span
-        className="absolute inset-0 p-1 bg-size-[4px_4px] backdrop-blur-xs mask-b-from-0 bg-[radial-gradient(transparent_1px,var(--header-bg)_1px)]"
-        initial={false}
-        animate={{
-          "--header-bg":
-            bgTheme === "light"
-              ? "var(--color-light-1)"
-              : "var(--color-dark-2)",
-        }}
-      />
+      <span className="absolute inset-0 p-1" />
       <AnimatePresence mode="wait">
         {!hidden && (
           <LogoName
             className={cn(
               "text-xl cursor-pointer transition-colors z-98",
-              bgTheme === "light" ? "text-dark-1" : "text-light-2",
+              bgTheme === "light" ? "text-dark-d" : "text-light-l",
             )}
-            initial={{ y: -24, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -24, opacity: 0 }}
+            initial={{ x: -24, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -24, opacity: 0 }}
+            transition={{
+              duration: REVEAL_TRANSITION_DURATION,
+              ease: "easeInOut",
+            }}
             onClick={(e) => {
               e.preventDefault();
               lockSnap();
@@ -98,12 +109,19 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             animate="visible"
             exit="hidden"
             className={cn(
-              "flex gap-8 items-center tracking-wide font-width-110 font-light transition-colors",
-              bgTheme === "light" ? "text-dark-1" : "text-light-2",
+              "flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors",
+              bgTheme === "light" ? "text-dark-d" : "text-light-l",
             )}
           >
             {NAV_LINKS.map((l, i) => (
-              <m.section key={i} variants={LINK_VARIANTS}>
+              <m.section
+                key={i}
+                variants={LINK_VARIANTS}
+                transition={{
+                  duration: REVEAL_TRANSITION_DURATION,
+                  ease: "easeInOut",
+                }}
+              >
                 <Link href={l.href} children={l.name} theme={bgTheme} />
               </m.section>
             ))}

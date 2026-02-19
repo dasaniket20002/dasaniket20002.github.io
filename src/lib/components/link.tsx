@@ -2,9 +2,7 @@ import { useLenis } from "lenis/react";
 import { AnimatePresence, type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useCallback, useState } from "react";
-import { MIN_SECTION_HEADER_HEIGHT, SECTION_HEADER_HEIGHT } from "../../App";
 import { useStickySnap } from "../hooks/use-sticky-snap";
-import { useWindowSize } from "../hooks/use-window-size";
 import { cn } from "../utils";
 import TextRoll from "./text-roll";
 
@@ -40,8 +38,6 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     const __hovered = hovered === undefined ? _hovered : hovered;
     const __setHovered = setHovered ? setHovered : _setHovered;
 
-    const { width: windowWidth } = useWindowSize();
-
     const handleClick = useCallback(
       (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         e.preventDefault();
@@ -54,14 +50,10 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
           lenis?.scrollTo(href, {
             onComplete: unlockSnap,
             lock: true,
-            offset:
-              windowWidth >= 768
-                ? SECTION_HEADER_HEIGHT
-                : MIN_SECTION_HEADER_HEIGHT,
           });
         }
       },
-      [href, lenis, lockSnap, unlockSnap, windowWidth],
+      [href, lenis, lockSnap, unlockSnap],
     );
 
     return (
@@ -70,8 +62,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         href={href}
         className={cn(
           "relative md:p-1 py-1 flex transition-colors cursor-pointer disabled:cursor-not-allowed",
-          theme === "light" && "text-dark-1",
-          theme === "dark" && "text-light-2",
+          theme === "light" ? "text-dark-d" : "text-light-l",
           className,
         )}
         onMouseEnter={() => __setHovered(true)}
@@ -102,8 +93,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               transition={{ ease: "backOut", duration: 0.5 }}
               className={cn(
                 "absolute left-0 md:left-1 right-0 md:right-1 bottom-0 h-(--underline-height) opacity-75",
-                theme === "light" && "bg-dark-1",
-                theme === "dark" && "bg-light-2",
+                theme === "light" ? "bg-dark-d" : "bg-light-l",
               )}
             />
           )}
@@ -116,8 +106,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
               transition={{ ease: "backOut" }}
               className={cn(
                 "absolute left-0 md:left-1 right-0 md:right-1 bottom-(--underline-height) top-0",
-                theme === "light" && "bg-light-1",
-                theme === "dark" && "bg-dark-2",
+                theme === "light" ? "bg-light-l" : "bg-dark-d",
               )}
             />
           )}

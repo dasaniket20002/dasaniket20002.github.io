@@ -36,7 +36,7 @@ const DisableRender = () => useFrame(() => null, 1000);
 const DEBUG = false;
 const GRAVITY: THREE.Vector3Tuple = [0, 4, 0];
 
-const BALLOON_COLOR = formatHex(getColorPropertyValue("light-2"));
+const BALLOON_COLOR = formatHex(getColorPropertyValue("light-l"));
 
 const BALLOON_MATERIAL = new THREE.MeshPhysicalMaterial({
   color: BALLOON_COLOR,

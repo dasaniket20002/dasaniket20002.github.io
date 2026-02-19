@@ -1,12 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wdth,wght,YTLC@0,6..12,75..125,200..1000,440..540;1,6..12,75..125,200..1000,440..540&display=swap");
-@font-face {
-  font-family: "Think Loved";
-  src: url("/fonts/think-loved/ThinkLoved.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @import "tailwindcss";
 
 @property --font-width {
@@ -26,7 +18,6 @@ html {
 
 :root {
   font-synthesis: none;
-  font-variant-ligatures: common-ligatures discretionary-ligatures;
   text-rendering: optimizeLegibility;
   font-optical-sizing: auto;
   font-variation-settings:
@@ -37,24 +28,25 @@ html {
   padding: 0;
   box-sizing: border-box;
 
-  --light-1: oklch(0.9454 0.0231 93.33);
-  --light-2: oklch(0.861 0.0322 91.05);
-  --dark-1: oklch(0.4426 0.0674 40.29);
-  --dark-2: oklch(0.2036 0.0388 21.05);
-  --success: oklch(0.5198 0.176858 142.4953);
+  --success: #008000;
+  --light-l: #f2f2f2;
+  --light-d: #87888c;
+  --dark-l: #4f5259;
+  --dark-d: #01040d;
+  --accent: #111426;
 
   --radius: 0.625rem;
 }
 
 @theme {
-  --font-think-loved: "Think Loved", sans-serif;
   --font-sans: "Nunito Sans", sans-serif;
 
-  --color-light-1: var(--light-1);
-  --color-light-2: var(--light-2);
-  --color-dark-1: var(--dark-1);
-  --color-dark-2: var(--dark-2);
   --color-success: var(--success);
+  --color-light-l: var(--light-l);
+  --color-light-d: var(--light-d);
+  --color-dark-l: var(--dark-l);
+  --color-dark-d: var(--dark-d);
+  --color-accent: var(--accent);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -63,7 +55,7 @@ html {
 }
 
 body {
-  @apply bg-light-1 font-sans antialiased;
+  @apply bg-dark-d font-sans antialiased;
 }
 
 * {
@@ -75,14 +67,14 @@ body {
 }
 
 @utility font-width-* {
-  --font-width: --value(integer); /* 75 to 125 */
+  --font-width: --value(integer, [integer]); /* 75 to 125 */
   font-variation-settings:
     "wdth" var(--font-width),
     "YTLC" var(--font-lowercase-height);
   /* "wght" var(--tw-font-weight); */
 }
 @utility font-lowercase-height-* {
-  --font-lowercase-height: --value(integer); /* 440 to 540 */
+  --font-lowercase-height: --value(integer, [integer]); /* 440 to 540 */
   font-variation-settings:
     "wdth" var(--font-width),
     "YTLC" var(--font-lowercase-height);
@@ -95,23 +87,3 @@ body {
 
 @custom-variant cqw-landscape (@container (min-aspect-ratio: 1/1));
 @custom-variant cqw-portrait (@container (max-aspect-ratio: 1/1));
-
-/* header {
-  background-image: radial-gradient(transparent 1px, var(--color-light-1) 1px);
-  background-size: 4px 4px;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  -moz-backdrop-filter: blur(3px);
-} */
-
-/* footer::before {
-  display: block;
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--color-dark-1);
-  opacity: 0.2;
-} */

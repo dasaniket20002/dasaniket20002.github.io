@@ -1,7 +1,6 @@
 import { useLenis } from "lenis/react";
 import { easeOut, useMotionValue } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
-import { HEADER_HEIGHT } from "../../App";
 import { StickySnapContext, type SnapSection } from "../hooks/use-sticky-snap";
 
 export function StickySnapProvider({
@@ -30,22 +29,10 @@ export function StickySnapProvider({
   const isSnapping = useMotionValue<0 | 1>(0);
 
   const registerSection = useCallback(
-    (
-      el: HTMLElement | null,
-      options: { offset?: number; useDefaultHeaderHeight?: boolean } = {
-        offset: 0,
-        useDefaultHeaderHeight: true,
-      },
-    ) => {
+    (el: HTMLElement | null, options: { offset?: number } = { offset: 0 }) => {
       if (!el) return;
-
-      let offset = options?.offset ?? 0;
-      if (options.useDefaultHeaderHeight) {
-        offset += HEADER_HEIGHT;
-      }
-
+      const offset = options?.offset ?? 0;
       const exists = sectionsRef.current.some((s) => s.el === el);
-
       if (!exists) {
         sectionsRef.current.push({ el, offset });
       }
