@@ -68,7 +68,7 @@ export default function MeshComponents() {
   useEffect(() => {
     const poiSeq = async () => {
       await animate(poiY, [-4, -0.25], {
-        duration: 1,
+        duration: 3,
         delay: 0.75,
         ease: "easeInOut",
       });
@@ -87,7 +87,7 @@ export default function MeshComponents() {
       animateDuration: number,
     ) => {
       await animate(value, initialKeyframes, {
-        duration: 1,
+        duration: 3,
         delay: 0.5,
         ease: "easeInOut",
       });

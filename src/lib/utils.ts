@@ -3,7 +3,7 @@ import { parse, type Hsv } from "culori";
 import { clamp } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
-export const PRIMARY_EMAIL = "aniket.das.cse24@heritageit.edu.in";
+export const PRIMARY_EMAIL = "dasaniketconnects@gmail.com";
 
 export const colorPalettes: Hsv[][] = [
   [
@@ -139,7 +139,7 @@ export const findOptimalSquareTiling = (width: number, height: number) => {
 
 export const preloadWithProgress = async (
   urls: string[],
-  onProgress: (p: number) => void,
+  onProgress?: (p: number) => void,
 ) => {
   let loadedBytes = 0;
   let totalBytes = 0;
@@ -162,7 +162,7 @@ export const preloadWithProgress = async (
         const { done, value } = await reader.read();
         if (done) break;
         loadedBytes += value.length;
-        onProgress(Math.round((loadedBytes / totalBytes) * 100));
+        onProgress?.(Math.round((loadedBytes / totalBytes) * 100));
       }
     }),
   );

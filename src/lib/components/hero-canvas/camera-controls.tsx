@@ -1,59 +1,76 @@
+// camera-controls.tsx
 import { useFrame, useThree } from "@react-three/fiber";
-import type { MotionValue } from "motion";
-import { useWindowSize } from "../../hooks/use-window-size";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { Spherical, Vector2, Vector3 } from "three";
+import { useElementSize } from "../../hooks/use-element-size";
 import { mapRange } from "../../utils";
 
+const SMOOTHING = 8; // higher = faster convergence
+const THETA_RANGE = Math.PI / 64;
+const PHI_RANGE = Math.PI / 64;
+const EPSILON = 1e-4;
+
 export default function CameraControls({
-  pointerX,
-  pointerY,
+  canvasRef,
 }: {
-  pointerX: MotionValue<number>;
-  pointerY: MotionValue<number>;
+  canvasRef: RefObject<HTMLCanvasElement | null>;
 }) {
   const { camera } = useThree();
-  const { width: windowWidth, height: windowHeight } = useWindowSize();
+  const canvasSize = useElementSize(canvasRef);
 
   const pointer = useRef(new Vector2());
   const lerped = useRef(new Vector2());
   const previous = useRef(new Vector2());
 
   const baseSpherical = useRef<Spherical | null>(null);
+  const _spherical = useRef(new Spherical());
+  const _vec3 = useRef(new Vector3());
 
   useEffect(() => {
-    const unsubX = pointerX.on("change", (latest) => {
-      pointer.current.x = mapRange(latest, 0, windowWidth - 1, 0, 1);
-    });
-    const unsubY = pointerY.on("change", (latest) => {
-      pointer.current.y = mapRange(latest, 0, windowHeight - 1, 0, 1);
-    });
-
-    return () => {
-      unsubX();
-      unsubY();
+    const handleMove = (e: PointerEvent) => {
+      if (!canvasRef.current) return;
+      const rect = canvasRef.current.getBoundingClientRect();
+      pointer.current.x = mapRange(
+        (e.clientX - rect.left) / rect.width,
+        0,
+        1,
+        -1,
+        1,
+      );
+      pointer.current.y = mapRange(
+        (e.clientY - rect.top) / rect.height,
+        0,
+        1,
+        -1,
+        1,
+      );
     };
-  }, [pointerX, pointerY, windowHeight, windowWidth]);
+    window.addEventListener("pointermove", handleMove);
+    return () => window.removeEventListener("pointermove", handleMove);
+  }, [canvasRef, canvasSize]);
 
   useFrame((state, delta) => {
     previous.current.copy(lerped.current);
-    lerped.current.lerp(pointer.current, 0.5);
 
-    // Regress system when the pointer is moved (nice perf trick)
-    if (!previous.current.equals(lerped.current)) state.performance.regress();
+    const t = 1 - Math.exp(-SMOOTHING * delta);
+    lerped.current.lerp(pointer.current, t);
 
-    if (!baseSpherical.current) {
-      const v = camera.position.clone();
-      baseSpherical.current = new Spherical().setFromVector3(v);
+    // only regress while there is meaningful movement
+    if (previous.current.distanceTo(lerped.current) > EPSILON) {
+      state.performance.regress();
     }
 
-    const spherical = baseSpherical.current.clone();
+    if (!baseSpherical.current) {
+      baseSpherical.current = new Spherical().setFromVector3(
+        camera.position.clone(),
+      );
+    }
 
-    spherical.theta += lerped.current.x * (Math.PI / 16) * delta * 5;
-    spherical.phi += lerped.current.y * (Math.PI / 16) * delta * 5;
+    const sph = _spherical.current.copy(baseSpherical.current);
+    sph.theta += lerped.current.x * THETA_RANGE;
+    sph.phi += lerped.current.y * PHI_RANGE;
 
-    const nextPos = new Vector3().setFromSpherical(spherical);
-    camera.position.copy(nextPos);
+    camera.position.copy(_vec3.current.setFromSpherical(sph));
     camera.lookAt(0, 0, 0);
   });
 

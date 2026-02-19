@@ -1,13 +1,23 @@
 import * as m from "motion/react-m";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import LogoName from "../../components/logo-name";
 import Counter from "./counter";
 import Message from "./message";
+import { preloadWithProgress } from "../../utils";
 
 type LoaderProps = { onComplete: () => void };
 
+const PRELOAD_URLS = [
+  "/assets/models/logo-model/logo-model.gltf",
+  "/assets/models/logo-model/logo-model.bin",
+];
+
 const Loader = forwardRef<HTMLDivElement, LoaderProps>(
   ({ onComplete }, ref) => {
+    useEffect(() => {
+      preloadWithProgress(PRELOAD_URLS);
+    }, []);
+
     return (
       <m.div
         ref={ref}

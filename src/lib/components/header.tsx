@@ -22,8 +22,6 @@ import LogoName from "./logo-name";
 
 type HeaderProps = { className?: string };
 
-const REVEAL_TRANSITION_DURATION = 0.5;
-
 const LINK_VARIANTS: Variants = {
   hidden: { x: 24, opacity: 0 },
   visible: { x: 0, opacity: 1 },
@@ -42,6 +40,7 @@ const NAV_LINKS = [
 ];
 
 const HEADER_INITIAL_DELAY = 1000;
+const REVEAL_TRANSITION_DURATION = 0.25;
 
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const headerRef = useRef<HTMLElement>(null);
@@ -73,11 +72,10 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
     <header
       ref={headerRef}
       className={cn(
-        "px-8 md:px-16 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98",
+        "px-16 md:px-32 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98",
         className,
       )}
     >
-      <span className="absolute inset-0 p-1" />
       <AnimatePresence mode="wait">
         {!hidden && (
           <LogoName

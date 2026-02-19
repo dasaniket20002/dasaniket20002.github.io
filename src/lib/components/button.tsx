@@ -24,7 +24,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       onClick,
       icon,
-      variant = "dark",
+      variant = "light",
       magnetic = false,
       disabled,
       ...motionProps
@@ -42,9 +42,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "group/button min-w-42 max-w-96 h-12 rounded-sm pt-1",
           "flex gap-2 items-center justify-center shadow-2xl",
           variant === "dark" &&
-            "bg-dark-1 text-light-2 border border-dark-1 hover:bg-transparent hover:text-dark-1",
-          variant === "light" && "bg-light-1 text-dark-1 border border-dark-1",
-          "cursor-pointer disabled:cursor-not-allowed [&>svg]:size-4 [&>svg]:stroke-1 transition-colors duration-150",
+            "bg-dark-d text-light-l border border-dark-l hover:bg-transparent hover:border-light-d",
+          variant === "light" && "bg-light-l text-dark-d border border-dark-l",
+          "cursor-pointer disabled:cursor-not-allowed transition-colors duration-150",
           className,
         )}
         onMouseEnter={(e) => {

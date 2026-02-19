@@ -1,13 +1,14 @@
-import { useMemo } from "react";
-import { getColorPropertyValue } from "../../utils";
-import { converter } from "culori";
-import { Color } from "three";
 import {
   Bloom,
   DepthOfField,
   EffectComposer,
+  FXAA,
   SSAO,
 } from "@react-three/postprocessing";
+import { converter } from "culori";
+import { useMemo } from "react";
+import { Color } from "three";
+import { getColorPropertyValue } from "../../utils";
 
 export default function LightsAndEffects() {
   const lightColor = useMemo(() => {
@@ -19,20 +20,21 @@ export default function LightsAndEffects() {
 
   return (
     <>
-      <ambientLight intensity={0.25} />
+      <ambientLight intensity={0.1} />
       <directionalLight
         position={[10, 10, -10]}
         intensity={1}
         color={lightColor}
         castShadow
-        shadow-mapSize={2048}
+        shadow-mapSize={1024}
       >
         <orthographicCamera
           attach="shadow-camera"
           args={[-10, 10, 10, -10, 1, 128]}
         />
       </directionalLight>
-      <EffectComposer multisampling={1} enableNormalPass>
+      <EffectComposer multisampling={0}>
+        <FXAA />
         <SSAO
           samples={8}
           radius={0.1}
