@@ -16,16 +16,11 @@ export default function Counter({
   useEffect(() => {
     const sequence = async () => {
       await wait(500);
-      await animate(count, 85, {
-        duration: 1.25,
-        ease: "easeInOut",
-      });
-      await wait(150);
       await animate(count, 100, {
-        duration: 0.25,
+        duration: 5,
         ease: "easeInOut",
       });
-      await wait(100);
+      await wait(1000);
       onComplete();
     };
     sequence();

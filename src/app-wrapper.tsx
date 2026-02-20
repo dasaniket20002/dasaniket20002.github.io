@@ -3,6 +3,7 @@ import ReactLenis, { type LenisRef } from "lenis/react";
 import { cancelFrame, frame, LazyMotion, type FrameData } from "motion/react";
 import { StickySnapProvider } from "./lib/contexts/sticky-snap-provider.tsx";
 import { useEffect, useRef } from "react";
+import { PerformanceMetricsProvider } from "./lib/contexts/performance-metrics-provider.tsx";
 
 const loadFeatures = () => import("./lib/features").then((res) => res.default);
 
@@ -26,9 +27,11 @@ export default function AppWrapper() {
       ref={lenisRef}
     >
       <LazyMotion features={loadFeatures} strict>
-        <StickySnapProvider>
-          <App />
-        </StickySnapProvider>
+        <PerformanceMetricsProvider>
+          <StickySnapProvider>
+            <App />
+          </StickySnapProvider>
+        </PerformanceMetricsProvider>
       </LazyMotion>
     </ReactLenis>
   );
