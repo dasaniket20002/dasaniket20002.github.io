@@ -1,5 +1,5 @@
 import SectionContainer from "../../components/section-container";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import AboutContent from "./about-content";
 import AboutPage1 from "./about-page-1";
 

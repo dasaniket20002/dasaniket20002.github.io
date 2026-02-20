@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SectionContainer from "../../components/section-container";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
 import DateRequest from "./date-request";
 import NameRequest from "./name-request";

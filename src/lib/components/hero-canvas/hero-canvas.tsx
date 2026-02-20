@@ -1,8 +1,14 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef, type RefObject } from "react";
+import { memo, Suspense, useRef, type RefObject } from "react";
 import CameraControls from "./camera-controls";
 import LightsAndEffects from "./lights_effects";
 import MeshComponents from "./mesh-components";
+
+const MeshComponentsMemo = memo(() => (
+  <Suspense fallback={null}>
+    <MeshComponents />
+  </Suspense>
+));
 
 export default function HeroCanvas({
   eventSource,
@@ -23,7 +29,7 @@ export default function HeroCanvas({
       camera={{ position: [-32, 32, 32], fov: 24 }}
       gl={{
         alpha: true,
-        antialias: true,
+        antialias: false,
         stencil: false,
         depth: false,
         powerPreference: "high-performance",
@@ -34,9 +40,7 @@ export default function HeroCanvas({
       eventPrefix={eventSource ? "client" : "offset"}
       frameloop={inView ? "always" : "never"}
     >
-      <Suspense fallback={null}>
-        <MeshComponents />
-      </Suspense>
+      <MeshComponentsMemo />
       <LightsAndEffects />
       <CameraControls canvasRef={canvasRef} />
     </Canvas>

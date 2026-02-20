@@ -16,7 +16,7 @@ import {
   useState,
 } from "react";
 import { useBGTheme } from "../hooks/use-bg-theme";
-import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useStickySnap } from "../contexts/use-sticky-snap";
 import { cn } from "../utils";
 import AnimatedTicker from "./animated-ticker";
 import Link from "./link";
@@ -121,7 +121,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
         {!hidden && (
           <LogoName
             className={cn(
-              "text-xl cursor-pointer transition-colors z-98",
+              "text-xl cursor-pointer transition-colors z-98 py-2",
               bgTheme === "light" ? "text-dark-d" : "text-light-l",
             )}
             initial={{ x: -24, opacity: 0 }}

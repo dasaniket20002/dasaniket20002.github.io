@@ -3,7 +3,7 @@ import * as m from "motion/react-m";
 import { useState } from "react";
 import AnimatedTicker from "../../components/animated-ticker";
 import SectionContainer from "../../components/section-container";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
 import ServiceCell from "./service-cell";
 import TextPressure from "../../components/text-pressure";

@@ -7,7 +7,7 @@ import { useLenis } from "lenis/react";
 import { useInView, useMotionValue, useTransform } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useMemo, useRef, useState, type FC } from "react";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn, getColorPropertyValue } from "../../utils";
 import InfiniteGridMenu from "./infinite-menu-class";
 import type { InfiniteMenuProps, MenuItem } from "./infinite-menu-types";

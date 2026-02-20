@@ -2,7 +2,7 @@ import { useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useRef } from "react";
 import Link from "../../components/link";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
@@ -59,7 +59,7 @@ export default function Hero({ className }: { className?: string }) {
           <HeroTagLine />
         </div>
         <HeroSkillsList
-          className="col-[3/5] row-[2/3] place-items-end"
+          className="col-[3/5] row-[2/3] place-items-end pt-24 md:pt-0"
           initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
@@ -70,7 +70,7 @@ export default function Hero({ className }: { className?: string }) {
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
         />
-        <div className="col-[3/5] row-[3/4] flex justify-end items-center py-2">
+        <div className="col-[4/5] row-[3/4] flex justify-end items-center py-2">
           <Link
             href={"https://earth.google.com/web/search/Kolkata,+West+Bengal"}
             showBG={false}

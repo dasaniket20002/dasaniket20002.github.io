@@ -17,7 +17,7 @@ import * as m from "motion/react-m";
 import { createPortal } from "react-dom";
 import { cn } from "../utils";
 import { IconX } from "@tabler/icons-react";
-import { useStickySnap } from "../hooks/use-sticky-snap";
+import { useStickySnap } from "../contexts/use-sticky-snap";
 import { useClickOutside } from "../hooks/use-click-outside";
 
 export type MorphingDialogContextType = {

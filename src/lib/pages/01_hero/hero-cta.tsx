@@ -1,7 +1,7 @@
 import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
 import { useLenis } from "lenis/react";
 import Button from "../../components/button";
-import { useStickySnap } from "../../hooks/use-sticky-snap";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn, PRIMARY_EMAIL } from "../../utils";
 import type { HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";

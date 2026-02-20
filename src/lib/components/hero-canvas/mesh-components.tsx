@@ -1,10 +1,10 @@
+import { Instance, Instances, useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { converter } from "culori";
+import { animate, MotionValue, useMotionValue } from "motion/react";
+import { useEffect, useRef } from "react";
 import { Color, FrontSide, Group, Mesh, MeshPhysicalMaterial } from "three";
 import { getColorPropertyValue } from "../../utils";
-import { useGLTF } from "@react-three/drei";
-import { useEffect, useRef } from "react";
-import { animate, MotionValue, useMotionValue } from "motion/react";
-import { useFrame } from "@react-three/fiber";
 
 const _COLOR_DARK = converter("rgb")(getColorPropertyValue("dark-d"));
 const COLOR_DARK = new Color().setRGB(
@@ -139,7 +139,7 @@ export default function MeshComponents() {
 
   return (
     <group>
-      <group ref={poiRef} scale={4}>
+      <group ref={poiRef} scale={4} position={[0, -4, 0]}>
         <mesh
           castShadow
           receiveShadow
@@ -160,56 +160,44 @@ export default function MeshComponents() {
         />
       </group>
 
-      <mesh
-        ref={surrmesh1Ref}
-        position={[-4, -4, 8]}
-        scale={4}
-        material={MESH_SURROUND_MAT}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[2, 2, 2]} />
-      </mesh>
-      <mesh
-        ref={surrmesh2Ref}
-        position={[8, -8, 8]}
-        scale={4}
-        material={MESH_SURROUND_MAT}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[2, 2, 6]} />
-      </mesh>
-      <mesh
-        ref={surrmesh3Ref}
-        position={[16, 0, -8]}
-        scale={4}
-        material={MESH_SURROUND_MAT}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[2, 4, 2]} />
-      </mesh>
-      <mesh
-        ref={surrmesh4Ref}
-        position={[-8, -8, -8]}
-        scale={4}
-        material={MESH_SURROUND_MAT}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[2, 2, 2]} />
-      </mesh>
-      <mesh
-        ref={surrmesh5Ref}
-        position={[0, -8, 0]}
-        scale={4}
-        material={MESH_SURROUND_MAT}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[2, 2, 2]} />
-      </mesh>
+      <Instances limit={5} material={MESH_SURROUND_MAT}>
+        <boxGeometry />
+        <Instance
+          ref={surrmesh1Ref}
+          scale={8}
+          position={[-8, -4, 8]}
+          castShadow
+          receiveShadow
+        />
+        <Instance
+          ref={surrmesh2Ref}
+          position={[8, -16, 8]}
+          scale={[8, 8, 16]}
+          receiveShadow
+          castShadow
+        />
+        <Instance
+          ref={surrmesh3Ref}
+          position={[16, 0, -10]}
+          scale={[8, 16, 8]}
+          receiveShadow
+          castShadow
+        />
+        <Instance
+          ref={surrmesh4Ref}
+          position={[-8, -8, -8]}
+          scale={8}
+          receiveShadow
+          castShadow
+        />
+        <Instance
+          ref={surrmesh5Ref}
+          position={[0, -8, 0]}
+          scale={8}
+          receiveShadow
+          castShadow
+        />
+      </Instances>
     </group>
   );
 }

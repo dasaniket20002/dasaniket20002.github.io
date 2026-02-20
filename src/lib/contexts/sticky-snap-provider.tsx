@@ -1,7 +1,7 @@
 import { useLenis } from "lenis/react";
 import { easeOut, useMotionValue } from "motion/react";
 import { useCallback, useEffect, useRef } from "react";
-import { StickySnapContext, type SnapSection } from "../hooks/use-sticky-snap";
+import { StickySnapContext, type SnapSection } from "./use-sticky-snap";
 
 export function StickySnapProvider({
   snapThreshold = 100,
