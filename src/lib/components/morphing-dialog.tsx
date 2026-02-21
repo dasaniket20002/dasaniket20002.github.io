@@ -235,7 +235,7 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
           <m.div
             key={`backdrop-${uniqueId}`}
             // className="fixed inset-0 h-full w-full z-9998 bg-dark-2/40 backdrop-blur-xs"
-            className="fixed inset-0 z-99 bg-size-[4px_4px] backdrop-blur-xs bg-[radial-gradient(transparent_1px,var(--color-dark-2)_1px)]"
+            className="fixed inset-0 z-99 bg-size-[4px_4px] backdrop-blur-xs bg-[radial-gradient(transparent_1px,var(--color-dark-d)_1px)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

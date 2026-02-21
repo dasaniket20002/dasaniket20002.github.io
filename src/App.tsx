@@ -5,11 +5,12 @@ import Header from "./lib/components/header";
 import NoiseOverlay from "./lib/components/noise-overlay";
 import Loader from "./lib/pages/00_loader/loader";
 import Hero from "./lib/pages/01_hero/hero";
+import Work from "./lib/pages/02_work/work";
 
 const RENDER_SOLO = false;
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -31,7 +32,8 @@ function App() {
             >
               <Header className="fixed top-0" />
               <Hero />
-              <div className="h-dvh"></div>
+              <Work />
+              <div className="h-[200dvh]"></div>
             </m.main>
           )}
         </AnimatePresence>

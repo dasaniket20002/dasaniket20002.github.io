@@ -49,7 +49,7 @@ const LogoName = forwardRef<HTMLElement, LogoNameProps>(
         ref={ref}
         {...motionProps}
         className={cn(
-          "flex items-center gap-[0.25em] text-2xl font-black font-width-110 uppercase select-none text-dark-1",
+          "flex items-center gap-[0.25em] px-2 text-2xl font-black font-width-110 uppercase select-none text-dark-1",
           className,
         )}
         onMouseEnter={() => setHovered(true)}

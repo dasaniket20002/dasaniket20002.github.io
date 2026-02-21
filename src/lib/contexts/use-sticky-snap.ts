@@ -1,14 +1,14 @@
 import type { MotionValue } from "motion/react";
-import { createContext, useContext } from "react";
+import { createContext, useContext, type RefObject } from "react";
 
 export type SnapSection = {
-  el: HTMLElement;
+  el: HTMLElement | null;
   offset: number;
 };
 
 export type StickySnapContextValue = {
   registerSection: (
-    el: HTMLElement | null,
+    el: RefObject<HTMLElement | null>,
     options?: { offset?: number },
   ) => void;
   lockSnap: () => void;
@@ -17,8 +17,8 @@ export type StickySnapContextValue = {
   unlockScroll: () => void;
   activeIndex: MotionValue<number>;
   isSnapping: MotionValue<0 | 1>;
-  sectionsRef: React.RefObject<SnapSection[]>;
-  activeElement: React.RefObject<HTMLElement | null>;
+  sectionsRef: RefObject<SnapSection[]>;
+  activeElement: RefObject<HTMLElement | null>;
 };
 
 export const StickySnapContext = createContext<StickySnapContextValue | null>(

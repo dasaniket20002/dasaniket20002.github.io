@@ -55,7 +55,7 @@ html {
 }
 
 body {
-  @apply bg-dark-d font-sans antialiased;
+  @apply bg-dark-d text-light-l font-sans antialiased;
 }
 
 * {

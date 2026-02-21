@@ -1,6 +1,6 @@
 import { useInView } from "motion/react";
 import * as m from "motion/react-m";
-import { lazy, Suspense, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import Link from "../../components/link";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
@@ -14,16 +14,16 @@ const HeroCanvas = lazy(
 
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const eventSourceRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
   const inView = useInView(containerRef, { amount: "some" });
 
+  useEffect(() => {
+    registerSection(containerRef);
+  }, [registerSection]);
+
   return (
     <div
-      ref={(r) => {
-        containerRef.current = r;
-        registerSection(r);
-      }}
+      ref={containerRef}
       data-bg-theme="dark"
       id="hero"
       className={cn(
@@ -37,13 +37,10 @@ export default function Hero({ className }: { className?: string }) {
     >
       <div className="size-full row-span-full col-span-full mask-b-from-90% mask-t-from-90% mask-l-from-90% mask-r-from-90%">
         <Suspense fallback={null}>
-          <HeroCanvas eventSource={eventSourceRef} inView={inView} />
+          <HeroCanvas inView={inView} />
         </Suspense>
       </div>
-      <div
-        ref={eventSourceRef}
-        className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid"
-      >
+      <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid">
         <div className="col-span-full row-[1/2] size-full flex flex-col gap-2 justify-center">
           <m.div
             initial={{ opacity: 0 }}

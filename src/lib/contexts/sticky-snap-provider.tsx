@@ -1,6 +1,6 @@
 import { useLenis } from "lenis/react";
 import { easeOut, useMotionValue } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, type RefObject } from "react";
 import { StickySnapContext, type SnapSection } from "./use-sticky-snap";
 
 export function StickySnapProvider({
@@ -29,12 +29,15 @@ export function StickySnapProvider({
   const isSnapping = useMotionValue<0 | 1>(0);
 
   const registerSection = useCallback(
-    (el: HTMLElement | null, options: { offset?: number } = { offset: 0 }) => {
+    (
+      el: RefObject<HTMLElement | null>,
+      options: { offset?: number } = { offset: 0 },
+    ) => {
       if (!el) return;
       const offset = options?.offset ?? 0;
-      const exists = sectionsRef.current.some((s) => s.el === el);
+      const exists = sectionsRef.current.some((s) => s.el === el.current);
       if (!exists) {
-        sectionsRef.current.push({ el, offset });
+        sectionsRef.current.push({ el: el.current, offset });
       }
     },
     [],
@@ -78,7 +81,8 @@ export function StickySnapProvider({
 
       for (let i = 0; i < sectionsRef.current.length; i++) {
         const { el, offset } = sectionsRef.current[i];
-        const rect = el.getBoundingClientRect();
+        const rect = el?.getBoundingClientRect();
+        if (!rect) return;
 
         /**
          * We snap only when the section's top
