@@ -26,7 +26,7 @@ const HIGH: QualitySettings = {
   useCameraControls: true,
   usePostProcessing: true,
   shadowMapRes: 1024,
-  effectRes: 720,
+  effectRes: 1024,
   useSSAO: true,
 };
 
@@ -36,7 +36,7 @@ const MEDIUM: QualitySettings = {
   useCameraControls: true,
   usePostProcessing: true,
   shadowMapRes: 512,
-  effectRes: 480,
+  effectRes: 512,
   useSSAO: false,
 };
 
@@ -46,7 +46,7 @@ const LOW: QualitySettings = {
   useCameraControls: false,
   usePostProcessing: false,
   shadowMapRes: 256,
-  effectRes: 320,
+  effectRes: 512,
   useSSAO: false,
 };
 

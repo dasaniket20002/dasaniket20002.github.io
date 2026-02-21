@@ -24,7 +24,7 @@ export default function NoiseOverlay() {
             stitchTiles="stitch"
           />
         </filter>
-        <rect width="100%" height="100%" filter="url(#noise)" opacity="0.25" />
+        <rect width="100%" height="100%" filter="url(#noise)" opacity="0.15" />
       </svg>
     </div>
   );

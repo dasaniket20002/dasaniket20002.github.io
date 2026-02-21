@@ -48,7 +48,7 @@ const REVEAL_TRANSITION_DURATION = 0.25;
 const ScrollProgressViewer = ({ className }: { className?: string }) => {
   const { scrollYProgress } = useScroll();
 
-  const top = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const top = useTransform(scrollYProgress, [0, 1], ["-3%", "103%"]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
 
   const [progress, setProgress] = useState(0);

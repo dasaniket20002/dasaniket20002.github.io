@@ -37,32 +37,37 @@ export default function LightsAndEffects() {
           args={[-10, 10, 10, -10, 1, 24]}
         />
       </directionalLight>
-      {qualitySettings.usePostProcessing && (
-        <EffectComposer multisampling={0} enableNormalPass>
-          <FXAA />
-          {qualitySettings.useSSAO ? (
-            <SSAO
-              samples={8}
-              radius={0.1}
-              intensity={20}
-              luminanceInfluence={0.6}
-            />
-          ) : (
-            <></>
-          )}
-          <DepthOfField
-            focusDistance={53}
-            focalLength={12}
-            bokehScale={4}
-            height={qualitySettings.effectRes}
+      <EffectComposer
+        multisampling={0}
+        enableNormalPass
+        enabled={qualitySettings.usePostProcessing}
+      >
+        <FXAA />
+        {qualitySettings.useSSAO ? (
+          <SSAO
+            samples={8}
+            radius={0.1}
+            intensity={20}
+            luminanceInfluence={0.6}
           />
-          <Bloom
-            luminanceThreshold={0.25}
-            luminanceSmoothing={0.5}
-            height={qualitySettings.effectRes}
-          />
-        </EffectComposer>
-      )}
+        ) : (
+          <></>
+        )}
+        <DepthOfField
+          focusDistance={53}
+          focalLength={12}
+          bokehScale={4}
+          width={qualitySettings.effectRes}
+          height={qualitySettings.effectRes}
+        />
+        <Bloom
+          luminanceThreshold={0.25}
+          luminanceSmoothing={0.5}
+          mipmapBlur
+          resolutionX={qualitySettings.effectRes}
+          resolutionY={qualitySettings.effectRes}
+        />
+      </EffectComposer>
     </>
   );
 }
