@@ -4,6 +4,7 @@ import { clamp } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
 export const PRIMARY_EMAIL = "dasaniketconnects@gmail.com";
+export const EPSILON = 1e-4;
 
 export const colorPalettes: Hsv[][] = [
   [

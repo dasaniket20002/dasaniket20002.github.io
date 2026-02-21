@@ -1,6 +1,8 @@
 import { useFrame } from "@react-three/fiber";
 import { createContext, useContext, useRef } from "react";
 
+export type PerformanceRating = "high" | "medium" | "low";
+
 export type StaticPerformanceMetrics = {
   hardwareConcurrency: number;
   deviceMemory: number;
@@ -10,25 +12,26 @@ export type StaticPerformanceMetrics = {
   gpuRenderer: string;
 };
 
-export type BenchmarkResult = {
+export type BenchmarkPerformanceMetrics = {
   avgFps: number;
   maxFps: number;
   minFps: number;
   sampleFrames: number;
   duration: number;
-  rating: "high" | "medium" | "low";
+  rating: PerformanceRating;
 };
 
 export type PerformanceMetrics = {
   staticMetrics?: StaticPerformanceMetrics;
-  benchmarkMetrics?: BenchmarkResult;
+  benchmarkMetrics?: BenchmarkPerformanceMetrics;
 };
 
 export type PerformanceMetricsContextValue = {
   findStaticMetrics: (
     gl: WebGLRenderingContext | WebGL2RenderingContext | null,
   ) => StaticPerformanceMetrics;
-  setBenchmarkMetrics: (result: BenchmarkResult) => void;
+  setBenchmarkMetrics: (result: BenchmarkPerformanceMetrics) => void;
+  performanceRating?: PerformanceRating;
 } & PerformanceMetrics;
 
 const WARMUP_DURATION = 0.1;
@@ -103,7 +106,7 @@ export function useBenchmarkRunner() {
     const maxFps = 1 / minDelta;
     const minFps = 1 / maxDelta;
 
-    let rating: BenchmarkResult["rating"];
+    let rating: BenchmarkPerformanceMetrics["rating"];
     if (avgFps >= 55) rating = "high";
     else if (avgFps >= 30) rating = "medium";
     else rating = "low";

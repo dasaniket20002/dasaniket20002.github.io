@@ -1,3 +1,4 @@
+import { OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Bloom,
@@ -6,22 +7,30 @@ import {
   FXAA,
   SSAO,
 } from "@react-three/postprocessing";
-import { useEffect, useRef } from "react";
-import { type Group } from "three";
+import { useRef } from "react";
+import { Color, type Group } from "three";
 import {
   useBenchmarkRunner,
   usePerformanceMetrics,
 } from "../../contexts/use-performance-metrics";
+import { converter } from "culori";
+import { getColorPropertyValue } from "../../utils";
 
-const STRESS_COUNT = 500;
+const COLS = 22;
+const STRESS_COUNT = COLS * COLS;
+const SPACING = 1;
+
+const _COLOR_DARK = converter("rgb")(getColorPropertyValue("dark-d"));
+const COLOR_DARK = new Color().setRGB(
+  _COLOR_DARK?.r ?? 0,
+  _COLOR_DARK?.g ?? 0,
+  _COLOR_DARK?.b ?? 0,
+);
 
 export default function LoaderCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { findStaticMetrics, benchmarkMetrics } = usePerformanceMetrics();
+  const { findStaticMetrics } = usePerformanceMetrics();
 
-  useEffect(() => {
-    if (benchmarkMetrics) console.log(benchmarkMetrics);
-  }, [benchmarkMetrics]);
   return (
     <Canvas
       ref={canvasRef}
@@ -40,6 +49,7 @@ export default function LoaderCanvas({ className }: { className?: string }) {
     >
       <LightsAndEffects />
       <MeshComponents />
+      <OrbitControls />
     </Canvas>
   );
 }
@@ -56,7 +66,11 @@ function MeshComponents() {
       <group ref={group}>
         <mesh
           position={[0, 0, 0]}
-          rotation={[Math.atan(Math.SQRT1_2), Math.PI / 4, 0]}
+          rotation={[
+            Math.atan(Math.SQRT1_2),
+            Math.PI / 4,
+            Math.atan(Math.SQRT1_2),
+          ]}
         >
           <boxGeometry args={[1, 1, 1, 2, 2, 2]} />
           <meshPhysicalMaterial
@@ -69,23 +83,22 @@ function MeshComponents() {
           />
         </mesh>
       </group>
-      {Array.from({ length: STRESS_COUNT }, (_, i) => i).map((i) => {
-        const COLS = Math.round(Math.sqrt(STRESS_COUNT));
-        const SPACING = 1.2;
-
+      {Array.from({ length: STRESS_COUNT }, (_, i) => {
         const col = i % COLS;
         const row = Math.floor(i / COLS);
 
         const x = (col - (COLS - 1) / 2) * SPACING;
-        const z = (row + 5) * SPACING;
+        const y = (row - (COLS - 1) / 2) * SPACING;
+
         return (
-          <mesh key={i} position={[x, 0, z]}>
-            <boxGeometry args={[1, 1, 1, 4, 4, 4]} />
+          <mesh key={i} position={[x, y, -50]}>
+            <boxGeometry args={[1, 1, 1, 8, 8, 8]} />
             <meshPhysicalMaterial
+              color={COLOR_DARK}
               transparent
               opacity={0.5}
               roughness={0.2}
-              reflectivity={0.28}
+              reflectivity={0.2}
               metalness={0.2}
               iridescence={0.7}
               iridescenceIOR={1.3}

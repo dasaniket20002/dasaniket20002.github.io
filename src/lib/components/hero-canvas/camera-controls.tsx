@@ -3,12 +3,11 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, type RefObject } from "react";
 import { Spherical, Vector2, Vector3 } from "three";
 import { useElementSize } from "../../hooks/use-element-size";
-import { mapRange } from "../../utils";
+import { EPSILON, mapRange } from "../../utils";
 
-const SMOOTHING = 8; // higher = faster convergence
+const SMOOTHING = 8;
 const THETA_RANGE = Math.PI / 64;
 const PHI_RANGE = Math.PI / 64;
-const EPSILON = 1e-4;
 
 export default function CameraControls({
   canvasRef,
@@ -55,7 +54,6 @@ export default function CameraControls({
     const t = 1 - Math.exp(-SMOOTHING * delta);
     lerped.current.lerp(pointer.current, t);
 
-    // only regress while there is meaningful movement
     if (previous.current.distanceTo(lerped.current) > EPSILON) {
       state.performance.regress();
     }

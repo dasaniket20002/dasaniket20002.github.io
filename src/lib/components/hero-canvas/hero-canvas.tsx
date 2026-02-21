@@ -3,6 +3,8 @@ import { memo, Suspense, useRef, type RefObject } from "react";
 import CameraControls from "./camera-controls";
 import LightsAndEffects from "./lights_effects";
 import MeshComponents from "./mesh-components";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 
 const MeshComponentsMemo = memo(() => (
   <Suspense fallback={null}>
@@ -20,6 +22,8 @@ export default function HeroCanvas({
   inView?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
 
   return (
     <Canvas
@@ -30,8 +34,8 @@ export default function HeroCanvas({
       gl={{
         alpha: true,
         antialias: false,
-        stencil: false,
-        depth: false,
+        stencil: !qualitySettings?.usePostProcessing,
+        depth: !qualitySettings?.usePostProcessing,
         powerPreference: "high-performance",
       }}
       onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
@@ -42,7 +46,9 @@ export default function HeroCanvas({
     >
       <MeshComponentsMemo />
       <LightsAndEffects />
-      <CameraControls canvasRef={canvasRef} />
+      {qualitySettings.useCameraControls && (
+        <CameraControls canvasRef={canvasRef} />
+      )}
     </Canvas>
   );
 }

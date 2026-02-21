@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   PerformanceMetricsContext,
-  type BenchmarkResult,
+  type BenchmarkPerformanceMetrics,
   type StaticPerformanceMetrics,
 } from "./use-performance-metrics";
 
@@ -14,7 +14,7 @@ export function PerformanceMetricsProvider({
     StaticPerformanceMetrics | undefined
   >();
   const [benchmarkMetrics, setBenchmarkMetrics] = useState<
-    BenchmarkResult | undefined
+    BenchmarkPerformanceMetrics | undefined
   >();
 
   const findStaticMetrics = useCallback(
@@ -100,6 +100,11 @@ export function PerformanceMetricsProvider({
     [],
   );
 
+  const performanceRating = useMemo(() => {
+    if (!benchmarkMetrics) return;
+    return benchmarkMetrics.rating;
+  }, [benchmarkMetrics]);
+
   return (
     <PerformanceMetricsContext.Provider
       value={{
@@ -107,6 +112,7 @@ export function PerformanceMetricsProvider({
         staticMetrics,
         benchmarkMetrics,
         setBenchmarkMetrics,
+        performanceRating,
       }}
     >
       {children}

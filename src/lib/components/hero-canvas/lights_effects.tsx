@@ -6,17 +6,21 @@ import {
   SSAO,
 } from "@react-three/postprocessing";
 import { converter } from "culori";
-import { useMemo } from "react";
 import { Color } from "three";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { getColorPropertyValue } from "../../utils";
 
+const _COLOR_LIGHT = converter("rgb")(getColorPropertyValue("dark-l"));
+const COLOR_LIGHT = new Color().setRGB(
+  _COLOR_LIGHT?.r ?? 0,
+  _COLOR_LIGHT?.g ?? 0,
+  _COLOR_LIGHT?.b ?? 0,
+);
+
 export default function LightsAndEffects() {
-  const lightColor = useMemo(() => {
-    const col = getColorPropertyValue("light-l");
-    const rgb = converter("rgb")(col);
-    const color_rep = new Color().setRGB(rgb?.r ?? 0, rgb?.g ?? 0, rgb?.b ?? 0);
-    return color_rep;
-  }, []);
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
 
   return (
     <>
@@ -24,35 +28,41 @@ export default function LightsAndEffects() {
       <directionalLight
         position={[10, 10, -10]}
         intensity={1}
-        color={lightColor}
+        color={COLOR_LIGHT}
         castShadow
-        shadow-mapSize={1024}
+        shadow-mapSize={qualitySettings.shadowMapRes}
       >
         <orthographicCamera
           attach="shadow-camera"
-          args={[-10, 10, 10, -10, 1, 128]}
+          args={[-10, 10, 10, -10, 1, 24]}
         />
       </directionalLight>
-      <EffectComposer multisampling={0} enableNormalPass>
-        <FXAA />
-        <SSAO
-          samples={8}
-          radius={0.1}
-          intensity={20}
-          luminanceInfluence={0.6}
-        />
-        <DepthOfField
-          focusDistance={53}
-          focalLength={12}
-          bokehScale={4}
-          height={720}
-        />
-        <Bloom
-          luminanceThreshold={0.25}
-          luminanceSmoothing={0.5}
-          height={360}
-        />
-      </EffectComposer>
+      {qualitySettings.usePostProcessing && (
+        <EffectComposer multisampling={0} enableNormalPass>
+          <FXAA />
+          {qualitySettings.useSSAO ? (
+            <SSAO
+              samples={8}
+              radius={0.1}
+              intensity={20}
+              luminanceInfluence={0.6}
+            />
+          ) : (
+            <></>
+          )}
+          <DepthOfField
+            focusDistance={53}
+            focalLength={12}
+            bokehScale={4}
+            height={qualitySettings.effectRes}
+          />
+          <Bloom
+            luminanceThreshold={0.25}
+            luminanceSmoothing={0.5}
+            height={qualitySettings.effectRes}
+          />
+        </EffectComposer>
+      )}
     </>
   );
 }

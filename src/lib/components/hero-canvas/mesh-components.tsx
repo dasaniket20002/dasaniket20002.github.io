@@ -1,9 +1,15 @@
 import { Instance, Instances, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { converter } from "culori";
-import { animate, MotionValue, useMotionValue } from "motion/react";
-import { useEffect, useRef } from "react";
+import {
+  animate,
+  useMotionValue,
+  type AnimationPlaybackControlsWithThen,
+} from "motion/react";
+import { useEffect, useMemo, useRef } from "react";
 import { Color, FrontSide, Group, Mesh, MeshPhysicalMaterial } from "three";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { getColorPropertyValue } from "../../utils";
 
 const _COLOR_DARK = converter("rgb")(getColorPropertyValue("dark-d"));
@@ -13,7 +19,7 @@ const COLOR_DARK = new Color().setRGB(
   _COLOR_DARK?.b ?? 0,
 );
 
-const _COLOR_LIGHT = converter("rgb")(getColorPropertyValue("dark-d"));
+const _COLOR_LIGHT = converter("rgb")(getColorPropertyValue("light-l"));
 const COLOR_LIGHT = new Color().setRGB(
   _COLOR_LIGHT?.r ?? 0,
   _COLOR_LIGHT?.g ?? 0,
@@ -29,6 +35,7 @@ const MESH_BODY_MAT = new MeshPhysicalMaterial({
   iridescence: 0.7,
   iridescenceIOR: 1,
 });
+
 const MESH_LETTER_MAT = new MeshPhysicalMaterial({
   side: FrontSide,
   color: COLOR_LIGHT,
@@ -51,6 +58,8 @@ const MESH_SURROUND_MAT = new MeshPhysicalMaterial({
 
 export default function MeshComponents() {
   const { meshes } = useGLTF("/assets/models/logo-model/logo-model.gltf");
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
 
   const poiRef = useRef<Group>(null);
   const poiY = useMotionValue(0);
@@ -64,6 +73,12 @@ export default function MeshComponents() {
   const surrmesh1 = useMotionValue(0);
   const surrmesh2 = useMotionValue(0);
   const surrmesh3 = useMotionValue(0);
+  const surroundValues = useMemo(
+    () => [surrmesh1, surrmesh2, surrmesh3],
+    [surrmesh1, surrmesh2, surrmesh3],
+  );
+
+  /* ---- Animations ---- */
 
   useEffect(() => {
     const poiSeq = async () => {
@@ -72,70 +87,65 @@ export default function MeshComponents() {
         delay: 0.75,
         ease: "easeInOut",
       });
-      animate(poiY, [-0.25, 0, -0.25], {
-        duration: 6,
-        ease: "easeInOut",
-        repeatType: "loop",
-        repeat: Infinity,
-      });
+
+      if (qualitySettings.loopPoiAnimation) {
+        animate(poiY, [-0.25, 0, -0.25], {
+          duration: 6,
+          ease: "easeInOut",
+          repeat: Infinity,
+        });
+      }
     };
 
-    const surrSeq = async (
-      value: MotionValue<number>,
-      initialKeyframes: number[],
-      animateKeyframes: number[],
-      animateDuration: number,
-    ) => {
-      await animate(value, initialKeyframes, {
-        duration: 3,
-        delay: 0.5,
-        ease: "easeInOut",
-      });
-      animate(value, animateKeyframes, {
-        duration: animateDuration,
-        ease: "easeInOut",
-        repeat: Infinity,
-        repeatType: "loop",
-      });
-    };
-
-    surrSeq(surrmesh1, [-8, -4], [-4, -4.5, -4], 12);
-    surrSeq(surrmesh2, [-16, -8], [-8, -9, -8], 16);
-    surrSeq(surrmesh3, [-10, -8], [-8, -8.5, -8], 24);
     poiSeq();
-  }, [poiY, surrmesh1, surrmesh2, surrmesh3]);
+  }, [poiY, qualitySettings.loopPoiAnimation]);
+
+  useEffect(() => {
+    if (!qualitySettings.surroundAnimations) {
+      if (surrmesh1Ref.current) surrmesh1Ref.current.position.x = -4;
+      if (surrmesh2Ref.current) surrmesh2Ref.current.position.y = -8;
+      if (surrmesh3Ref.current) surrmesh3Ref.current.position.z = -8;
+      return;
+    }
+
+    const controls: Promise<AnimationPlaybackControlsWithThen>[] =
+      qualitySettings.surroundAnimations.map(async (cfg, i) => {
+        await animate(surroundValues[i], cfg.initial, {
+          duration: 3,
+          delay: 0.5,
+          ease: "easeInOut",
+        });
+        return animate(surroundValues[i], cfg.loop, {
+          duration: cfg.loopDuration,
+          ease: "easeInOut",
+          repeat: Infinity,
+        });
+      });
+
+    return () => {
+      controls.forEach((ctrl) => ctrl.then((c) => c.stop()));
+    };
+  }, [
+    surroundValues,
+    qualitySettings.surroundAnimations,
+    surrmesh1,
+    surrmesh2,
+    surrmesh3,
+  ]);
+
+  /* ---- Per-frame updates ---- */
 
   useFrame(() => {
-    if (poiRef.current) {
-      poiRef.current.position.set(
-        poiRef.current.position.x,
-        poiY.get(),
-        poiRef.current.position.z,
-      );
-    }
+    if (poiRef.current) poiRef.current.position.y = poiY.get();
 
-    if (surrmesh1Ref.current) {
-      surrmesh1Ref.current.position.set(
-        surrmesh1.get(),
-        surrmesh1Ref.current.position.y,
-        surrmesh1Ref.current.position.z,
-      );
-    }
-    if (surrmesh2Ref.current) {
-      surrmesh2Ref.current.position.set(
-        surrmesh2Ref.current.position.x,
-        surrmesh2.get(),
-        surrmesh2Ref.current.position.z,
-      );
-    }
-    if (surrmesh3Ref.current) {
-      surrmesh3Ref.current.position.set(
-        surrmesh3Ref.current.position.x,
-        surrmesh3Ref.current.position.y,
-        surrmesh3.get(),
-      );
-    }
+    if (!qualitySettings.surroundAnimations) return;
+
+    if (surrmesh1Ref.current) surrmesh1Ref.current.position.x = surrmesh1.get();
+    if (surrmesh2Ref.current) surrmesh2Ref.current.position.y = surrmesh2.get();
+    if (surrmesh3Ref.current) surrmesh3Ref.current.position.z = surrmesh3.get();
   });
+
+  /* ---- Scene graph ---- */
 
   return (
     <group>
@@ -166,8 +176,8 @@ export default function MeshComponents() {
           ref={surrmesh1Ref}
           scale={8}
           position={[-8, -4, 8]}
-          castShadow
           receiveShadow
+          castShadow
         />
         <Instance
           ref={surrmesh2Ref}
