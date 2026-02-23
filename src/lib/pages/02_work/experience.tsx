@@ -5,6 +5,7 @@ import { useElementSize } from "../../hooks/use-element-size";
 import ExperienceList, { type Experience } from "./experience-list";
 import * as m from "motion/react-m";
 import { cn } from "../../utils";
+import { useWindowSize } from "../../hooks/use-window-size";
 
 const experiences: Experience[] = [
   {
@@ -86,6 +87,7 @@ export default function Experience({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const experienceContainerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
+  const { width: windowWidth } = useWindowSize();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -125,7 +127,9 @@ export default function Experience({ className }: { className?: string }) {
     >
       <div
         className="relative row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full"
-        style={{ height: experienceContainerHeight }}
+        style={{
+          height: windowWidth >= 768 ? experienceContainerHeight : "auto",
+        }}
       >
         <m.div
           style={{ top: titleParallaxTop }}
