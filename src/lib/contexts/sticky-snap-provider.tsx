@@ -23,7 +23,7 @@ export function StickySnapProvider({
   const activeElement = useRef<HTMLElement>(null);
 
   const lockedScrollRef = useRef(false);
-  const lockedScrollPositionRef = useRef<number | null>(null);
+  const snapTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const activeIndex = useMotionValue(0);
   const isSnapping = useMotionValue<0 | 1>(0);
@@ -52,30 +52,44 @@ export function StickySnapProvider({
   }, []);
 
   const lockScroll = useCallback(() => {
+    // Cancel any in-flight snap
+    if (snappingRef.current) {
+      snappingRef.current = false;
+      isSnapping.set(0);
+      clearTimeout(snapTimeoutRef.current);
+    }
+
+    // Lock both snap and scroll
+    lockedSnapRef.current = true;
     lockedScrollRef.current = true;
-    lockedScrollPositionRef.current = lastScrollRef.current;
-  }, []);
+
+    // Stop Lenis entirely — no input processing, no scroll events,
+    // no scrollTo feedback loop
+    lenis?.stop();
+  }, [lenis, isSnapping]);
 
   const unlockScroll = useCallback(() => {
     lockedScrollRef.current = false;
-    lockedScrollPositionRef.current = null;
-  }, []);
+    lockedSnapRef.current = false;
+
+    // Resume Lenis from the preserved position
+    lenis?.start();
+  }, [lenis]);
 
   useEffect(() => {
     if (!lenis) return;
 
     const onScroll = ({ scroll }: { scroll: number }) => {
-      if (lockedScrollRef.current) {
-        const lockPos = lockedScrollPositionRef.current ?? scroll;
-        lenis.scrollTo(lockPos, { duration: 0, immediate: true });
-        return;
-      }
+      // Always keep tracking current position
+      const prevScroll = lastScrollRef.current;
+      lastScrollRef.current = scroll;
 
+      // Lenis is stopped during lock, but guard anyway
+      if (lockedScrollRef.current) return;
       if (snappingRef.current) return;
       if (lockedSnapRef.current) return;
 
-      const scrollingDown = scroll > lastScrollRef.current;
-      lastScrollRef.current = scroll;
+      const scrollingDown = scroll > prevScroll;
 
       if (!scrollingDown && !snapTopBottom) return;
 
@@ -84,10 +98,6 @@ export function StickySnapProvider({
         const rect = el?.getBoundingClientRect();
         if (!rect) return;
 
-        /**
-         * We snap only when the section's top
-         * is entering the threshold zone
-         */
         if (scrollingDown && rect.top > 0 && rect.top < snapThreshold) {
           const targetY = scroll + rect.top - offset;
 
@@ -101,7 +111,7 @@ export function StickySnapProvider({
             easing: easeOut,
           });
 
-          setTimeout(
+          snapTimeoutRef.current = setTimeout(
             () => {
               snappingRef.current = false;
               isSnapping.set(0);

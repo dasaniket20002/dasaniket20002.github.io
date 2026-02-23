@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -170,16 +171,22 @@ function MorphingDialogContent({
     };
 
     document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [setIsOpen]);
 
+  // Synchronous before paint — locks before Lenis's next RAF tick
+  useLayoutEffect(() => {
+    if (isOpen) {
+      lockScroll();
+    }
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      unlockScroll();
     };
-  }, [setIsOpen, firstFocusableElement, lastFocusableElement]);
+  }, [isOpen, lockScroll, unlockScroll]);
 
+  // After paint — focus management
   useEffect(() => {
     if (isOpen) {
-      // document.body.classList.add("overflow-hidden");
-      lockScroll();
       const focusableElements = containerRef.current?.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
@@ -191,11 +198,9 @@ function MorphingDialogContent({
         firstFocusableElement.current.focus();
       }
     } else {
-      // document.body.classList.remove("overflow-hidden");
-      unlockScroll();
       triggerRef.current?.focus();
     }
-  }, [isOpen, lockScroll, triggerRef, unlockScroll]);
+  }, [isOpen, triggerRef]);
 
   useClickOutside(containerRef, () => {
     if (isOpen) {
