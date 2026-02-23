@@ -92,7 +92,11 @@ export default function Experience({ className }: { className?: string }) {
     offset: ["start end", "end start"],
   });
   const titleRevealY = useTransform(scrollYProgress, [0, 0.25], ["100%", "0%"]);
-  const _titleRevealBlur = useTransform(scrollYProgress, [0, 0.25], [3, 0]);
+  const _titleRevealBlur = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.8, 1],
+    [3, 0, 0, 3],
+  );
   const titleRevealBlur = useMotionTemplate`blur(${_titleRevealBlur}px)`;
 
   const titleParallaxTop = useTransform(
@@ -113,7 +117,9 @@ export default function Experience({ className }: { className?: string }) {
     <div
       ref={containerRef}
       className={cn(
-        "relative col-span-full row-span-full grid grid-rows-subgrid grid-cols-subgrid",
+        "relative grid gap-y-12 md:gap-y-0",
+        "grid-cols-[4rem_1fr_4rem] grid-rows-[4rem_auto_1fr]",
+        "md:grid-cols-[8rem_1fr_1fr_1fr_8rem]",
         className,
       )}
     >
@@ -123,7 +129,7 @@ export default function Experience({ className }: { className?: string }) {
       >
         <m.div
           style={{ top: titleParallaxTop }}
-          className="sticky overflow-hidden"
+          className="sticky mask-b-from-80%"
         >
           <m.h3
             style={{ y: titleRevealY, filter: titleRevealBlur }}
