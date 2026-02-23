@@ -10,7 +10,7 @@ import Work from "./lib/pages/02_work/work";
 const RENDER_SOLO = false;
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <>

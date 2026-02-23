@@ -110,21 +110,21 @@ export default function Experience({ className }: { className?: string }) {
   );
 
   useEffect(() => {
-    registerSection(experienceContainerRef);
+    registerSection(containerRef);
   }, [registerSection]);
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        "relative grid gap-y-12 md:gap-y-0",
-        "grid-cols-[4rem_1fr_4rem] grid-rows-[4rem_auto_1fr]",
+        "relative grid gap-y-12 md:gap-y-0 py-16",
+        "grid-cols-[4rem_1fr_4rem] grid-rows-[auto_1fr]",
         "md:grid-cols-[8rem_1fr_1fr_1fr_8rem]",
         className,
       )}
     >
       <div
-        className="relative row-[2/3] md:row-[2/4] col-[2/-2] md:col-[2/3] w-full"
+        className="relative row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full"
         style={{ height: experienceContainerHeight }}
       >
         <m.div
@@ -142,7 +142,7 @@ export default function Experience({ className }: { className?: string }) {
       <ExperienceList
         ref={experienceContainerRef}
         experiences={experiences}
-        className="row-[3/4] md:row-[2/4] col-[2/-2] md:col-[3/5] h-min"
+        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-min"
       />
     </div>
   );
