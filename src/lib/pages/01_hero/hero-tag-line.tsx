@@ -8,6 +8,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
         per="line"
         as="h1"
         delay={1.5}
+        speedReveal={2}
         className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px"
         tokenStyles={[
           {
