@@ -22,7 +22,7 @@ export default function AppWrapper() {
       options={{
         autoRaf: false,
         syncTouch: true,
-        // infinite: true,
+        infinite: true,
       }}
       ref={lenisRef}
     >

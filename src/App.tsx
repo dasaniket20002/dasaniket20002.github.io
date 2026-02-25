@@ -1,12 +1,14 @@
 import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
-import { useState } from "react";
-import Header from "./lib/components/header";
+import { lazy, useState } from "react";
 import NoiseOverlay from "./lib/components/noise-overlay";
-import Loader from "./lib/pages/00_loader/loader";
-import Hero from "./lib/pages/01_hero/hero";
-import Work from "./lib/pages/02_work/work";
-import Services from "./lib/pages/03_services/services";
+
+const Loader = lazy(() => import("./lib/pages/00_loader/loader"));
+const Header = lazy(() => import("./lib/components/header"));
+
+const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
+const Work = lazy(() => import("./lib/pages/02_work/work"));
+const Services = lazy(() => import("./lib/pages/03_services/services"));
 
 const RENDER_SOLO = false;
 
@@ -36,6 +38,7 @@ function App() {
               <Work />
               <Services />
               <div className="h-[200dvh]"></div>
+              <Hero />
             </m.main>
           )}
         </AnimatePresence>

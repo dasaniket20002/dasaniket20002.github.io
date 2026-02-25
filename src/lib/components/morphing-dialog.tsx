@@ -17,9 +17,9 @@ import {
 import * as m from "motion/react-m";
 import { createPortal } from "react-dom";
 import { cn } from "../utils";
-import { IconX } from "@tabler/icons-react";
 import { useStickySnap } from "../contexts/use-sticky-snap";
 import { useClickOutside } from "../hooks/use-click-outside";
+import IconX from "./svg/icon-x";
 
 export type MorphingDialogContextType = {
   isOpen: boolean;
@@ -455,7 +455,7 @@ function MorphingDialogClose({
       exit="exit"
       variants={variants}
     >
-      {children || <IconX size={18} />}
+      {children || <IconX className="size-5" />}
     </m.button>
   );
 }

@@ -1,6 +1,3 @@
-"use client";
-
-import { IconBrandBlender } from "@tabler/icons-react";
 import type { MotionValue } from "motion/react";
 import {
   useAnimationFrame,
@@ -13,6 +10,7 @@ import {
 import * as m from "motion/react-m";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "../utils";
+import IconBrandBlender from "./svg/icon-brand-blender";
 
 /* ================================================================== */
 /*  Helpers                                                           */

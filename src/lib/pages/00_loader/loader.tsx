@@ -1,11 +1,12 @@
 import * as m from "motion/react-m";
-import { forwardRef, useEffect } from "react";
+import { forwardRef, lazy, useEffect } from "react";
 import LogoName from "../../components/logo-name";
 import { preloadWithProgress } from "../../utils";
 import Counter from "./counter";
-import LoaderCanvas from "./loader-canvas";
 import Message from "./message";
 import MetricsDisplay from "./metrics-display";
+
+const LoaderCanvas = lazy(() => import("./loader-canvas"));
 
 type LoaderProps = { onComplete: () => void };
 

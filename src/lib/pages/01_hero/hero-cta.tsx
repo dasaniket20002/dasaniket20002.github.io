@@ -1,10 +1,11 @@
-import { IconArrowDown, IconArrowRight } from "@tabler/icons-react";
 import { useLenis } from "lenis/react";
 import Button from "../../components/button";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn, PRIMARY_EMAIL } from "../../utils";
 import type { HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
+import IconArrowDown from "../../components/svg/icon-arrow-down";
+import IconArrowRight from "../../components/svg/icon-arrow-right";
 
 export default function HeroCTA({
   className,

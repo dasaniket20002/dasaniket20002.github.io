@@ -15,12 +15,21 @@ import {
   RigidBody,
   useRopeJoint,
   useSphericalJoint,
+  type Vector3Tuple,
 } from "@react-three/rapier";
 import { formatHex } from "culori";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import { Suspense, useCallback, useMemo, useRef, type RefObject } from "react";
-import * as THREE from "three";
 import { getColorPropertyValue } from "../../utils";
+import {
+  CatmullRomCurve3,
+  Color,
+  DoubleSide,
+  Mesh,
+  MeshPhysicalMaterial,
+  Vector2,
+  Vector3,
+} from "three";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -34,11 +43,11 @@ declare module "@react-three/fiber" {
 const DisableRender = () => useFrame(() => null, 1000);
 
 const DEBUG = false;
-const GRAVITY: THREE.Vector3Tuple = [0, 4, 0];
+const GRAVITY: Vector3Tuple = [0, 4, 0];
 
 const BALLOON_COLOR = formatHex(getColorPropertyValue("light-l"));
 
-const BALLOON_MATERIAL = new THREE.MeshPhysicalMaterial({
+const BALLOON_MATERIAL = new MeshPhysicalMaterial({
   color: BALLOON_COLOR,
   transparent: true,
   opacity: 0.5,
@@ -49,10 +58,10 @@ const BALLOON_MATERIAL = new THREE.MeshPhysicalMaterial({
   iridescenceIOR: 1.82,
   clearcoat: 0.5,
   clearcoatRoughness: 0.12,
-  side: THREE.DoubleSide,
+  side: DoubleSide,
 });
 
-const BALLOON_HOLDER_MATERIAL = new THREE.MeshPhysicalMaterial({
+const BALLOON_HOLDER_MATERIAL = new MeshPhysicalMaterial({
   color: BALLOON_COLOR,
   roughness: 0.14,
   metalness: 0.74,
@@ -123,14 +132,14 @@ function FloatingBalloonLightsAndEffects() {
           radius={0.15}
           intensity={20}
           luminanceInfluence={0.6}
-          color={new THREE.Color(1, 1, 1)}
+          color={new Color(1, 1, 1)}
         />
         <SSAO
           samples={21}
           radius={0.03}
           intensity={15}
           luminanceInfluence={0.6}
-          color={new THREE.Color(1, 1, 1)}
+          color={new Color(1, 1, 1)}
         />
       </EffectComposer>
     </>
@@ -144,7 +153,7 @@ function FloatingBalloonComponent() {
   const j2 = useRef<RapierRigidBody>(null);
   const j3 = useRef<RapierRigidBody>(null);
   const balloon = useRef<RapierRigidBody>(null);
-  const rope = useRef<THREE.Mesh>(null);
+  const rope = useRef<Mesh>(null);
 
   // Ref to avoid re-renders
   const targetYRotation = useRef(0);
@@ -177,11 +186,11 @@ function FloatingBalloonComponent() {
 
   const curve = useMemo(
     () =>
-      new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
+      new CatmullRomCurve3([
+        new Vector3(),
+        new Vector3(),
+        new Vector3(),
+        new Vector3(),
       ]),
     [],
   );
@@ -334,7 +343,7 @@ function FloatingBalloonComponent() {
               opacity: 0.5,
               color: "gray",
               lineWidth: 0.04,
-              resolution: new THREE.Vector2(width, height),
+              resolution: new Vector2(width, height),
             },
           ]}
         />
