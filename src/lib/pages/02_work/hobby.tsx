@@ -140,17 +140,27 @@ export default function Hobby({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
 
-  const { scrollYProgress } = useScroll({
+  // Reveal animation — always covers exactly 25vh of scrolling, regardless of container height
+  const { scrollYProgress: revealProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["start end", "start 0.75"], // top of container: viewport bottom → 25% into viewport
   });
-  const titleRevealY = useTransform(scrollYProgress, [0, 0.25], ["100%", "0%"]);
-  const _titleRevealBlur = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.8, 1],
-    [3, 0, 0, 3],
+
+  // Exit animation — fixed viewport distance for the blur-out
+  const { scrollYProgress: exitProgress } = useScroll({
+    target: containerRef,
+    offset: ["end end", "end start"], // bottom of container: viewport bottom → viewport top (1vh)
+  });
+
+  const titleRevealY = useTransform(revealProgress, [0, 1], ["100%", "0%"]);
+
+  // Combine entry blur and exit blur
+  const _revealBlur = useTransform(revealProgress, [0, 1], [3, 0]);
+  const _exitBlur = useTransform(exitProgress, [0.8, 1], [0, 3]);
+  const _titleBlur = useTransform([_revealBlur, _exitBlur], ([reveal, exit]) =>
+    Math.max(reveal as number, exit as number),
   );
-  const titleRevealBlur = useMotionTemplate`blur(${_titleRevealBlur}px)`;
+  const titleRevealBlur = useMotionTemplate`blur(${_titleBlur}px)`;
 
   useEffect(() => {
     registerSection(containerRef);
@@ -160,11 +170,11 @@ export default function Hobby({ className }: { className?: string }) {
     <div
       ref={containerRef}
       className={cn(
-        "h-dvh w-full px-16 md:px-32 py-16 flex flex-col gap-8",
+        "h-dvh w-full px-16 md:px-32 pt-16 flex flex-col gap-8",
         className,
       )}
     >
-      <div className="relative mask-b-from-80%">
+      <div className="sticky top-16 md:relative md:top-0 mask-b-from-80% z-1">
         <m.h3
           style={{ y: titleRevealY, filter: titleRevealBlur }}
           className="text-4xl font-width-125 font-light tracking-wide"

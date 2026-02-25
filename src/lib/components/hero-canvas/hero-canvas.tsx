@@ -47,7 +47,7 @@ export default function HeroCanvas({
       <MeshComponentsMemo />
       <LightsAndEffects />
       {qualitySettings.useCameraControls && (
-        <CameraControls canvasRef={canvasRef} />
+        <CameraControls eventTarget={eventSource ?? canvasRef} />
       )}
     </Canvas>
   );

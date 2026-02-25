@@ -92,14 +92,13 @@ const ExperienceList = forwardRef<
                 gridRow: `${headerRow} / ${headerRow + 1}`,
               }}
             >
-              <h3 className="text-2xl font-width-120 font-bold">
+              <h3 className="text-4xl font-width-120 font-extralight uppercase">
                 {exp.companyName}
               </h3>
-              <h4 className="text-lg text-light-l/75 tracking-wider">
-                {exp.totalDuration}
-              </h4>
-              <h4 className="text-base text-light-d tracking-widest">
-                {exp.location}
+              <h4 className="text-base text-light-l/75 tracking-wider inline-flex gap-3 items-center">
+                <span>{exp.location}</span>
+                <span>.</span>
+                <span className="text-light-d">{exp.totalDuration}</span>
               </h4>
             </div>
 
@@ -127,7 +126,7 @@ const ExperienceList = forwardRef<
                       gridRow: `${titleRow} / ${titleRow + 1}`,
                     }}
                   >
-                    <p className="text-xl font-width-120 font-bold uppercase">
+                    <p className="text-2xl font-width-120 font-light tracking-wide uppercase">
                       {des.title}
                     </p>
                     {des.type && (

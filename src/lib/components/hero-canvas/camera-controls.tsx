@@ -10,12 +10,12 @@ const THETA_RANGE = Math.PI / 64;
 const PHI_RANGE = Math.PI / 64;
 
 export default function CameraControls({
-  canvasRef,
+  eventTarget,
 }: {
-  canvasRef: RefObject<HTMLCanvasElement | null>;
+  eventTarget: RefObject<HTMLElement | null>;
 }) {
   const { camera } = useThree();
-  const canvasSize = useElementSize(canvasRef);
+  const canvasSize = useElementSize(eventTarget);
 
   const pointer = useRef(new Vector2());
   const lerped = useRef(new Vector2());
@@ -26,9 +26,11 @@ export default function CameraControls({
   const _vec3 = useRef(new Vector3());
 
   useEffect(() => {
+    const el = eventTarget.current;
+    if (!el) return;
+
     const handleMove = (e: PointerEvent) => {
-      if (!canvasRef.current) return;
-      const rect = canvasRef.current.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
       pointer.current.x = mapRange(
         (e.clientX - rect.left) / rect.width,
         0,
@@ -44,9 +46,19 @@ export default function CameraControls({
         1,
       );
     };
-    window.addEventListener("pointermove", handleMove);
-    return () => window.removeEventListener("pointermove", handleMove);
-  }, [canvasRef, canvasSize]);
+
+    const handleLeave = () => {
+      // Reset to center so the camera smoothly returns to its base orientation
+      pointer.current.set(0, 0);
+    };
+
+    el.addEventListener("pointermove", handleMove);
+    el.addEventListener("pointerleave", handleLeave);
+    return () => {
+      el.removeEventListener("pointermove", handleMove);
+      el.removeEventListener("pointerleave", handleLeave);
+    };
+  }, [eventTarget, canvasSize]);
 
   useFrame((state, delta) => {
     previous.current.copy(lerped.current);

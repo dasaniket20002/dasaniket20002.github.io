@@ -89,17 +89,34 @@ export default function Experience({ className }: { className?: string }) {
   const { registerSection } = useStickySnap();
   const { width: windowWidth } = useWindowSize();
 
+  // Reveal animation — always covers exactly 25vh of scrolling, regardless of container height
+  const { scrollYProgress: revealProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start 0.75"], // top of container: viewport bottom → 25% into viewport
+  });
+
+  // Overall progress — for parallax and other size-dependent effects
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["-0.25 end", "end start"],
   });
-  const titleRevealY = useTransform(scrollYProgress, [0, 0.25], ["100%", "0%"]);
-  const _titleRevealBlur = useTransform(
-    scrollYProgress,
-    [0, 0.25, 0.8, 1],
-    [3, 0, 0, 3],
+
+  // Exit animation — fixed viewport distance for the blur-out
+  const { scrollYProgress: exitProgress } = useScroll({
+    target: containerRef,
+    offset: ["end end", "end start"], // bottom of container: viewport bottom → viewport top (1vh)
+  });
+
+  const titleRevealY = useTransform(revealProgress, [0, 1], ["100%", "0%"]);
+
+  // Combine entry blur and exit blur
+  const _revealBlur = useTransform(revealProgress, [0, 1], [3, 0]);
+  const _exitBlur = useTransform(exitProgress, [0.8, 1], [0, 3]);
+  const _titleBlur = useTransform<number, number>(
+    [_revealBlur, _exitBlur],
+    ([reveal, exit]) => Math.max(reveal, exit),
   );
-  const titleRevealBlur = useMotionTemplate`blur(${_titleRevealBlur}px)`;
+  const titleRevealBlur = useMotionTemplate`blur(${_titleBlur}px)`;
 
   const titleParallaxTop = useTransform(
     scrollYProgress,
@@ -126,13 +143,13 @@ export default function Experience({ className }: { className?: string }) {
       )}
     >
       <div
-        className="relative row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1"
         style={{
           height: windowWidth >= 768 ? experienceContainerHeight : "auto",
         }}
       >
         <m.div
-          style={{ top: titleParallaxTop }}
+          style={{ top: windowWidth >= 768 ? titleParallaxTop : 0 }}
           className="sticky mask-b-from-80%"
         >
           <m.h3
