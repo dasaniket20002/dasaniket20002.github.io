@@ -6,6 +6,7 @@ import NoiseOverlay from "./lib/components/noise-overlay";
 import Loader from "./lib/pages/00_loader/loader";
 import Hero from "./lib/pages/01_hero/hero";
 import Work from "./lib/pages/02_work/work";
+import Services from "./lib/pages/03_services/services";
 
 const RENDER_SOLO = false;
 
@@ -33,6 +34,7 @@ function App() {
               <Header className="fixed top-0" />
               <Hero />
               <Work />
+              <Services />
               <div className="h-[200dvh]"></div>
             </m.main>
           )}

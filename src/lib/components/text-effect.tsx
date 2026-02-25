@@ -5,7 +5,6 @@ import type {
   Variant,
   Variants,
 } from "motion/react";
-import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import React, { useMemo } from "react";
 import { cn } from "../utils";
@@ -388,32 +387,28 @@ export function TextEffect({
   );
 
   return (
-    <AnimatePresence mode="popLayout">
-      {trigger && (
-        <MotionTag
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          variants={computedVariants.container}
-          className={className}
-          onAnimationComplete={onAnimationComplete}
-          onAnimationStart={onAnimationStart}
-          style={style}
-        >
-          {per !== "line" ? <span className="sr-only">{children}</span> : null}
-          {segments.map((segment, index) => (
-            <AnimationComponent
-              key={`${per}-${index}-${segment}`}
-              segment={segment}
-              variants={computedVariants.item}
-              per={per}
-              segmentWrapperClassName={segmentWrapperClassName}
-              tokenStyles={tokenStyles}
-              wordStyleMap={wordStyleMap}
-            />
-          ))}
-        </MotionTag>
-      )}
-    </AnimatePresence>
+    <MotionTag
+      initial="hidden"
+      animate={trigger ? "visible" : "hidden"}
+      exit="exit"
+      variants={computedVariants.container}
+      className={className}
+      onAnimationComplete={onAnimationComplete}
+      onAnimationStart={onAnimationStart}
+      style={style}
+    >
+      {per !== "line" ? <span className="sr-only">{children}</span> : null}
+      {segments.map((segment, index) => (
+        <AnimationComponent
+          key={`${per}-${index}-${segment}`}
+          segment={segment}
+          variants={computedVariants.item}
+          per={per}
+          segmentWrapperClassName={segmentWrapperClassName}
+          tokenStyles={tokenStyles}
+          wordStyleMap={wordStyleMap}
+        />
+      ))}
+    </MotionTag>
   );
 }
