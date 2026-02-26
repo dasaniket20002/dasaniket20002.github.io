@@ -10,25 +10,25 @@ import ServiceCard from "./service-card";
 const services = [
   {
     title: "UI/UX Design",
-    items: ["/ User Flow", "/ Wireframes", "/ Interactive Prototypes"],
+    items: ["User Flow", "Wireframes", "Interactive Prototypes"],
     description:
       "I design interfaces that balance logic and emotion. They are intuitive from the first click, easy to use, and keep users engaged - helping brands build stronger connections.",
   },
   {
     title: "Web Design",
-    items: ["/ Modern Layout", "/ Responsive Design", "/ Clear Navigation"],
+    items: ["Modern Layout", "Responsive Design", "Clear Navigation"],
     description:
       "I create websites that stand out from the competition and bring real value to businesses. Each project combines creativity and functionality to deliver the best digital solutions.",
   },
   {
     title: "Development",
-    items: ["/ Front-end", "/ Back-end", "/ Optimization", "/ Support"],
+    items: ["Front-end", "Back-end", "Optimization", "Support"],
     description:
       "Full-cycle development with the best experts - from front-end to back-end. We deliver turnkey projects that are reliable, scalable, and built to last.",
   },
   {
     title: "Creative Design",
-    items: ["/ Visual Design", "/ Presentation"],
+    items: ["Visual Design", "Presentation"],
     description:
       "My creative design is about visuals that speak for the brand. From eye-catching social media and stylish presentations to thoughtful visual concepts - everything is designed to inspire, connect, and deliver the best digital solutions.",
   },
