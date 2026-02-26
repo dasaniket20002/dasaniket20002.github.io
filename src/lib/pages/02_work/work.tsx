@@ -1,6 +1,6 @@
 import { cn } from "../../utils";
 import Experience from "./experience";
-import Hobby from "./hobby";
+// import Hobby from "./hobby";
 
 export default function Work({ className }: { className?: string }) {
   return (
@@ -10,7 +10,7 @@ export default function Work({ className }: { className?: string }) {
       className={cn("w-full relative space-y-16", className)}
     >
       <Experience />
-      <Hobby />
+      {/* <Hobby /> */}
     </div>
   );
 }

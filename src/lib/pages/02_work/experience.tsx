@@ -92,7 +92,7 @@ export default function Experience({ className }: { className?: string }) {
   // Reveal animation — always covers exactly 25vh of scrolling, regardless of container height
   const { scrollYProgress: revealProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "start 0.75"], // top of container: viewport bottom → 25% into viewport
+    offset: ["start end", "start center"], // top of container: viewport bottom → 25% into viewport
   });
 
   // Overall progress — for parallax and other size-dependent effects
@@ -150,20 +150,30 @@ export default function Experience({ className }: { className?: string }) {
       >
         <m.div
           style={{ top: windowWidth >= 768 ? titleParallaxTop : 0 }}
-          className="sticky mask-b-from-80%"
+          className="sticky flex flex-col"
         >
-          <m.h3
-            style={{ y: titleRevealY, filter: titleRevealBlur }}
-            className="text-4xl font-width-125 font-light tracking-wide"
-          >
-            EXPERIENCE
-          </m.h3>
+          <div className="mask-b-from-80%">
+            <m.h3
+              style={{ y: titleRevealY, filter: titleRevealBlur }}
+              className="text-4xl font-width-125 font-light tracking-wide uppercase"
+            >
+              what i have done
+            </m.h3>
+          </div>
+          <div className="mask-b-from-80%">
+            <m.p
+              style={{ y: titleRevealY, filter: titleRevealBlur }}
+              className="text-xl font-width-120 font-extralight tracking-wide uppercase"
+            >
+              so far...
+            </m.p>
+          </div>
         </m.div>
       </div>
       <ExperienceList
         ref={experienceContainerRef}
         experiences={experiences}
-        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-min"
+        className="max-w-5xl row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-min"
       />
     </div>
   );

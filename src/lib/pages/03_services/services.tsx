@@ -15,12 +15,6 @@ const services = [
       "I design interfaces that balance logic and emotion. They are intuitive from the first click, easy to use, and keep users engaged - helping brands build stronger connections.",
   },
   {
-    title: "Web Design",
-    items: ["Modern Layout", "Responsive Design", "Clear Navigation"],
-    description:
-      "I create websites that stand out from the competition and bring real value to businesses. Each project combines creativity and functionality to deliver the best digital solutions.",
-  },
-  {
     title: "Development",
     items: ["Front-end", "Back-end", "Optimization", "Support"],
     description:
@@ -31,6 +25,27 @@ const services = [
     items: ["Visual Design", "Presentation"],
     description:
       "My creative design is about visuals that speak for the brand. From eye-catching social media and stylish presentations to thoughtful visual concepts - everything is designed to inspire, connect, and deliver the best digital solutions.",
+  },
+  {
+    title: "AI-Enhanced Workflows",
+    items: [
+      "AI-Assisted tooling",
+      "Human-AI Integration",
+      "Intelligent Suggestion",
+      "LLM Integration",
+    ],
+    description:
+      "Integrating AI where it actually helps, not where it sounds impressive. Humans stay in the loop, decisions stay grounded.",
+  },
+  {
+    title: "Research & Strategy",
+    items: [
+      "User Research",
+      "Data Informed Decisions",
+      "Stakeholder Alignment",
+    ],
+    description:
+      "Decisions backed by evidence, not gut feelings. I synthesize qualitative and quantitative signals into structures teams can actually act on.",
   },
 ];
 
@@ -97,26 +112,41 @@ export default function Services({ className }: { className?: string }) {
       >
         <m.div
           style={{ top: windowWidth >= 768 ? titleParallaxTop : 0 }}
-          className="sticky mask-b-from-80% inline-flex"
+          className="sticky flex flex-col"
         >
-          <m.h3
-            style={{ y: titleRevealY, filter: titleRevealBlur }}
-            className="text-4xl font-width-125 font-light tracking-wide"
-          >
-            SERVICES
-          </m.h3>
+          <div className="mask-b-from-80%">
+            <m.h3
+              style={{ y: titleRevealY, filter: titleRevealBlur }}
+              className="text-4xl font-width-125 font-light tracking-wide uppercase"
+            >
+              what i actually do
+            </m.h3>
+          </div>
+          <div className="mask-b-from-80%">
+            <m.p
+              style={{ y: titleRevealY, filter: titleRevealBlur }}
+              className="text-xl font-width-120 font-extralight tracking-wide uppercase"
+            >
+              being a nerd...
+            </m.p>
+          </div>
         </m.div>
       </div>
       <div
         ref={serviceContainerRef}
-        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] flex flex-col gap-32 justify-around h-full"
+        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] _flex _flex-col grid grid-cols-1 auto-rows-fr h-full"
       >
-        {services.map((service) => (
+        {services.map((service, i) => (
           <ServiceCard
             key={service.title}
             title={service.title}
             items={service.items}
             description={service.description}
+            className={cn(
+              "max-w-5xl py-12 h-full justify-between",
+              // i === 0 && "pt-0",
+              // i === services.length - 1 && "pb-0",
+            )}
           />
         ))}
       </div>
