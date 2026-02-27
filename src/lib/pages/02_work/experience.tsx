@@ -135,6 +135,7 @@ export default function Experience({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
+      id="work"
       className={cn(
         "relative grid gap-y-12 md:gap-y-0 py-16",
         "grid-cols-[4rem_1fr_4rem] grid-rows-[auto_1fr]",
