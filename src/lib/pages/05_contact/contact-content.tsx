@@ -62,7 +62,7 @@ export default function ContactContent() {
           </m.p>
         </div>
       </div>
-      <Form className="flex-1" />
+      <Form className="flex-1 mb-16" />
     </div>
   );
 }

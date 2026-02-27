@@ -1,7 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
-import { parse, type Hsv } from "culori";
+import { converter, parse, type Hsv } from "culori";
 import { clamp } from "motion/react";
 import { twMerge } from "tailwind-merge";
+import { Color } from "three";
 
 export const PRIMARY_EMAIL = "dasaniketconnects@gmail.com";
 export const EPSILON = 1e-4;
@@ -183,6 +184,24 @@ export const getColorPropertyValue = (
     .getPropertyValue(`--color-${propertyName}`)
     .trim();
   return parse(oklchString);
+};
+
+export const getColorPropertyRGB = (
+  propertyName:
+    | "light-l"
+    | "light-d"
+    | "dark-l"
+    | "dark-d"
+    | "accent"
+    | "success",
+) => {
+  const _color = converter("rgb")(getColorPropertyValue(propertyName));
+  const color = new Color().setRGB(
+    _color?.r ?? 0,
+    _color?.g ?? 0,
+    _color?.b ?? 0,
+  );
+  return color;
 };
 
 export const getISTParts = (date = new Date()) => {

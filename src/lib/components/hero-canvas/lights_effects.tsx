@@ -5,18 +5,11 @@ import {
   FXAA,
   SSAO,
 } from "@react-three/postprocessing";
-import { converter } from "culori";
-import { Color } from "three";
 import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
 import { useQualitySettings } from "../../hooks/use-quality-settings";
-import { getColorPropertyValue } from "../../utils";
+import { getColorPropertyRGB } from "../../utils";
 
-const _COLOR_LIGHT = converter("rgb")(getColorPropertyValue("dark-l"));
-const COLOR_LIGHT = new Color().setRGB(
-  _COLOR_LIGHT?.r ?? 0,
-  _COLOR_LIGHT?.g ?? 0,
-  _COLOR_LIGHT?.b ?? 0,
-);
+const COLOR_LIGHT = getColorPropertyRGB("dark-l");
 
 export default function LightsAndEffects() {
   const { performanceRating } = usePerformanceMetrics();

@@ -1,30 +1,18 @@
 import { Instance, Instances, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { converter } from "culori";
 import {
   animate,
   useMotionValue,
   type AnimationPlaybackControlsWithThen,
 } from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
-import { Color, FrontSide, Group, Mesh, MeshPhysicalMaterial } from "three";
+import { FrontSide, Group, Mesh, MeshPhysicalMaterial } from "three";
 import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
 import { useQualitySettings } from "../../hooks/use-quality-settings";
-import { getColorPropertyValue } from "../../utils";
+import { getColorPropertyRGB } from "../../utils";
 
-const _COLOR_DARK = converter("rgb")(getColorPropertyValue("dark-d"));
-const COLOR_DARK = new Color().setRGB(
-  _COLOR_DARK?.r ?? 0,
-  _COLOR_DARK?.g ?? 0,
-  _COLOR_DARK?.b ?? 0,
-);
-
-const _COLOR_LIGHT = converter("rgb")(getColorPropertyValue("light-l"));
-const COLOR_LIGHT = new Color().setRGB(
-  _COLOR_LIGHT?.r ?? 0,
-  _COLOR_LIGHT?.g ?? 0,
-  _COLOR_LIGHT?.b ?? 0,
-);
+const COLOR_DARK = getColorPropertyRGB("dark-d");
+const COLOR_LIGHT = getColorPropertyRGB("light-l");
 
 const MESH_BODY_MAT = new MeshPhysicalMaterial({
   side: FrontSide,

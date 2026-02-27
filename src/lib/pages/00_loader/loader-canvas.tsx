@@ -8,24 +8,18 @@ import {
   SSAO,
 } from "@react-three/postprocessing";
 import { useRef } from "react";
-import { Color, type Group } from "three";
+import { type Group } from "three";
 import {
   useBenchmarkRunner,
   usePerformanceMetrics,
 } from "../../contexts/use-performance-metrics";
-import { converter } from "culori";
-import { getColorPropertyValue } from "../../utils";
+import { getColorPropertyRGB } from "../../utils";
 
 const COLS = 22;
 const STRESS_COUNT = COLS * COLS;
 const SPACING = 1;
 
-const _COLOR_DARK = converter("rgb")(getColorPropertyValue("dark-d"));
-const COLOR_DARK = new Color().setRGB(
-  _COLOR_DARK?.r ?? 0,
-  _COLOR_DARK?.g ?? 0,
-  _COLOR_DARK?.b ?? 0,
-);
+const COLOR_DARK = getColorPropertyRGB("dark-d");
 
 export default function LoaderCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
