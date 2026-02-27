@@ -166,7 +166,12 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
                   ease: "easeInOut",
                 }}
               >
-                <Link href={l.href} children={l.name} theme={bgTheme} />
+                <Link
+                  href={l.href}
+                  children={l.name}
+                  theme={bgTheme}
+                  showBG={false}
+                />
               </m.section>
             ))}
           </m.nav>

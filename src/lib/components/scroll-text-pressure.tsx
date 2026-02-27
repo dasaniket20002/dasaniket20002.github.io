@@ -1,4 +1,5 @@
 import {
+  easeInOut,
   MotionValue,
   useMotionTemplate,
   useScroll,
@@ -52,20 +53,20 @@ const Char = ({
   return (
     <m.span
       style={{ opacity, filter, fontVariationSettings }}
-      className={cn(isHighlighted && "text-light-2")}
+      className={cn(isHighlighted && "text-light-l italic")}
     >
       {children}
     </m.span>
   );
 };
 
-export type ScrollRevealTextProps = {
+export type ScrollTextPressureProps = {
   displayText: string;
   highlights?: string[];
   containerRef: React.RefObject<HTMLElement | null>;
 } & HTMLMotionProps<"div">;
 
-const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
+const ScrollTextPressure = forwardRef<HTMLDivElement, ScrollTextPressureProps>(
   (
     { displayText, highlights, containerRef, className, ...motionProps },
     ref,
@@ -78,13 +79,14 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
 
     const { scrollYProgress } = useScroll({
       target: containerRef,
-      offset: ["start start", "end end"],
+      offset: ["start center", "end end"],
     });
 
     const calculatedIndex = useTransform(
       scrollYProgress,
       [0, 1],
       [0, displaySplit.length],
+      { ease: easeInOut },
     );
     const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -98,7 +100,7 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
           className="w-px h-full bg-dark-1 mask-t-from-0% mask-b-from-0%"
           style={{ height: progress }}
         />
-        <p className="relative py-32 text-5xl md:text-7xl text-dark-1 whitespace-pre tracking-tighter leading-snug italic">
+        <p className="relative py-32 text-5xl md:text-7xl text-light-d whitespace-pre-wrap tracking-tighter leading-snug">
           {displaySplit.map((char, index) => (
             <Char
               key={index}
@@ -115,4 +117,4 @@ const ScrollRevealText = forwardRef<HTMLDivElement, ScrollRevealTextProps>(
   },
 );
 
-export default ScrollRevealText;
+export default ScrollTextPressure;

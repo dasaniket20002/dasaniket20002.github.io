@@ -9,6 +9,7 @@ const Header = lazy(() => import("./lib/components/header"));
 const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
 const Work = lazy(() => import("./lib/pages/02_work/work"));
 const Services = lazy(() => import("./lib/pages/03_services/services"));
+const About = lazy(() => import("./lib/pages/04_about/about"));
 
 const RENDER_SOLO = false;
 
@@ -37,6 +38,7 @@ function App() {
               <Hero />
               <Work />
               <Services />
+              <About />
               <div className="h-[200dvh]"></div>
               <Hero />
             </m.main>
