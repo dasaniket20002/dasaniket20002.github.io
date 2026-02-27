@@ -73,13 +73,16 @@ function Form({ className }: { className?: string }) {
   const [date, setDate] = useState<string>("");
 
   return (
-    <form
+    <m.form
+      initial={{ filter: "blur(3px)", opacity: 0.5 }}
+      whileInView={{ filter: "blur(0px)", opacity: 1 }}
+      viewport={{ margin: "-128px" }}
       className={cn(
         "font-width-85 tracking-wide grid grid-cols-3 grid-rows-[1fr_auto] gap-y-8",
         className,
       )}
     >
-      <h2 className="relative text-5xl leading-relaxed col-span-full md:col-[2/4] row-[1/2] h-min">
+      <h2 className="relative text-5xl leading-relaxed col-span-full md:col-[2/4] row-[1/2] h-min self-end">
         <span className="italic">"</span>
         Hey, my name is
         <NameRequest inputValue={name} setInputValue={setName} />
@@ -92,11 +95,11 @@ function Form({ className }: { className?: string }) {
         <span className="italic">"</span>
       </h2>
       <SendAction
-        className="col-span-full md:col-[2/4] row-[2/3]"
+        className="col-span-full md:col-[2/4] row-[2/3] self-start"
         name={name}
         service={service}
         date={date}
       />
-    </form>
+    </m.form>
   );
 }

@@ -3,10 +3,8 @@ import {
   ScrollVelocityMasonry,
   type MasonryImage,
 } from "../../components/scroll-velocity-masonry";
-import { cn } from "../../utils";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
-import { useMotionTemplate, useScroll, useTransform } from "motion/react";
-import * as m from "motion/react-m";
+import { cn } from "../../utils";
 
 const ALL_IMAGES: MasonryImage[] = [
   {
@@ -140,28 +138,6 @@ export default function Hobby({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
 
-  // Reveal animation — always covers exactly 25vh of scrolling, regardless of container height
-  const { scrollYProgress: revealProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "start 0.75"], // top of container: viewport bottom → 25% into viewport
-  });
-
-  // Exit animation — fixed viewport distance for the blur-out
-  const { scrollYProgress: exitProgress } = useScroll({
-    target: containerRef,
-    offset: ["end end", "end start"], // bottom of container: viewport bottom → viewport top (1vh)
-  });
-
-  const titleRevealY = useTransform(revealProgress, [0, 1], ["100%", "0%"]);
-
-  // Combine entry blur and exit blur
-  const _revealBlur = useTransform(revealProgress, [0, 1], [3, 0]);
-  const _exitBlur = useTransform(exitProgress, [0.8, 1], [0, 3]);
-  const _titleBlur = useTransform([_revealBlur, _exitBlur], ([reveal, exit]) =>
-    Math.max(reveal as number, exit as number),
-  );
-  const titleRevealBlur = useMotionTemplate`blur(${_titleBlur}px)`;
-
   useEffect(() => {
     registerSection(containerRef);
   }, [registerSection]);
@@ -170,18 +146,10 @@ export default function Hobby({ className }: { className?: string }) {
     <div
       ref={containerRef}
       className={cn(
-        "h-dvh w-full px-16 md:px-32 pt-16 flex flex-col gap-8",
+        "h-dvh w-full px-16 md:px-32 flex flex-col gap-8",
         className,
       )}
     >
-      <div className="sticky top-16 md:relative md:top-0 mask-b-from-80% z-1 mix-blend-difference">
-        <m.h3
-          style={{ y: titleRevealY, filter: titleRevealBlur }}
-          className="text-4xl font-width-125 font-light tracking-wide"
-        >
-          HOBBIES
-        </m.h3>
-      </div>
       <ScrollVelocityMasonry
         images={ALL_IMAGES}
         baseVelocity={3}

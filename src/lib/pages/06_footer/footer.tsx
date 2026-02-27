@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <div
       ref={containerRef}
-      className="h-dvh w-full px-16 md:px-32 pt-16 flex flex-col gap-8"
+      className="h-dvh w-full px-16 md:px-32 pt-16 flex flex-col gap-8 bg-light-l"
     ></div>
   );
 }

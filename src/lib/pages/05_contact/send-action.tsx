@@ -1,11 +1,10 @@
-import { AnimatePresence } from "motion/react";
-import * as m from "motion/react-m";
 import { useCallback, useState } from "react";
 import Button from "../../components/button";
 import IconMailFast from "../../components/svg/icon-mail-fast";
+import { useToast } from "../../contexts/use-toast";
 import { cn, PRIMARY_EMAIL } from "../../utils";
 
-const RECLICK_TIMER = 2500;
+const RECLICK_TIMER = 500;
 
 export default function SendAction({
   className,
@@ -19,7 +18,7 @@ export default function SendAction({
   date: string;
 }) {
   const [disabled, setDisabled] = useState(false);
-  const [notification, setNotification] = useState("");
+  const { toast } = useToast();
 
   const handleSend = useCallback(() => {
     if (disabled) return;
@@ -28,43 +27,30 @@ export default function SendAction({
     setTimeout(() => setDisabled(false), RECLICK_TIMER);
 
     if (!name || !service || !date) {
-      setNotification("No name, service or date provided");
-      setTimeout(() => setNotification(""), RECLICK_TIMER);
+      toast("No name, service or date provided", { type: "error" });
       return;
     }
 
     const subject = encodeURIComponent(`Appointment for ${service} on ${date}`);
     const body = encodeURIComponent(
-      `Hey, my name is **${name}** and I'm looking for ${service} service.\nAre you available on ${date} for a chat?`,
+      `Hey, my name is ${name} and I'm looking for ${service} service.\nAre you available on ${date} for a chat?`,
     );
 
-    setNotification("Redirecting to your email client...");
-    setTimeout(() => setNotification(""), RECLICK_TIMER);
+    toast("Redirecting to your email client...", { type: "success" });
     window.location.href = `mailto:${PRIMARY_EMAIL}?subject=${subject}&body=${body}`;
-  }, [date, name, service, disabled]);
+  }, [disabled, name, service, date, toast]);
 
   return (
-    <div
-      className={cn("size-full space-y-3 p-1 place-items-center", className)}
-    >
-      <Button
-        text="Send enquiry"
-        type="button"
-        icon={<IconMailFast className="size-8 stroke-1" />}
-        className="px-16 py-8 text-xl gap-6 w-full"
-        disabled={disabled}
-        onClick={handleSend}
-      />
-      <AnimatePresence mode="wait">
-        <m.p
-          key={notification}
-          initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
-          animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          exit={{ clipPath: "inset(0% 100% 0% 0%)" }}
-        >
-          {notification}
-        </m.p>
-      </AnimatePresence>
-    </div>
+    <Button
+      text="Send enquiry"
+      type="button"
+      icon={<IconMailFast className="size-8 stroke-1" />}
+      className={cn(
+        "px-16 py-8 text-xl gap-6 w-full place-self-center my-3",
+        className,
+      )}
+      disabled={disabled}
+      onClick={handleSend}
+    />
   );
 }
