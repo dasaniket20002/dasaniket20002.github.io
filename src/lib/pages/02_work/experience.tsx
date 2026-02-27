@@ -144,7 +144,7 @@ export default function Experience({ className }: { className?: string }) {
       )}
     >
       <div
-        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference"
         style={{
           height: windowWidth >= 768 ? experienceContainerHeight : "auto",
         }}

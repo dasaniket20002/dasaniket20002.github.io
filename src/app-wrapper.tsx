@@ -23,6 +23,9 @@ export default function AppWrapper() {
         autoRaf: false,
         syncTouch: true,
         infinite: true,
+        lerp: 0.25,
+        overscroll: false,
+        wheelMultiplier: 1.1,
       }}
       ref={lenisRef}
     >

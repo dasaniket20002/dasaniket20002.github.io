@@ -98,31 +98,21 @@ export default function AboutNeeds({ className }: { className?: string }) {
     >
       <div
         ref={revealHeaderRef}
-        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference"
         style={{
           height: windowWidth >= 768 ? aboutContainerHeight : "auto",
         }}
       >
         <m.div
           style={{ top: windowWidth >= 768 ? titleParallaxTop : 0 }}
-          className="sticky flex flex-col"
+          className="sticky mask-b-from-80%"
         >
-          <div className="mask-b-from-80%">
-            <m.h3
-              style={{ y: titleRevealY, filter: titleRevealBlur }}
-              className="text-4xl font-width-125 font-light tracking-wide uppercase"
-            >
-              what i'm looking for
-            </m.h3>
-          </div>
-          <div className="mask-b-from-80%">
-            <m.p
-              style={{ y: titleRevealY, filter: titleRevealBlur }}
-              className="text-xl font-width-120 font-extralight tracking-wide uppercase"
-            >
-              for salvation
-            </m.p>
-          </div>
+          <m.h3
+            style={{ y: titleRevealY, filter: titleRevealBlur }}
+            className="text-4xl font-width-125 font-light tracking-wide uppercase"
+          >
+            what i'm looking for
+          </m.h3>
         </m.div>
       </div>
       <div

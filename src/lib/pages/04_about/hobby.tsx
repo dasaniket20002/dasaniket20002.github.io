@@ -174,12 +174,12 @@ export default function Hobby({ className }: { className?: string }) {
         className,
       )}
     >
-      <div className="sticky top-16 md:relative md:top-0 mask-b-from-80% z-1">
+      <div className="sticky top-16 md:relative md:top-0 mask-b-from-80% z-1 mix-blend-difference">
         <m.h3
           style={{ y: titleRevealY, filter: titleRevealBlur }}
           className="text-4xl font-width-125 font-light tracking-wide"
         >
-          HOBBY
+          HOBBIES
         </m.h3>
       </div>
       <ScrollVelocityMasonry

@@ -105,7 +105,7 @@ export default function Services({ className }: { className?: string }) {
     >
       <div
         ref={revealHeaderRef}
-        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference"
         style={{
           height: windowWidth >= 768 ? serviceContainerHeight : "auto",
         }}
@@ -127,7 +127,7 @@ export default function Services({ className }: { className?: string }) {
               style={{ y: titleRevealY, filter: titleRevealBlur }}
               className="text-xl font-width-120 font-extralight tracking-wide uppercase"
             >
-              being a nerd...
+              besides being a nerd...
             </m.p>
           </div>
         </m.div>
