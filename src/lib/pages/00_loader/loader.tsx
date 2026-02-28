@@ -5,14 +5,15 @@ import { preloadWithProgress } from "../../utils";
 import Counter from "./counter";
 import Message from "./message";
 import MetricsDisplay from "./metrics-display";
+import { useGLTF } from "@react-three/drei";
 
 const LoaderCanvas = lazy(() => import("./loader-canvas"));
 
 type LoaderProps = { onComplete: () => void };
 
+useGLTF.preload("/assets/models/computers/computers_1-transformed.glb");
+
 const PRELOAD_URLS = [
-  "/assets/models/logo-model/logo-model.gltf",
-  "/assets/models/logo-model/logo-model.bin",
   "assets/works/blender/antigravity_cmp.png",
   "assets/works/blender/aquarium_of_life_cmp.png",
   "assets/works/blender/bathroom_unclean_cmp.png",

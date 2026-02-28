@@ -15,7 +15,7 @@ const ComputerScene = lazy(
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
-  const inView = useInView(containerRef, { amount: "some" });
+  const inView = useInView(containerRef, { amount: 0.5, initial: false });
 
   useEffect(() => {
     registerSection(containerRef);
@@ -31,15 +31,19 @@ export default function Hero({ className }: { className?: string }) {
         "grid grid-rows-[1fr_1fr_4rem]",
         "grid-cols-[4rem_1fr_1fr_1fr_1fr_4rem]",
         "md:grid-cols-[8rem_1fr_1fr_1fr_1fr_8rem]",
-        "bg-radial-[at_0%_0%] from-[color-mix(in_oklab,var(--color-dark-d)_90%,white)] via-dark-d to-dark-d",
         className,
       )}
     >
-      <div className="size-full row-span-full col-span-full mask-b-from-90% mask-t-from-90% mask-l-from-90% mask-r-from-90%">
+      <m.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+        className="size-full row-span-full col-span-full mask-b-from-90% mask-t-from-90%"
+      >
         <Suspense fallback={null}>
           <ComputerScene inView={inView} eventSource={containerRef} />
         </Suspense>
-      </div>
+      </m.div>
       <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid">
         <div className="col-span-full row-[1/2] size-full flex flex-col gap-2 justify-center">
           <m.div

@@ -1,14 +1,16 @@
 import { BakeShadows, MeshReflectorMaterial } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
   DepthOfField,
   EffectComposer,
+  ToneMapping,
 } from "@react-three/postprocessing";
-import { easing } from "maath";
+import { ToneMappingMode } from "postprocessing";
 import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
 import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { getColorPropertyRGB } from "../../utils";
+import CameraRig from "../r3f-common/camera-rig";
 import { Computers, Instances } from "./computers";
 
 const COLOR_DARK = getColorPropertyRGB("dark-d");
@@ -30,22 +32,83 @@ export default function ComputerScene({
     <Canvas
       shadows
       dpr={[1, 1.5]}
-      camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 1, far: 20 }}
+      camera={{
+        position: [-1.5, 1, 5.5],
+        fov: 45,
+        near: 1,
+        far: 100,
+      }}
       className={className}
       eventSource={eventSource as React.RefObject<HTMLElement>}
       eventPrefix={eventSource ? "client" : "offset"}
       gl={{
-        alpha: true,
+        alpha: false,
         antialias: false,
         stencil: false,
-        depth: false,
+        depth: true,
         powerPreference: "high-performance",
       }}
-      frameloop={inView ? "always" : "never"}
+      frameloop={inView === false ? "never" : "always"}
     >
+      {/* Auto-instanced sketchfab model */}
+      <group position={[0, -1, 0]}>
+        <Instances>
+          <Computers scale={0.5} />
+        </Instances>
+
+        <ReflectorFloor />
+      </group>
+
+      <LightsEffects />
+
+      <CameraRig enabled={qualitySettings.useCameraControls} z={5.5} />
+      {/* <OrbitControls /> */}
+
+      <BakeShadows />
+    </Canvas>
+  );
+}
+
+function ReflectorFloor({
+  position,
+}: {
+  position?: [x: number, y: number, z: number];
+}) {
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
+  return (
+    <mesh receiveShadow position={position} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[10, 10]} />
+      <MeshReflectorMaterial
+        blur={[300, 30]}
+        resolution={qualitySettings.reflectorRes}
+        mixBlur={2}
+        mixStrength={180}
+        roughness={1}
+        depthScale={1.2}
+        minDepthThreshold={0.5}
+        maxDepthThreshold={1.25}
+        color={COLOR_DARK}
+        metalness={0.8}
+        mirror={0}
+      />
+    </mesh>
+  );
+}
+
+function LightsEffects() {
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
+
+  return (
+    <>
       {/* Lights */}
-      {/* <color attach="background" args={[COLOR_DARK]} /> */}
-      <hemisphereLight intensity={0.015} groundColor={COLOR_DARK} />
+      <color
+        attach="background"
+        args={[COLOR_DARK.clone().multiplyScalar(0.1)]}
+      />
+      <fog attach="fog" args={[COLOR_DARK]} />
+      <hemisphereLight intensity={0.01} groundColor={COLOR_DARK} />
       <spotLight
         position={[10, 20, 10]}
         angle={0.12}
@@ -55,81 +118,44 @@ export default function ComputerScene({
         shadow-mapSize={qualitySettings.shadowMapRes}
       />
 
-      {/* Main scene */}
       <group position={[0, -1, 0]}>
-        {/* Auto-instanced sketchfab model */}
-        <Instances>
-          <Computers scale={0.5} />
-        </Instances>
-        {/* Plane reflections + distance blur */}
-        <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[50, 50]} />
-          <MeshReflectorMaterial
-            blur={[300, 30]}
-            resolution={2048}
-            mixBlur={1}
-            mixStrength={180}
-            roughness={1}
-            depthScale={1.2}
-            minDepthThreshold={0.4}
-            maxDepthThreshold={1.4}
-            color={COLOR_DARK}
-            metalness={0.8}
-          />
-        </mesh>
         {/* a light give it more realism */}
         <pointLight
           distance={1.5}
           intensity={10}
-          position={[-0.15, 0.7, 0]}
+          position={[0.15, 1, -1]}
           color={COLOR_DARK}
         />
         <pointLight
-          distance={1}
-          intensity={2}
-          position={[-0.15, 0.7, 0]}
+          distance={2}
+          intensity={1}
+          position={[0.15, 0.5, 0]}
           color={COLOR_LIGHT}
         />
       </group>
+
       {/* Postprocessing */}
-      <EffectComposer enabled={qualitySettings.usePostProcessing}>
+      <EffectComposer
+        enabled={qualitySettings.usePostProcessing}
+        multisampling={0}
+      >
         <DepthOfField
-          target={[0, 0, -1]}
-          focalLength={2}
-          bokehScale={8}
-          height={qualitySettings.effectRes}
+          target={[0.15, 0.5, -1]}
+          focalLength={1}
+          bokehScale={6}
+          resolutionX={qualitySettings.effectRes}
+          resolutionY={qualitySettings.effectRes}
         />
         <Bloom
-          luminanceThreshold={0.4}
+          luminanceThreshold={0.5}
           mipmapBlur
-          luminanceSmoothing={0.15}
-          intensity={5}
-          height={qualitySettings.effectRes}
+          luminanceSmoothing={0.25}
+          intensity={4}
+          resolutionX={qualitySettings.effectRes}
+          resolutionY={qualitySettings.effectRes}
         />
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
       </EffectComposer>
-      {/* Camera movements */}
-      <CameraRig enabled={qualitySettings.useCameraControls} />
-      {/* Small helper that freezes the shadows for better performance */}
-      <BakeShadows />
-    </Canvas>
+    </>
   );
-}
-
-function CameraRig({ enabled }: { enabled?: boolean }) {
-  useFrame((state, delta) => {
-    if (enabled === false) return;
-
-    easing.damp3(
-      state.camera.position,
-      [
-        -1 + (state.pointer.x * state.viewport.width) / 10,
-        (1 + state.pointer.y) / 2,
-        5.5,
-      ],
-      0.5,
-      delta,
-    );
-    state.camera.lookAt(0, 0, 0);
-  });
-  return null;
 }

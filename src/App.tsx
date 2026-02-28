@@ -35,7 +35,7 @@ function App() {
               key="content"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 2, ease: "easeInOut" }}
+              transition={{ duration: 1, ease: "easeInOut" }}
               className="relative h-full"
             >
               <Header className="fixed top-0" />
