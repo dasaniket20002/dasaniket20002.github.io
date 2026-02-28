@@ -6,9 +6,10 @@ import {
   EffectComposer,
 } from "@react-three/postprocessing";
 import { easing } from "maath";
-import { ReinhardToneMapping, SRGBColorSpace } from "three";
-import { Computers, Instances } from "./computers";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { getColorPropertyRGB } from "../../utils";
+import { Computers, Instances } from "./computers";
 
 const COLOR_DARK = getColorPropertyRGB("dark-d");
 const COLOR_LIGHT = getColorPropertyRGB("light-l");
@@ -22,6 +23,9 @@ export default function ComputerScene({
   className?: string;
   inView?: boolean;
 }) {
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
+
   return (
     <Canvas
       shadows
@@ -32,12 +36,10 @@ export default function ComputerScene({
       eventPrefix={eventSource ? "client" : "offset"}
       gl={{
         alpha: true,
-        antialias: true,
+        antialias: false,
         stencil: false,
         depth: false,
         powerPreference: "high-performance",
-        toneMapping: ReinhardToneMapping,
-        outputColorSpace: SRGBColorSpace,
       }}
       frameloop={inView ? "always" : "never"}
     >
@@ -50,11 +52,11 @@ export default function ComputerScene({
         penumbra={1}
         intensity={1}
         castShadow
-        shadow-mapSize={1024}
+        shadow-mapSize={qualitySettings.shadowMapRes}
       />
 
       {/* Main scene */}
-      <group position={[-0, -1, 0]}>
+      <group position={[0, -1, 0]}>
         {/* Auto-instanced sketchfab model */}
         <Instances>
           <Computers scale={0.5} />
@@ -90,30 +92,33 @@ export default function ComputerScene({
         />
       </group>
       {/* Postprocessing */}
-      <EffectComposer>
+      <EffectComposer enabled={qualitySettings.usePostProcessing}>
         <DepthOfField
           target={[0, 0, -1]}
           focalLength={2}
           bokehScale={8}
-          height={700}
+          height={qualitySettings.effectRes}
         />
         <Bloom
           luminanceThreshold={0.4}
           mipmapBlur
           luminanceSmoothing={0.15}
           intensity={5}
+          height={qualitySettings.effectRes}
         />
       </EffectComposer>
       {/* Camera movements */}
-      <CameraRig />
+      <CameraRig enabled={qualitySettings.useCameraControls} />
       {/* Small helper that freezes the shadows for better performance */}
       <BakeShadows />
     </Canvas>
   );
 }
 
-function CameraRig() {
+function CameraRig({ enabled }: { enabled?: boolean }) {
   useFrame((state, delta) => {
+    if (enabled === false) return;
+
     easing.damp3(
       state.camera.position,
       [

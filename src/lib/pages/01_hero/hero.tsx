@@ -8,7 +8,7 @@ import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
 
-const HeroCanvas = lazy(
+const ComputerScene = lazy(
   () => import("../../components/computers/computers-scene"),
 );
 
@@ -37,7 +37,7 @@ export default function Hero({ className }: { className?: string }) {
     >
       <div className="size-full row-span-full col-span-full mask-b-from-90% mask-t-from-90% mask-l-from-90% mask-r-from-90%">
         <Suspense fallback={null}>
-          <HeroCanvas inView={inView} eventSource={containerRef} />
+          <ComputerScene inView={inView} eventSource={containerRef} />
         </Suspense>
       </div>
       <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid">

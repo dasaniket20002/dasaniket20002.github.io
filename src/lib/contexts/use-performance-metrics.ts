@@ -107,8 +107,8 @@ export function useBenchmarkRunner() {
     const minFps = 1 / maxDelta;
 
     let rating: BenchmarkPerformanceMetrics["rating"];
-    if (avgFps >= 55) rating = "high";
-    else if (avgFps >= 30) rating = "medium";
+    if (avgFps >= 120) rating = "high";
+    else if (avgFps >= 60) rating = "medium";
     else rating = "low";
 
     setBenchmarkMetrics({
