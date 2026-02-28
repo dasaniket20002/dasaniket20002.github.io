@@ -11,6 +11,7 @@ import {
   type ToastOptions,
   type ToastType,
 } from "./use-toast";
+import Portal from "../components/portal";
 
 const MAX_TOASTS = 5;
 let counter = 0;
@@ -38,7 +39,6 @@ function ToastItem({
   const remainingRef = useRef(data.duration);
   const startRef = useRef(0);
 
-  // Pausable auto-dismiss
   useEffect(() => {
     if (paused) return;
 
@@ -63,17 +63,14 @@ function ToastItem({
       onMouseLeave={() => setPaused(false)}
       className="relative flex items-center gap-3 px-4 py-6 rounded-lg max-h-24 w-full max-w-xl bg-dark-d border shadow-xl border-dark-l pointer-events-auto overflow-hidden cursor-default"
     >
-      {/* Icon */}
       <span className="shrink-0 size-8 rounded-lg grid place-items-center stroke-dark-d">
         <Icon className="size-6 stroke-2" />
       </span>
 
-      {/* Message */}
       <p className="flex-1 font-medium tracking-wide text-light-l">
         {data.message}
       </p>
 
-      {/* Close */}
       <button
         onClick={() => onDismiss(data.id)}
         className="shrink-0 stroke-light-d/25 hover:stroke-light-d/75 transition-colors cursor-pointer"
@@ -129,16 +126,18 @@ export default function ToastProvider({
     <ToastContext.Provider value={value}>
       {children}
 
-      <ol
-        aria-label="Notifications"
-        className="fixed inset-6 z-50 flex flex-col gap-2 pointer-events-none place-content-end place-items-end"
-      >
-        <AnimatePresence mode="popLayout">
-          {toasts.map((t) => (
-            <ToastItem key={t.id} data={t} onDismiss={dismiss} />
-          ))}
-        </AnimatePresence>
-      </ol>
+      <Portal>
+        <ol
+          aria-label="Notifications"
+          className="fixed inset-6 z-50 flex flex-col gap-2 pointer-events-none place-content-end place-items-end"
+        >
+          <AnimatePresence mode="popLayout">
+            {toasts.map((t) => (
+              <ToastItem key={t.id} data={t} onDismiss={dismiss} />
+            ))}
+          </AnimatePresence>
+        </ol>
+      </Portal>
     </ToastContext.Provider>
   );
 }

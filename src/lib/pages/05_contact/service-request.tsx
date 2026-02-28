@@ -1,10 +1,10 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { useClickOutside } from "../../hooks/use-click-outside";
 import { AnimatePresence } from "motion/react";
 import { cn } from "../../utils";
 import * as m from "motion/react-m";
 import { useElementSize } from "../../hooks/use-element-size";
 import IconChevronDown from "../../components/svg/icon-chevron-down";
+import Popover from "../../components/popover";
 
 const SERVICE_REQUEST_OPTIONS = [
   "UI/UX Design",
@@ -65,7 +65,7 @@ export default function ServiceRequest({
   inputValue: string;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const containerRef = useRef<HTMLSpanElement>(null);
+  const anchorRef = useRef<HTMLSpanElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -96,8 +96,7 @@ export default function ServiceRequest({
     }
   }, [inputValue]);
 
-  const handleClickOutside = useCallback(() => setFocused(false), []);
-  useClickOutside(containerRef, handleClickOutside);
+  const handleClose = useCallback(() => setFocused(false), []);
 
   const handleMouseEnter = useCallback(() => setHovered(true), []);
   const handleMouseLeave = useCallback(() => setHovered(false), []);
@@ -125,7 +124,7 @@ export default function ServiceRequest({
 
   return (
     <span
-      ref={containerRef}
+      ref={anchorRef}
       className={cn(
         "relative inline-block transition-colors duration-1000 rounded-md mx-[0.5ch]",
         focused && "bg-dark-l/10",
@@ -156,7 +155,7 @@ export default function ServiceRequest({
         onChange={handleInputChange}
         id="form-service-request"
         type="text"
-        className="outline-none font-width-90 font-bold px-[0.5ch] [anchor-name:--service-request-select]"
+        className="outline-none font-width-90 font-bold px-[0.5ch] bg-transparent"
       />
       <span className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none">
         <IconChevronDown
@@ -181,35 +180,33 @@ export default function ServiceRequest({
       />
 
       {/* popover */}
-      <m.div
-        layout
-        initial={{ height: 0, opacity: 0 }}
-        animate={{
-          height: focused ? contentHeight : 0,
-          opacity: focused ? 1 : 0.25,
-          transition: { delay: focused ? 0 : 0.25, type: "spring" },
-        }}
-        className={cn(
-          "w-full absolute z-10 rounded-md mt-1.5 transition-colors duration-1000 bg-dark-d shadow-2xl overflow-hidden",
-          "[position-anchor:--service-request-select] top-[anchor(bottom)] [justify-self:anchor-center]",
-          "[position-try:flip-block_flip-inline] [position-visibility:anchors-visible]",
-        )}
-      >
-        <div ref={contentRef} className="flex flex-col">
-          <AnimatePresence mode="popLayout">
-            {focused &&
-              filteredElements.map((req_opt, i) => (
-                <DropdownOption
-                  key={req_opt}
-                  option={req_opt}
-                  index={i}
-                  totalCount={filteredElements.length}
-                  onSelect={handleOptionSelect}
-                />
-              ))}
-          </AnimatePresence>
-        </div>
-      </m.div>
+      <Popover open={focused} onClose={handleClose} anchorRef={anchorRef}>
+        <m.div
+          layout
+          initial={{ height: 0, opacity: 0 }}
+          animate={{
+            height: focused ? contentHeight : 0,
+            opacity: focused ? 1 : 0.25,
+            transition: { delay: focused ? 0 : 0.25, type: "spring" },
+          }}
+          className="w-full min-w-lg rounded-md transition-colors duration-1000 bg-dark-d shadow-2xl overflow-hidden"
+        >
+          <div ref={contentRef} className="flex flex-col">
+            <AnimatePresence mode="popLayout">
+              {focused &&
+                filteredElements.map((req_opt, i) => (
+                  <DropdownOption
+                    key={req_opt}
+                    option={req_opt}
+                    index={i}
+                    totalCount={filteredElements.length}
+                    onSelect={handleOptionSelect}
+                  />
+                ))}
+            </AnimatePresence>
+          </div>
+        </m.div>
+      </Popover>
     </span>
   );
 }
