@@ -9,7 +9,7 @@ import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
 
 const HeroCanvas = lazy(
-  () => import("../../components/hero-canvas/hero-canvas"),
+  () => import("../../components/computers/computers-scene"),
 );
 
 export default function Hero({ className }: { className?: string }) {
