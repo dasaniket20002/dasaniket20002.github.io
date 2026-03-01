@@ -1,6 +1,5 @@
-import { useRef } from "react";
-import type { BodyRegistry } from "./body-registry";
-import { MAX_BALLS, MAX_LIGHTS, type CloudBallsData } from "./cloud-metaballs";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
 import {
   AmbientLight,
   Color,
@@ -12,26 +11,32 @@ import {
   Vector4,
   type ShaderMaterial,
 } from "three";
-import { useFrame, useThree } from "@react-three/fiber";
+import {
+  MAX_BALLS,
+  MAX_LIGHTS,
+  useCloudSimContext,
+  type CloudBallsData,
+} from "./cloud-sim-context";
 
-import vertexShader from "./vertex-shader.glsl?raw";
 import fragmentShader from "./fragment-shader.glsl?raw";
+import vertexShader from "./vertex-shader.glsl?raw";
 
 interface CloudVisualsProps {
-  registryRef: React.RefObject<BodyRegistry>;
   ballConfigs: CloudBallsData[];
   smoothness: number;
   baseColor: string;
+  inView?: boolean;
 }
 
-export default function CloudVisuals({
-  registryRef,
+export default function CloudVisualsClient({
   ballConfigs,
   smoothness,
   baseColor,
+  inView,
 }: CloudVisualsProps) {
   const matRef = useRef<ShaderMaterial>(null!);
   const { scene } = useThree();
+  const { registryRef } = useCloudSimContext();
 
   const tmpDirRef = useRef(new Vector3());
   const tmpTargetPosRef = useRef(new Vector3());
@@ -73,7 +78,6 @@ export default function CloudVisuals({
     );
     u.uCamMat.value.copy(camera.matrixWorld);
 
-    // Sync ball positions from physics
     const balls = u.uBalls.value as Vector4[];
     let count = 0;
     for (let i = 0; i < ballConfigs.length; i++) {
@@ -95,8 +99,16 @@ export default function CloudVisuals({
     u.uCount.value = count;
     u.uSmooth.value = smoothness;
     u.uBaseColor.value.set(baseColor);
+  });
 
-    // Collect scene lights directly into material uniforms
+  useEffect(() => {
+    if (!inView) return;
+
+    const m = matRef.current;
+    if (!m) return;
+
+    const u = m.uniforms;
+
     let ambFound = false;
     let dirCount = 0;
 
@@ -129,7 +141,7 @@ export default function CloudVisuals({
     });
 
     u.uDirLightCount.value = dirCount;
-  });
+  }, [scene, inView]);
 
   return (
     <mesh frustumCulled={false} renderOrder={1}>
@@ -139,9 +151,9 @@ export default function CloudVisuals({
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniformsRef.current}
-        depthWrite={false}
-        depthTest={false}
-        transparent={true}
+        // depthWrite={false}
+        // depthTest={false}
+        // transparent={true}
         blending={NormalBlending}
       />
     </mesh>
