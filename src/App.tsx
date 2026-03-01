@@ -22,7 +22,7 @@ function App() {
     <>
       <NoiseOverlay />
       {RENDER_SOLO ? (
-        <></>
+        <div className="h-dvh w-full"></div>
       ) : (
         <AnimatePresence mode="popLayout">
           {isLoading ? (
