@@ -24,8 +24,9 @@ import vertexShader from "./vertex-shader.glsl?raw";
 interface CloudVisualsProps {
   ballConfigs: CloudBallsData[];
   smoothness: number;
-  baseColor: string;
+  baseColor: Color;
   inView?: boolean;
+  position?: [number, number, number];
 }
 
 export default function CloudVisualsClient({
@@ -33,6 +34,7 @@ export default function CloudVisualsClient({
   smoothness,
   baseColor,
   inView,
+  position,
 }: CloudVisualsProps) {
   const matRef = useRef<ShaderMaterial>(null!);
   const { scene } = useThree();
@@ -51,7 +53,7 @@ export default function CloudVisualsClient({
     },
     uCount: { value: 0 },
     uSmooth: { value: smoothness },
-    uBaseColor: { value: new Color(baseColor) },
+    uBaseColor: { value: baseColor },
     uAmbientColor: { value: new Color(1, 1, 1) },
     uAmbientIntensity: { value: 0.5 },
     uDirLightCount: { value: 0 },
@@ -99,6 +101,39 @@ export default function CloudVisualsClient({
     u.uCount.value = count;
     u.uSmooth.value = smoothness;
     u.uBaseColor.value.set(baseColor);
+
+    // let ambFound = false;
+    // let dirCount = 0;
+
+    // const dirDirs = u.uDirLightDirs.value as Vector3[];
+    // const dirCols = u.uDirLightColors.value as Color[];
+    // const dirInts = u.uDirLightIntensities.value as number[];
+
+    // scene.traverse((obj) => {
+    //   if ((obj as AmbientLight).isAmbientLight && !ambFound) {
+    //     const light = obj as AmbientLight;
+    //     u.uAmbientColor.value.copy(light.color);
+    //     u.uAmbientIntensity.value = light.intensity;
+    //     ambFound = true;
+    //   }
+    //   if (
+    //     (obj as DirectionalLight).isDirectionalLight &&
+    //     dirCount < MAX_LIGHTS
+    //   ) {
+    //     const light = obj as DirectionalLight;
+    //     tmpDirRef.current.setFromMatrixPosition(light.matrixWorld);
+    //     tmpTargetPosRef.current.setFromMatrixPosition(light.target.matrixWorld);
+    //     dirDirs[dirCount]
+    //       .copy(tmpDirRef.current)
+    //       .sub(tmpTargetPosRef.current)
+    //       .normalize();
+    //     dirCols[dirCount].copy(light.color);
+    //     dirInts[dirCount] = light.intensity;
+    //     dirCount++;
+    //   }
+    // });
+
+    // u.uDirLightCount.value = dirCount;
   });
 
   useEffect(() => {
@@ -144,17 +179,15 @@ export default function CloudVisualsClient({
   }, [scene, inView]);
 
   return (
-    <mesh frustumCulled={false} renderOrder={1}>
+    <mesh position={position}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         ref={matRef}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniformsRef.current}
-        // depthWrite={false}
-        // depthTest={false}
-        // transparent={true}
         blending={NormalBlending}
+        transparent
       />
     </mesh>
   );
