@@ -7,6 +7,8 @@ export type QualitySettings = {
   effectRes: number;
   reflectorRes: number;
   renderTexRes: number;
+  glassRes: number;
+  glassSamples: number;
 };
 
 const HIGH: QualitySettings = {
@@ -16,6 +18,8 @@ const HIGH: QualitySettings = {
   effectRes: 896,
   reflectorRes: 512,
   renderTexRes: 384,
+  glassRes: 2048,
+  glassSamples: 16,
 };
 
 const MEDIUM: QualitySettings = {
@@ -25,6 +29,8 @@ const MEDIUM: QualitySettings = {
   effectRes: 512,
   reflectorRes: 256,
   renderTexRes: 256,
+  glassRes: 1024,
+  glassSamples: 8,
 };
 
 const LOW: QualitySettings = {
@@ -34,6 +40,8 @@ const LOW: QualitySettings = {
   effectRes: 256,
   reflectorRes: 128,
   renderTexRes: 128,
+  glassRes: 512,
+  glassSamples: 4,
 };
 
 const QUALITY_MAP = { high: HIGH, medium: MEDIUM, low: LOW } as const;

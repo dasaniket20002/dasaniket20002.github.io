@@ -54,6 +54,7 @@ export default function MaskSection() {
         <Suspense fallback={null}>
           <GlassScene inView={inView} />
         </Suspense>
+        <div className="absolute inset-0 px-16 md:px-32 pointer-events-none"></div>
       </div>
     </div>
   );
