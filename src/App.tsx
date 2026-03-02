@@ -24,7 +24,7 @@ function App() {
       {RENDER_SOLO ? (
         <></>
       ) : (
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="wait">
           {isLoading ? (
             <Suspense fallback={null}>
               <Loader key="loader" onComplete={() => setIsLoading(false)} />

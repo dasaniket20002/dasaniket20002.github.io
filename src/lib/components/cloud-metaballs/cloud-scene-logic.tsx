@@ -121,7 +121,7 @@ function PhysicsBall({
       position={[
         restPos.x + 20 + 0.25 * index * index * 2,
         restPos.y - 20 + 0.05 * index * index,
-        restPos.z - 10 + (0.5 * index * index) / 2,
+        restPos.z - 10 + 0.5 * index * index * 2,
       ]}
       gravityScale={0}
       linearDamping={1.5}

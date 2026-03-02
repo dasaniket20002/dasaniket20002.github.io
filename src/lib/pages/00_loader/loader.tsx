@@ -48,37 +48,45 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
     }, []);
 
     return (
-      <m.div
-        ref={ref}
-        initial={false}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5, ease: "backOut" }}
-        className="relative h-dvh z-98 grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[4rem_1fr_auto_4rem] bg-dark-d"
-      >
-        <div className="row-[2/3] col-[2/4] md:col-[2/3] size-full flex flex-col gap-16">
-          <LogoName
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "backOut" }}
-            className="text-8xl text-dark-l w-min self-start flex-none"
-          />
-          <Message className="text-dark-l w-full font-semibold font-width-110 text-3xl" />
-        </div>
-
-        <div className="row-[3/4] col-[2/4] md:col-[2/3] size-full flex items-end gap-3">
-          <div className="size-64 flex-none rounded-lg border border-light-d/25 overflow-hidden">
-            <LoaderCanvas />
+      <>
+        <m.div
+          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
+          exit={{ clipPath: "inset(100% 0% 0% 0%)" }}
+          transition={{ duration: 1, ease: "anticipate", delay: 0.5 }}
+          className="absolute z-97 w-dvw h-dvh top-0 left-0 bg-dark-d"
+        ></m.div>
+        <m.div
+          ref={ref}
+          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
+          exit={{ clipPath: "inset(100% 0% 0% 0%)" }}
+          transition={{ duration: 0.8, ease: "anticipate", delay: 0.25 }}
+          className="relative h-dvh z-98 grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[4rem_1fr_auto_4rem] bg-light-l"
+        >
+          <div className="row-[2/3] col-[2/4] md:col-[2/3] size-full flex flex-col gap-16">
+            <LogoName
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, ease: "backOut" }}
+              className="text-8xl text-light-d w-min self-start flex-none"
+            />
+            <Message className="text-light-d/50 w-full font-semibold font-width-110 text-3xl" />
           </div>
-          <MetricsDisplay className="h-64 max-w-3xl" />
-        </div>
 
-        <div className="row-[2/3] md:row-[2/4] col-[3/4] relative size-full place-items-end mix-blend-difference">
-          <Counter
-            onComplete={onComplete}
-            className="font-black font-width-125 tracking-tighter tabular-nums text-9xl text-light-l"
-          />
-        </div>
-      </m.div>
+          <div className="row-[3/4] col-[2/4] md:col-[2/3] size-full flex items-end gap-3">
+            <div className="size-64 flex-none rounded-lg border border-light-d/25 overflow-hidden">
+              <LoaderCanvas />
+            </div>
+            <MetricsDisplay className="h-64 max-w-3xl" />
+          </div>
+
+          <div className="row-[2/3] md:row-[2/4] col-[3/4] relative size-full place-items-end">
+            <Counter
+              onComplete={onComplete}
+              className="font-black font-width-125 tracking-tighter tabular-nums text-9xl text-dark-d"
+            />
+          </div>
+        </m.div>
+      </>
     );
   },
 );

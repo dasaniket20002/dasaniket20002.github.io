@@ -1,25 +1,27 @@
-import { OrbitControls } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import {
+  Float,
+  MeshTransmissionMaterial,
+  OrbitControls,
+} from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
   DepthOfField,
   EffectComposer,
-  FXAA,
   SSAO,
+  ToneMapping,
 } from "@react-three/postprocessing";
+import { ToneMappingMode } from "postprocessing";
 import { useRef } from "react";
-import { type Group } from "three";
 import {
   useBenchmarkRunner,
   usePerformanceMetrics,
 } from "../../contexts/use-performance-metrics";
-import { getColorPropertyRGB } from "../../utils";
+import { COLOR_LIGHT_L } from "../../utils";
 
 const COLS = 22;
 const STRESS_COUNT = COLS * COLS;
 const SPACING = 1;
-
-const COLOR_DARK = getColorPropertyRGB("dark-d");
 
 export default function LoaderCanvas({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,7 +30,7 @@ export default function LoaderCanvas({ className }: { className?: string }) {
   return (
     <Canvas
       ref={canvasRef}
-      camera={{ position: [0, 0, 5], fov: 24, near: 1, far: 100 }}
+      camera={{ position: [0, 0, 5], fov: 24, near: 1, far: 500 }}
       gl={{
         alpha: true,
         antialias: false,
@@ -36,7 +38,6 @@ export default function LoaderCanvas({ className }: { className?: string }) {
         depth: false,
       }}
       onCreated={(state) => {
-        state.gl.toneMappingExposure = 1.5;
         findStaticMetrics(state.gl.getContext());
       }}
       className={className}
@@ -49,34 +50,43 @@ export default function LoaderCanvas({ className }: { className?: string }) {
 }
 
 function MeshComponents() {
-  const group = useRef<Group>(null);
-  useFrame((_, delta) => {
-    group.current?.rotateY((Math.PI / 8) * delta * 0.5);
-  });
   useBenchmarkRunner();
 
   return (
     <>
-      <group ref={group}>
-        <mesh
-          position={[0, 0, 0]}
-          rotation={[
-            Math.atan(Math.SQRT1_2),
-            Math.PI / 4,
-            Math.atan(Math.SQRT1_2),
-          ]}
-        >
-          <boxGeometry args={[1, 1, 1, 2, 2, 2]} />
+      <Float speed={1} rotationIntensity={5}>
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[0.75, 0.75, 0.75, 4, 4, 4]} />
           <meshPhysicalMaterial
             reflectivity={0.9}
             roughness={0.1}
             metalness={0.1}
             iridescence={0.7}
             iridescenceIOR={1.3}
-            wireframe
           />
         </mesh>
-      </group>
+
+        <mesh position={[0, 0, 0]}>
+          <boxGeometry args={[1.25, 1.25, 1.25, 4, 4, 4]} />
+          <MeshTransmissionMaterial
+            anisotropy={0.1}
+            attenuationColor="#ffffff"
+            attenuationDistance={0.5}
+            chromaticAberration={0.06}
+            clearcoat={1}
+            color={"white"}
+            distortion={0}
+            distortionScale={0.3}
+            ior={1.33}
+            resolution={512}
+            roughness={0}
+            samples={8}
+            temporalDistortion={0.5}
+            thickness={3.5}
+            transmission={1}
+          />
+        </mesh>
+      </Float>
       {Array.from({ length: STRESS_COUNT }, (_, i) => {
         const col = i % COLS;
         const row = Math.floor(i / COLS);
@@ -88,9 +98,9 @@ function MeshComponents() {
           <mesh key={i} position={[x, y, -50]}>
             <boxGeometry args={[1, 1, 1, 8, 8, 8]} />
             <meshPhysicalMaterial
-              color={COLOR_DARK}
+              color={COLOR_LIGHT_L}
               transparent
-              opacity={0.5}
+              opacity={0.8}
               roughness={0.2}
               reflectivity={0.2}
               metalness={0.2}
@@ -107,6 +117,10 @@ function MeshComponents() {
 function LightsAndEffects() {
   return (
     <>
+      <color
+        attach="background"
+        args={[COLOR_LIGHT_L.clone().multiplyScalar(2)]}
+      />
       <ambientLight intensity={0.1} />
       <directionalLight
         position={[5, 7.5, 5]}
@@ -120,16 +134,16 @@ function LightsAndEffects() {
           args={[-10, 10, 10, -10, 1, 128]}
         />
       </directionalLight>
-      <EffectComposer multisampling={0} enableNormalPass>
-        <FXAA />
+      <EffectComposer multisampling={8} enableNormalPass>
         <SSAO samples={8} radius={1} intensity={1} luminanceInfluence={0.2} />
         <DepthOfField
           focusDistance={5}
           focalLength={4}
-          bokehScale={4}
+          bokehScale={12}
           height={720}
         />
         <Bloom luminanceThreshold={0.1} luminanceSmoothing={0.5} height={360} />
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
       </EffectComposer>
     </>
   );

@@ -26,7 +26,7 @@
     "@eslint/js": "^9.39.3",
     "@tailwindcss/vite": "^4.2.1",
     "@types/culori": "^4.0.1",
-    "@types/node": "^24.10.13",
+    "@types/node": "^24.11.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.182.0",

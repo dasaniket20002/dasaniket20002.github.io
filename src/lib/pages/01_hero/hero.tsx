@@ -36,19 +36,19 @@ export default function Hero({ className }: { className?: string }) {
       <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1, delay: 0.25 }}
         className="size-full row-span-full col-span-full mask-t-from-90% mask-b-from-90%"
       >
         <Suspense fallback={null}>
           <CloudMetaballs inView={inView} eventSource={containerRef} />
         </Suspense>
       </m.div>
-      <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid gap-y-12">
-        <div className="col-span-full row-[1/2] size-full flex flex-col gap-2 justify-end">
+      <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid gap-y-16">
+        <div className="col-span-full row-[1/2] size-full flex flex-col gap-4 justify-end">
           <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.5, ease: "easeInOut" }}
+            transition={{ delay: 0.25, duration: 0.5, ease: "easeInOut" }}
             className="w-min text-sm border-light-d/25 border flex gap-4 items-center py-3 pl-3 pr-4 rounded-full bg-light-d/5 -ml-3 backdrop-blur-md"
           >
             <span className="relative h-2.5 aspect-square rounded-full bg-success before:absolute before:inset-0 before:bg-success before:blur-sm before:animate-pulse" />
@@ -62,13 +62,13 @@ export default function Hero({ className }: { className?: string }) {
           className="col-[3/5] row-[2/3] place-items-end pt-24 md:pt-0"
           initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeInOut" }}
         />
         <HeroCTA
           className="col-[1/4] row-[2/3]"
           initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
-          transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
+          transition={{ duration: 0.5, delay: 0.35, ease: "easeInOut" }}
         />
         <div className="col-[4/5] row-[3/4] flex justify-end items-center pb-2">
           <Link

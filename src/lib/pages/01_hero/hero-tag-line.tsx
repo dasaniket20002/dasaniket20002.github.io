@@ -3,11 +3,11 @@ import { cn } from "../../utils";
 
 export default function HeroTagLine({ className }: { className?: string }) {
   return (
-    <div className={cn("relative uppercase text-dark-d", className)}>
+    <div className={cn("relative uppercase text-dark-d space-y-2", className)}>
       <TextEffect
         per="line"
         as="h1"
-        delay={1.5}
+        delay={1}
         speedReveal={2}
         className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px"
         tokenStyles={[
@@ -19,6 +19,18 @@ export default function HeroTagLine({ className }: { className?: string }) {
             match: "Aniket Das",
             className: "text-3xl",
           },
+        ]}
+      >
+        {`hi! I'm Aniket Das.`}
+      </TextEffect>
+
+      <TextEffect
+        per="line"
+        as="h1"
+        delay={1}
+        speedReveal={2}
+        className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px"
+        tokenStyles={[
           {
             match: "digital experiences",
             className: "text-5xl font-semibold italic",
@@ -33,7 +45,7 @@ export default function HeroTagLine({ className }: { className?: string }) {
           },
         ]}
       >
-        {`hi! I'm Aniket Das.\nI build digital experiences\nwith motion & graphics.`}
+        {`I build digital experiences\nwith motion & graphics.`}
       </TextEffect>
     </div>
   );

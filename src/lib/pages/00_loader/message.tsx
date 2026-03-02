@@ -14,11 +14,10 @@ const LOADING_MESSAGES = [
   "Blame the cache.",
   "Summoning semicolons...",
   "Still faster than Jira.",
-  "Loading the loading message...",
-  "Consulting the crystal ball...",
   "This message is here so you don't feel ignored.",
   "Yes, this is actually loading.",
   "I could've shown a spinner. I chose chaos.",
+  "Relax. No data is being collected.",
 ];
 
 export default function Message({ className }: { className?: string }) {

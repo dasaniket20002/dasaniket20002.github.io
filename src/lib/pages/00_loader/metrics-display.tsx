@@ -148,12 +148,12 @@ export default function MetricsDisplay({ className }: { className?: string }) {
           animate={{ opacity: 1, x: 0 }}
           className="flex-none flex gap-[0.5ch] items-center whitespace-nowrap"
         >
-          <p className="text-dark-l text-sm font-medium">{`$.${metric.key}`}</p>
+          <p className="text-light-d text-sm font-medium">{`$.${metric.key}`}</p>
           {metric.type === "pair" && (
             <p
               className={cn(
                 "text-dark-l text-base truncate",
-                metric.key === "sys_perf" && "text-light-d",
+                metric.key === "sys_perf" && "text-dark-l",
               )}
             >
               {`> ${metric.value}`}
