@@ -13,34 +13,34 @@ export default function HeroSkillsList({
       {...motionProps}
     >
       <Link
-        theme="dark"
         href={"#services"}
         className="-ml-1 w-min"
         underlineThickness={1}
+        theme="light"
       >
         UI/UX Design
       </Link>
       <Link
-        theme="dark"
         href={"#services"}
         className="-ml-1 w-min"
         underlineThickness={1}
+        theme="light"
       >
         Web Design
       </Link>
       <Link
-        theme="dark"
         href={"#services"}
         className="-ml-1 w-min"
         underlineThickness={1}
+        theme="light"
       >
         Development
       </Link>
       <Link
-        theme="dark"
         href={"#services"}
         className="-ml-1 w-min"
         underlineThickness={1}
+        theme="light"
       >
         Creative Design
       </Link>

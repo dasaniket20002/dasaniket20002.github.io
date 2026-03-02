@@ -22,7 +22,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       href,
       children,
       className,
-      theme = "light",
+      theme = "dark",
       underlineThickness = 1,
       hovered,
       setHovered,

@@ -16,13 +16,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { useBGTheme } from "../hooks/use-bg-theme";
 import { useStickySnap } from "../contexts/use-sticky-snap";
+import { useWindowSize } from "../hooks/use-window-size";
 import { cn } from "../utils";
 import AnimatedTicker from "./animated-ticker";
 import Link from "./link";
 import LogoName from "./logo-name";
-import { useWindowSize } from "../hooks/use-window-size";
 
 type HeaderProps = { className?: string };
 
@@ -91,7 +90,6 @@ const ScrollProgressViewer = ({ className }: { className?: string }) => {
 const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
   const headerRef = useRef<HTMLElement>(null);
   const [hidden, setHidden] = useState(true);
-  const bgTheme = useBGTheme(headerRef);
 
   const { lockSnap, unlockSnap } = useStickySnap();
   const lenis = useLenis();
@@ -125,10 +123,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
       <AnimatePresence mode="popLayout">
         {!hidden && (
           <LogoName
-            className={cn(
-              "text-xl cursor-pointer transition-colors z-98 py-2",
-              bgTheme === "light" ? "text-dark-d" : "text-light-l",
-            )}
+            className="text-xl cursor-pointer transition-colors z-98 py-2 text-light-l"
             initial={{ x: -24, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -24, opacity: 0 }}
@@ -152,10 +147,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className={cn(
-              "flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors",
-              bgTheme === "light" ? "text-dark-d" : "text-light-l",
-            )}
+            className="flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors text-light-l"
           >
             {NAV_LINKS.map((l, i) => (
               <m.section
@@ -166,12 +158,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
                   ease: "easeInOut",
                 }}
               >
-                <Link
-                  href={l.href}
-                  children={l.name}
-                  theme={bgTheme}
-                  showBG={false}
-                />
+                <Link href={l.href} children={l.name} showBG={false} />
               </m.section>
             ))}
           </m.nav>

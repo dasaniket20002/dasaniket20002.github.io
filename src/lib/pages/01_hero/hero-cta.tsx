@@ -43,7 +43,7 @@ export default function HeroCTA({
         <p>Or email me @</p>
         <a
           href={`mailto:${PRIMARY_EMAIL}`}
-          className="text-base font-light cursor-pointer text-light-l"
+          className="text-base font-light cursor-pointer text-dark-d"
         >
           {PRIMARY_EMAIL}
         </a>

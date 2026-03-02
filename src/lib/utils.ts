@@ -204,6 +204,11 @@ export const getColorPropertyRGB = (
   return color;
 };
 
+export const COLOR_DARK_D = getColorPropertyRGB("dark-d");
+export const COLOR_DARK_L = getColorPropertyRGB("dark-l");
+export const COLOR_LIGHT_D = getColorPropertyRGB("light-d");
+export const COLOR_LIGHT_L = getColorPropertyRGB("light-l");
+
 export const getISTParts = (date = new Date()) => {
   // time parts (hour, minute, dayPeriod)
   const timeFormatter = new Intl.DateTimeFormat("en-IN", {

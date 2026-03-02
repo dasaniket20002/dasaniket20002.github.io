@@ -8,14 +8,14 @@ import HeroCTA from "./hero-cta";
 import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
 
-const ComputerScene = lazy(
-  () => import("../../components/computers/computers-scene"),
+const CloudMetaballs = lazy(
+  () => import("../../components/cloud-metaballs/cloud-metaballs.tsx"),
 );
 
 export default function Hero({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
-  const inView = useInView(containerRef, { amount: 0.5, initial: false });
+  const inView = useInView(containerRef, { margin: "-128px", initial: false });
 
   useEffect(() => {
     registerSection(containerRef);
@@ -24,7 +24,6 @@ export default function Hero({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      data-bg-theme="dark"
       id="hero"
       className={cn(
         "h-dvh w-full relative",
@@ -37,23 +36,23 @@ export default function Hero({ className }: { className?: string }) {
       <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        className="size-full row-span-full col-span-full mask-b-from-90% mask-t-from-90%"
+        transition={{ duration: 1 }}
+        className="size-full row-span-full col-span-full mask-t-from-90% mask-b-from-90%"
       >
         <Suspense fallback={null}>
-          <ComputerScene inView={inView} eventSource={containerRef} />
+          <CloudMetaballs inView={inView} eventSource={containerRef} />
         </Suspense>
       </m.div>
-      <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid">
-        <div className="col-span-full row-[1/2] size-full flex flex-col gap-2 justify-center">
+      <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid gap-y-12">
+        <div className="col-span-full row-[1/2] size-full flex flex-col gap-2 justify-end">
           <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.5, ease: "easeInOut" }}
-            className="w-min text-sm border-dark-l border flex gap-4 items-center text-light-d py-3 pl-3 pr-4 rounded-full bg-dark-d/50 -ml-3"
+            className="w-min text-sm border-light-d/25 border flex gap-4 items-center py-3 pl-3 pr-4 rounded-full bg-light-d/5 -ml-3 backdrop-blur-md"
           >
-            <span className="relative h-2.5 aspect-square rounded-full bg-success before:absolute before:inset-0 before:bg-success before:blur-sm" />
-            <p className="whitespace-nowrap trim-text-caps tracking-wider">
+            <span className="relative h-2.5 aspect-square rounded-full bg-success before:absolute before:inset-0 before:bg-success before:blur-sm before:animate-pulse" />
+            <p className="whitespace-nowrap trim-text-caps tracking-wider text-dark-l">
               Available for collaboration
             </p>
           </m.div>
@@ -71,7 +70,7 @@ export default function Hero({ className }: { className?: string }) {
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           transition={{ duration: 1, delay: 1, ease: "easeInOut" }}
         />
-        <div className="col-[4/5] row-[3/4] flex justify-end items-center py-2">
+        <div className="col-[4/5] row-[3/4] flex justify-end items-center pb-2">
           <Link
             href={"https://earth.google.com/web/search/Kolkata,+West+Bengal"}
             showBG={false}
@@ -94,14 +93,14 @@ export default function Hero({ className }: { className?: string }) {
             India
           </Link>
         </div>
-      </div>
 
-      <div className="col-[2/4] row-[3/4] size-full flex items-center gap-3">
-        <span className="h-px flex-3 bg-light-d" />
-        <span className="h-px flex-2 bg-light-d" />
-        <span className="text-light-d uppercase text-base trim-text-caps whitespace-nowrap">
-          scroll down
-        </span>
+        <div className="col-[1/3] row-[3/4] size-full flex items-center gap-3 pb-2">
+          <span className="h-px flex-3 bg-light-d" />
+          <span className="h-px flex-2 bg-light-d" />
+          <span className="text-light-d uppercase text-base trim-text-caps whitespace-nowrap">
+            scroll down
+          </span>
+        </div>
       </div>
 
       <div className="col-[5/6] row-[1/2] h-32 flex flex-col items-end gap-3 mt-48">

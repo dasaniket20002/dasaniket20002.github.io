@@ -3,7 +3,7 @@ import { cn } from "../../utils";
 
 export default function HeroTagLine({ className }: { className?: string }) {
   return (
-    <div className={cn("relative uppercase text-light-l", className)}>
+    <div className={cn("relative uppercase text-dark-d", className)}>
       <TextEffect
         per="line"
         as="h1"
