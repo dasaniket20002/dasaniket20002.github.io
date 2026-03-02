@@ -9,6 +9,7 @@ export type QualitySettings = {
   renderTexRes: number;
   glassRes: number;
   glassSamples: number;
+  colliderPhysicsEnabled: boolean;
 };
 
 const HIGH: QualitySettings = {
@@ -20,6 +21,7 @@ const HIGH: QualitySettings = {
   renderTexRes: 384,
   glassRes: 2048,
   glassSamples: 16,
+  colliderPhysicsEnabled: true,
 };
 
 const MEDIUM: QualitySettings = {
@@ -31,6 +33,7 @@ const MEDIUM: QualitySettings = {
   renderTexRes: 256,
   glassRes: 1024,
   glassSamples: 8,
+  colliderPhysicsEnabled: true,
 };
 
 const LOW: QualitySettings = {
@@ -42,6 +45,7 @@ const LOW: QualitySettings = {
   renderTexRes: 128,
   glassRes: 512,
   glassSamples: 4,
+  colliderPhysicsEnabled: false,
 };
 
 const QUALITY_MAP = { high: HIGH, medium: MEDIUM, low: LOW } as const;

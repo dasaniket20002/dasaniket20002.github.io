@@ -1,31 +1,15 @@
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
-import {
-  AmbientLight,
-  Color,
-  DirectionalLight,
-  Matrix4,
-  NormalBlending,
-  PerspectiveCamera,
-  Vector3,
-  Vector4,
-  type ShaderMaterial,
-} from "three";
-import {
-  MAX_BALLS,
-  MAX_LIGHTS,
-  useCloudSimContext,
-  type CloudBallsData,
-} from "./cloud-sim-context";
-
-import fragmentShader from "./fragment-shader.glsl?raw";
-import vertexShader from "./vertex-shader.glsl?raw";
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import { Color, NormalBlending, Vector4 } from "three";
+import { useCloudSimContext, type CloudBallsData } from "./cloud-sim-context";
+import { MetaballMaterial } from "./metaball-material";
 
 interface CloudVisualsProps {
   ballConfigs: CloudBallsData[];
   smoothness: number;
   baseColor: Color;
-  inView?: boolean;
+  roughness?: number;
+  metalness?: number;
   position?: [number, number, number];
 }
 
@@ -33,55 +17,31 @@ export default function CloudVisualsClient({
   ballConfigs,
   smoothness,
   baseColor,
-  inView,
+  roughness = 0.1,
+  metalness = 0.0,
   position,
 }: CloudVisualsProps) {
-  const matRef = useRef<ShaderMaterial>(null!);
-  const { scene } = useThree();
+  const matRef = useRef<MetaballMaterial>(null!);
   const { registryRef } = useCloudSimContext();
 
-  const tmpDirRef = useRef(new Vector3());
-  const tmpTargetPosRef = useRef(new Vector3());
-
-  const uniformsRef = useRef({
-    uTime: { value: 0 },
-    uCamPos: { value: new Vector3() },
-    uInvProj: { value: new Matrix4() },
-    uCamMat: { value: new Matrix4() },
-    uBalls: {
-      value: Array.from({ length: MAX_BALLS }, () => new Vector4()),
-    },
-    uCount: { value: 0 },
-    uSmooth: { value: smoothness },
-    uBaseColor: { value: baseColor },
-    uAmbientColor: { value: new Color(1, 1, 1) },
-    uAmbientIntensity: { value: 0.5 },
-    uDirLightCount: { value: 0 },
-    uDirLightDirs: {
-      value: Array.from({ length: MAX_LIGHTS }, () => new Vector3()),
-    },
-    uDirLightColors: {
-      value: Array.from({ length: MAX_LIGHTS }, () => new Color()),
-    },
-    uDirLightIntensities: {
-      value: new Array(MAX_LIGHTS).fill(0) as number[],
-    },
-  });
-
-  useFrame(({ clock, camera }) => {
+  useFrame(({ camera }) => {
     const m = matRef.current;
     if (!m) return;
 
     const u = m.uniforms;
-    u.uTime.value = clock.elapsedTime;
-    u.uCamPos.value.copy(camera.position);
-    u.uInvProj.value.copy(
-      (camera as PerspectiveCamera).projectionMatrixInverse,
-    );
-    u.uCamMat.value.copy(camera.matrixWorld);
 
+    // ── Matrices: now uniforms instead of varyings ──────────
+    u.uProjectionMatrix.value.copy(camera.projectionMatrix);
+    u.uInverseProjectionMatrix.value.copy(camera.projectionMatrixInverse);
+    u.uCameraMatrix.value.copy(camera.matrixWorld);
+
+    // ── Ball positions ──────────────────────────────────────
     const balls = u.uBalls.value as Vector4[];
     let count = 0;
+    let cx = 0,
+      cy = 0,
+      cz = 0;
+
     for (let i = 0; i < ballConfigs.length; i++) {
       const body = registryRef.current.get(i);
       if (body) {
@@ -95,99 +55,49 @@ export default function CloudVisualsClient({
           ballConfigs[i].r,
         );
       }
+      cx += balls[i].x;
+      cy += balls[i].y;
+      cz += balls[i].z;
       count++;
     }
 
+    // ── Bounding sphere (CPU-side) ──────────────────────────
+    if (count > 0) {
+      cx /= count;
+      cy /= count;
+      cz /= count;
+
+      let radius = 0;
+      for (let i = 0; i < count; i++) {
+        const dx = balls[i].x - cx;
+        const dy = balls[i].y - cy;
+        const dz = balls[i].z - cz;
+        const d = Math.sqrt(dx * dx + dy * dy + dz * dz) + balls[i].w;
+        if (d > radius) radius = d;
+      }
+      radius += smoothness; // account for smin bloat
+
+      u.uBounds.value.set(cx, cy, cz, radius);
+    }
+
+    // ── Scalars / colors ────────────────────────────────────
     u.uCount.value = count;
     u.uSmooth.value = smoothness;
     u.uBaseColor.value.set(baseColor);
+    u.uRoughness.value = roughness;
+    u.uMetalness.value = metalness;
 
-    // let ambFound = false;
-    // let dirCount = 0;
-
-    // const dirDirs = u.uDirLightDirs.value as Vector3[];
-    // const dirCols = u.uDirLightColors.value as Color[];
-    // const dirInts = u.uDirLightIntensities.value as number[];
-
-    // scene.traverse((obj) => {
-    //   if ((obj as AmbientLight).isAmbientLight && !ambFound) {
-    //     const light = obj as AmbientLight;
-    //     u.uAmbientColor.value.copy(light.color);
-    //     u.uAmbientIntensity.value = light.intensity;
-    //     ambFound = true;
-    //   }
-    //   if (
-    //     (obj as DirectionalLight).isDirectionalLight &&
-    //     dirCount < MAX_LIGHTS
-    //   ) {
-    //     const light = obj as DirectionalLight;
-    //     tmpDirRef.current.setFromMatrixPosition(light.matrixWorld);
-    //     tmpTargetPosRef.current.setFromMatrixPosition(light.target.matrixWorld);
-    //     dirDirs[dirCount]
-    //       .copy(tmpDirRef.current)
-    //       .sub(tmpTargetPosRef.current)
-    //       .normalize();
-    //     dirCols[dirCount].copy(light.color);
-    //     dirInts[dirCount] = light.intensity;
-    //     dirCount++;
-    //   }
-    // });
-
-    // u.uDirLightCount.value = dirCount;
+    u.uStepThreshold.value = 0.005;
+    u.uStepFactor.value = 1.2;
   });
-
-  useEffect(() => {
-    if (!inView) return;
-
-    const m = matRef.current;
-    if (!m) return;
-
-    const u = m.uniforms;
-
-    let ambFound = false;
-    let dirCount = 0;
-
-    const dirDirs = u.uDirLightDirs.value as Vector3[];
-    const dirCols = u.uDirLightColors.value as Color[];
-    const dirInts = u.uDirLightIntensities.value as number[];
-
-    scene.traverse((obj) => {
-      if ((obj as AmbientLight).isAmbientLight && !ambFound) {
-        const light = obj as AmbientLight;
-        u.uAmbientColor.value.copy(light.color);
-        u.uAmbientIntensity.value = light.intensity;
-        ambFound = true;
-      }
-      if (
-        (obj as DirectionalLight).isDirectionalLight &&
-        dirCount < MAX_LIGHTS
-      ) {
-        const light = obj as DirectionalLight;
-        tmpDirRef.current.setFromMatrixPosition(light.matrixWorld);
-        tmpTargetPosRef.current.setFromMatrixPosition(light.target.matrixWorld);
-        dirDirs[dirCount]
-          .copy(tmpDirRef.current)
-          .sub(tmpTargetPosRef.current)
-          .normalize();
-        dirCols[dirCount].copy(light.color);
-        dirInts[dirCount] = light.intensity;
-        dirCount++;
-      }
-    });
-
-    u.uDirLightCount.value = dirCount;
-  }, [scene, inView]);
 
   return (
     <mesh position={position}>
       <planeGeometry args={[2, 2]} />
-      <shaderMaterial
+      <metaballMaterial
         ref={matRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniformsRef.current}
+        key={MetaballMaterial.key}
         blending={NormalBlending}
-        transparent
       />
     </mesh>
   );

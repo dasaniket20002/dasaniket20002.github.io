@@ -3,7 +3,7 @@ import { easing } from "maath";
 
 export default function CameraRig({
   enabled,
-  z,
+  z = 0,
 }: {
   enabled?: boolean;
   z?: number;
@@ -16,7 +16,7 @@ export default function CameraRig({
       [
         -1 + (state.pointer.x * state.viewport.width) / 10,
         (1 + state.pointer.y) / 2,
-        z ?? 0,
+        z,
       ],
       0.5,
       delta,

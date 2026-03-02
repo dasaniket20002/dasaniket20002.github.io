@@ -1,16 +1,19 @@
 import { useMemo } from "react";
+import type { Color, EulerOrder } from "three";
 
-export function HUD() {
-  return (
-    <>
-      <DotField />
-      <CubeScatter />
-      <RadialLines />
-    </>
-  );
-}
-
-function DotField() {
+export function DotField({
+  position,
+  rotation,
+  scale,
+  color = "black",
+  opacity = 1,
+}: {
+  position?: [number, number, number];
+  rotation?: [number, number, number, order?: EulerOrder];
+  scale?: number;
+  color?: Color | string;
+  opacity?: number;
+}) {
   const points = useMemo(() => {
     const positions: number[] = [];
     const size = 10;
@@ -28,7 +31,7 @@ function DotField() {
   }, []);
 
   return (
-    <points position={[0, 0, -30]}>
+    <points position={position} rotation={rotation} scale={scale}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -38,12 +41,24 @@ function DotField() {
           args={[points, 3]}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.2} color="lightgray" />
+      <pointsMaterial size={0.2} color={color} transparent opacity={opacity} />
     </points>
   );
 }
 
-function CubeScatter() {
+export function CubeScatter({
+  position,
+  rotation,
+  scale,
+  color = "black",
+  opacity = 1,
+}: {
+  position?: [number, number, number];
+  rotation?: [number, number, number, order?: EulerOrder];
+  scale?: number;
+  color?: Color | string;
+  opacity?: number;
+}) {
   const positions: [number, number, number][] = [
     [-15, 10, -5],
     [12, 8, -8],
@@ -53,18 +68,35 @@ function CubeScatter() {
   ];
 
   return (
-    <group position={[0, 0, -50]} scale={0.5}>
+    <group position={position} rotation={rotation} scale={scale}>
       {positions.map((pos, i) => (
         <mesh key={i} position={pos}>
           <boxGeometry args={[4, 4, 4]} />
-          <meshBasicMaterial color="gray" wireframe transparent opacity={0.5} />
+          <meshStandardMaterial
+            color={color}
+            wireframe
+            transparent
+            opacity={opacity}
+          />
         </mesh>
       ))}
     </group>
   );
 }
 
-function RadialLines() {
+export function RadialLines({
+  position,
+  rotation,
+  scale,
+  color = "black",
+  opacity = 1,
+}: {
+  position?: [number, number, number];
+  rotation?: [number, number, number, order?: EulerOrder];
+  scale?: number;
+  color?: Color | string;
+  opacity?: number;
+}) {
   const lines = useMemo(() => {
     const segments = 8;
     const radius = 40;
@@ -87,7 +119,7 @@ function RadialLines() {
   }, []);
 
   return (
-    <lineSegments position={[0, 0, -30]}>
+    <lineSegments position={position} rotation={rotation} scale={scale}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -97,7 +129,7 @@ function RadialLines() {
           args={[lines, 3]}
         />
       </bufferGeometry>
-      <lineBasicMaterial color="gray" transparent opacity={0.1} />
+      <lineBasicMaterial color={color} transparent opacity={opacity} />
     </lineSegments>
   );
 }

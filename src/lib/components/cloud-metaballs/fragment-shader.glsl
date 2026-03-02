@@ -1,138 +1,218 @@
 precision highp float;
 
-varying vec2 vUv;
+#include <common>
+#include <packing>
+#include <lights_pars_begin>
 
-const int MAX_BALLS = 32;
-const int MAX_LIGHTS = 8;
+const int MAX_BALLS = 16;
 
-uniform float uTime;
-uniform vec3 uCamPos;
-uniform mat4 uInvProj;
-uniform mat4 uCamMat;
-uniform vec4 uBalls[MAX_BALLS];
-uniform int uCount;
+uniform vec4  uBalls[MAX_BALLS];
+uniform int   uCount;
 uniform float uSmooth;
-uniform vec3 uBaseColor;
+uniform vec3  uBaseColor;
+uniform float uRoughness;
+uniform float uMetalness;
+uniform float uStepThreshold;
+uniform float uStepFactor;
 
-// Scene lights
-uniform vec3 uAmbientColor;
-uniform float uAmbientIntensity;
-uniform int uDirLightCount;
-uniform vec3 uDirLightDirs[MAX_LIGHTS];
-uniform vec3 uDirLightColors[MAX_LIGHTS];
-uniform float uDirLightIntensities[MAX_LIGHTS];
+uniform vec4  uBounds;                   // .xyz = centre, .w = radius
+
+uniform mat4  uProjectionMatrix;
+uniform mat4  uInverseProjectionMatrix;
+uniform mat4  uCameraMatrix;
+
+varying vec2  vUv;
+
+/* ═══════════════════════════════════════════════════════════════
+   SDF
+   ═══════════════════════════════════════════════════════════════ */
 
 float smin(float a, float b, float k) {
-    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
-    return mix(b, a, h) - k * h * (1.0 - h);
+  float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+  return mix(b, a, h) - k * h * (1.0 - h);
 }
 
 float map(vec3 p) {
-    float d = 1e10;
-    for (int i = 0; i < MAX_BALLS; i++) {
-        if (i >= uCount) break;
-        d = smin(d, length(p - uBalls[i].xyz) - uBalls[i].w, uSmooth);
-    }
-    return d;
+  float d = 1e10;
+  for (int i = 0; i < MAX_BALLS; i++) {
+    if (i >= uCount) break;
+    d = smin(d, length(p - uBalls[i].xyz) - uBalls[i].w, uSmooth);
+  }
+  return d;
 }
 
 vec3 calcNormal(vec3 p) {
-    vec2 e = vec2(0.001, 0.0);
-    return normalize(vec3(
-        map(p + e.xyy) - map(p - e.xyy),
-        map(p + e.yxy) - map(p - e.yxy),
-        map(p + e.yyx) - map(p - e.yyx)
-    ));
+  const vec2  k = vec2(1.0, -1.0);
+  const float e = 0.001;
+  return normalize(
+    k.xyy * map(p + k.xyy * e) +
+    k.yyx * map(p + k.yyx * e) +
+    k.yxy * map(p + k.yxy * e) +
+    k.xxx * map(p + k.xxx * e));
+}
+
+vec2 iSphere(vec3 ro, vec3 rd, vec4 s) {
+  vec3  oc  = ro - s.xyz;
+  float b   = dot(oc, rd);
+  float c   = dot(oc, oc) - s.w * s.w;
+  float det = b * b - c;
+  if (det < 0.0) return vec2(-1.0);
+  det = sqrt(det);
+  return vec2(-b - det, -b + det);          // (tNear, tFar)
 }
 
 float raymarch(vec3 ro, vec3 rd) {
-    float t = 0.0;
-    for (int i = 0; i < 150; i++) {
-        float d = map(ro + rd * t);
-        if (d < 0.0003) return t;
-        if (t > 25.0) break;
-        t += d * 0.8;
-    }
-    return -1.0;
+  vec2 bound = iSphere(ro, rd, uBounds);
+  if (bound.y < 0.0) return -1.0;
+
+  float t    = max(bound.x, 0.0);
+  float tMax = min(bound.y + 0.5, 25.0);
+
+  for (int i = 0; i < 96; i++) {
+    float d = map(ro + rd * t);
+    if (d < uStepThreshold) return t;
+    t += d * uStepFactor;
+    if (t > tMax) return -1.0;
+  }
+  return -1.0;
 }
 
-vec3 envColor(vec3 rd) {
-    float y = rd.y * 0.5 + 0.5;
-    vec3 sky = mix(vec3(0.6, 0.7, 0.9), vec3(0.3, 0.5, 0.9), y);
-    return sky;
+/* ═══════════════════════════════════════════════════════════════
+   PBR 
+   ═══════════════════════════════════════════════════════════════ */
+
+float pow5(float x) { float x2 = x * x; return x2 * x2 * x; }
+
+// accepts pre-squared a2 so the caller computes it once
+float D_GGX(float NdotH, float a2) {
+  float d = NdotH * NdotH * (a2 - 1.0) + 1.0;
+  return a2 / (PI * d * d);
 }
+
+// Combined G / (4·NdotV·NdotL)
+float V_SmithSchlick(float NdotV, float NdotL, float k) {
+  return 0.25 / max((NdotV * (1.0 - k) + k) *
+                    (NdotL * (1.0 - k) + k), 1e-6);
+}
+
+vec3 F_Schlick(float cosTheta, vec3 F0) {
+  return F0 + (1.0 - F0) * pow5(1.0 - cosTheta);
+}
+
+vec3 evalBRDF(vec3 N, vec3 V, vec3 L, vec3 radiance,
+              vec3 albedo, vec3 F0, float a2, float k,
+              float metalness, float NdotV) {
+
+  float NdotL = dot(N, L);
+  if (NdotL <= 0.0) return vec3(0.0);
+
+  vec3  H     = normalize(L + V);
+  float NdotH = max(dot(N, H), 0.0);
+  float VdotH = max(dot(V, H), 0.0);
+
+  float D   = D_GGX(NdotH, a2);
+  float Vis = V_SmithSchlick(NdotV, NdotL, k);
+  vec3  F   = F_Schlick(VdotH, F0);
+
+  vec3 spec = D * Vis * F;
+  vec3 diff = (1.0 - F) * (1.0 - metalness) * albedo * (1.0 / PI);
+
+  return (diff + spec) * radiance * NdotL;
+}
+
+float distAtten(float dist, float cutoff) {
+  float d2 = dist * dist;
+  if (cutoff > 0.0) {
+    float r = dist / cutoff;
+    float r2 = r * r;  float r4 = r2 * r2;
+    float w  = saturate(1.0 - r4);
+    return w * w / (d2 + 1.0);
+  }
+  return 1.0 / (d2 + 1e-4);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Main
+   ═══════════════════════════════════════════════════════════════ */
 
 void main() {
-    vec2 ndc = vUv * 2.0 - 1.0;
+  vec2 ndc = vUv * 2.0 - 1.0;
 
-    vec4 vp = uInvProj * vec4(ndc, -1.0, 1.0);
-    vp.xyz /= vp.w;
+  vec4 vp = uInverseProjectionMatrix * vec4(ndc, -1.0, 1.0);
+  vp.xyz /= vp.w;
 
-    vec3 rd = normalize((uCamMat * vec4(normalize(vp.xyz), 0.0)).xyz);
-    vec3 ro = uCamPos;
+  vec3 rd = normalize((uCameraMatrix * vec4(vp.xyz, 0.0)).xyz);
+  vec3 ro = cameraPosition;
 
-    float t = raymarch(ro, rd);
+  float t = raymarch(ro, rd);
+  if (t < 0.0) discard;
 
-    if (t < 0.0) {
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
-        return;
-    }
+  vec3 p = ro + rd * t;
+  vec3 N = calcNormal(p);
+  vec3 V = -rd;
 
-    vec3 p = ro + rd * t;
-    vec3 n = calcNormal(p);
-    vec3 V = normalize(ro - p);
-    vec3 R = reflect(-V, n);
+  /* ── depth ────────────────────────────────────────────── */
+  vec4 clip = uProjectionMatrix * viewMatrix * vec4(p, 1.0);
+  gl_FragDepth = clip.z / clip.w * 0.5 + 0.5;
 
-    // Fresnel (Schlick) - strong for plastic/glossy look
-    float F0base = 0.08;
-    float fres = F0base + (1.0 - F0base) * pow(1.0 - max(dot(n, V), 0.0), 5.0);
+  /* ── material constants ────────────────── */
+  vec3  albedo = uBaseColor;
+  float rough  = clamp(uRoughness, 0.04, 1.0);
+  float metal  = clamp(uMetalness, 0.0,  1.0);
+  float a      = rough * rough;
+  float a2     = a * a;
+  float k      = rough + 1.0;  k = k * k * 0.125;
+  float NdotV  = max(dot(N, V), 0.001);
+  vec3  F0     = mix(vec3(0.04), albedo, metal);
 
-    vec3 base = uBaseColor;
+  vec3 Lo = albedo * ambientLightColor;
 
-    // Ambient
-    vec3 col = base * uAmbientColor * uAmbientIntensity;
+  /* ── directional ─────────────────── */
+  #if NUM_DIR_LIGHTS > 0
+  for (int i = 0; i < NUM_DIR_LIGHTS; i++) {
+    vec3 L = normalize(mat3(uCameraMatrix) * directionalLights[i].direction);
+    Lo += evalBRDF(N, V, L, directionalLights[i].color,
+                   albedo, F0, a2, k, metal, NdotV);
+  }
+  #endif
 
-    // Directional lights - plastic/glossy Blinn-Phong
-    for (int i = 0; i < MAX_LIGHTS; i++) {
-        if (i >= uDirLightCount) break;
+  /* ── point ────────────────────────────────────── */
+  #if NUM_POINT_LIGHTS > 0
+  for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
+    vec3  dv  = (uCameraMatrix * vec4(pointLights[i].position, 1.0)).xyz - p;
+    float dst = length(dv);
+    Lo += evalBRDF(N, V, dv / dst,
+                   pointLights[i].color * distAtten(dst, pointLights[i].distance),
+                   albedo, F0, a2, k, metal, NdotV);
+  }
+  #endif
 
-        vec3 L = normalize(uDirLightDirs[i]);
-        vec3 lCol = uDirLightColors[i] * uDirLightIntensities[i];
-        vec3 H = normalize(L + V);
+  /* ── spot ──────────────────────────────────────────────── */
+  #if NUM_SPOT_LIGHTS > 0
+  for (int i = 0; i < NUM_SPOT_LIGHTS; i++) {
+    vec3  dv   = (uCameraMatrix * vec4(spotLights[i].position, 1.0)).xyz - p;
+    float dst  = length(dv);
+    vec3  L    = dv / dst;
+    vec3  sDir = normalize(mat3(uCameraMatrix) * spotLights[i].direction);
+    float cone = smoothstep(spotLights[i].coneCos,
+                             spotLights[i].penumbraCos, dot(L, sDir));
+    Lo += evalBRDF(N, V, L,
+                   spotLights[i].color * distAtten(dst, spotLights[i].distance) * cone,
+                   albedo, F0, a2, k, metal, NdotV);
+  }
+  #endif
 
-        // Diffuse - slightly wrapped for softer look
-        float wrap = max((dot(n, L) + 0.3) / 1.3, 0.0);
-        col += base * lCol * wrap * 0.7;
+  /* ── env + rim ────────────────────────────────────────── */
+  vec3 R  = reflect(-V, N);
+  vec3 Fr = F_Schlick(NdotV, F0);
+  Lo += mix(vec3(0.6, 0.7, 0.9), vec3(0.3, 0.5, 0.9), R.y * 0.5 + 0.5)
+        * Fr * (1.0 - rough) * 0.3;
 
-        // Specular - high shininess for glossy plastic
-        float spec = pow(max(dot(n, H), 0.0), 180.0);
-        col += lCol * spec * 1.2;
+  float rim = 1.0 - max(dot(N, V), 0.0);
+  Lo += vec3(0.8, 0.85, 1.0) * (rim * rim * rim) * 0.15;
 
-        // Secondary broader specular lobe for plastic sheen
-        float spec2 = pow(max(dot(n, H), 0.0), 32.0);
-        col += lCol * spec2 * 0.15;
-    }
+  gl_FragColor = vec4(Lo, 1.0);
 
-    // Environment reflection - glossy plastic reflects environment
-    vec3 envRef = envColor(R);
-    col += envRef * fres * 0.6;
-
-    // Rim light for plastic edge glow
-    float rim = pow(1.0 - max(dot(n, V), 0.0), 3.0);
-    col += vec3(0.8, 0.85, 1.0) * rim * 0.25;
-
-    // Subsurface scattering approximation
-    for (int i = 0; i < MAX_LIGHTS; i++) {
-        if (i >= uDirLightCount) break;
-        vec3 L = normalize(uDirLightDirs[i]);
-        vec3 lCol = uDirLightColors[i] * uDirLightIntensities[i];
-        float sss = pow(max(dot(V, -L), 0.0), 4.0) * 0.08;
-        col += base * lCol * sss;
-    }
-
-    // ACES tone mapping
-    col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14);
-    col = pow(clamp(col, 0.0, 1.0), vec3(1.0 / 2.2));
-
-    gl_FragColor = vec4(col, 1.0);
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
 }

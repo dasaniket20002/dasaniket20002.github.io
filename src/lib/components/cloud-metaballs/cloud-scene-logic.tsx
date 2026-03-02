@@ -8,6 +8,8 @@ import {
 } from "@react-three/rapier";
 import { useCloudSimContext, type CloudBallsData } from "./cloud-sim-context";
 import { Plane, Raycaster, Vector2, Vector3 } from "three";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 
 const SPRING_STIFFNESS = 8.0;
 const SPRING_DAMPING = 3.0;
@@ -18,6 +20,9 @@ const MOUSE_PUSH_FORCE = 18.0;
 export function CloudPhysicsHost({ balls }: { balls: CloudBallsData[] }) {
   const { registryRef, mouseTargetRef, mouseActiveRef } = useCloudSimContext();
   const mouseRbRef = useRef<RapierRigidBody>(null);
+
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
 
   useFrame(() => {
     if (!mouseRbRef.current) return;
@@ -59,14 +64,16 @@ export function CloudPhysicsHost({ balls }: { balls: CloudBallsData[] }) {
         <PhysicsBall key={i} index={i} config={ball} />
       ))}
 
-      <RigidBody
-        ref={mouseRbRef}
-        type="kinematicPosition"
-        position={[0, 0, 100]}
-        colliders={false}
-      >
-        <BallCollider args={[MOUSE_SPHERE_RADIUS]} />
-      </RigidBody>
+      {qualitySettings.colliderPhysicsEnabled && (
+        <RigidBody
+          ref={mouseRbRef}
+          type="kinematicPosition"
+          position={[0, 0, 100]}
+          colliders={false}
+        >
+          <BallCollider args={[MOUSE_SPHERE_RADIUS]} />
+        </RigidBody>
+      )}
     </Physics>
   );
 }
@@ -112,7 +119,7 @@ function PhysicsBall({
       ref={rbRef}
       type="dynamic"
       position={[
-        restPos.x + 20 + 0.25 * index * index,
+        restPos.x + 20 + 0.25 * index * index * 2,
         restPos.y - 20 + 0.05 * index * index,
         restPos.z - 10 + (0.5 * index * index) / 2,
       ]}
@@ -135,7 +142,12 @@ export function CloudInputHandler() {
   const hitPtRef = useRef(new Vector3());
   const prevPointer = useRef(new Vector2(0, 0));
 
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
+
   useFrame(() => {
+    if (!qualitySettings.colliderPhysicsEnabled) return;
+
     const dx = pointer.x - prevPointer.current.x;
     const dy = pointer.y - prevPointer.current.y;
     const isMoving = dx * dx + dy * dy > 0.00001;

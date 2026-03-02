@@ -24,7 +24,7 @@ import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { getColorPropertyRGB } from "../../utils";
 import CameraRig from "../r3f-common/camera-rig";
-import { HUD } from "../r3f-common/hud";
+import { CubeScatter, DotField, RadialLines } from "../r3f-common/hud";
 
 const COLOR_DARK = getColorPropertyRGB("dark-d");
 const COLOR_LIGHT = getColorPropertyRGB("light-l");
@@ -119,7 +119,14 @@ function Scene({
       </Center>
 
       <Center>
-        <HUD />
+        <DotField position={[0, 0, -30]} color={"lightgray"} opacity={0.75} />
+        <RadialLines position={[0, 0, -30]} color={"gray"} opacity={0.25} />
+        <CubeScatter
+          position={[0, 0, -50]}
+          scale={0.5}
+          color={"gray"}
+          opacity={0.5}
+        />
       </Center>
 
       <Environment preset="city">
@@ -133,7 +140,7 @@ function Scene({
       </Environment>
 
       <EffectComposer
-        multisampling={4}
+        multisampling={0}
         enabled={qualitySettings.usePostProcessing}
       >
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />

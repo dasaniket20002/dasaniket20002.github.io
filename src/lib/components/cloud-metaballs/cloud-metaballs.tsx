@@ -1,6 +1,14 @@
-import { Billboard } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import {
+  ChromaticAberration,
+  EffectComposer,
+  TiltShift2,
+  ToneMapping,
+} from "@react-three/postprocessing";
+import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { useEffect } from "react";
+import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../hooks/use-quality-settings";
 import { COLOR_LIGHT_D, COLOR_LIGHT_L } from "../../utils";
 import CameraRig from "../r3f-common/camera-rig";
 import { CubeScatter, DotField, RadialLines } from "../r3f-common/hud";
@@ -10,15 +18,19 @@ import CloudVisualsClient from "./cloud-visuals-client";
 
 const SceneLights = () => (
   <>
-    <ambientLight intensity={0.5} color={COLOR_LIGHT_D} />
+    <color
+      attach="background"
+      args={[COLOR_LIGHT_L.clone().multiplyScalar(2)]}
+    />
+    <ambientLight intensity={1} color={COLOR_LIGHT_D} />
     <directionalLight
       position={[3, 4, 2]}
-      intensity={1.8}
+      intensity={3}
       color={COLOR_LIGHT_L}
     />
     <directionalLight
       position={[-2, 1, -3]}
-      intensity={0.6}
+      intensity={2}
       color={COLOR_LIGHT_L}
     />
   </>
@@ -34,6 +46,8 @@ export default function CloudMetaballs({
   inView?: boolean;
 }) {
   const { registerView } = useCloudSimContext();
+  const { performanceRating } = usePerformanceMetrics();
+  const qualitySettings = useQualitySettings(performanceRating);
 
   useEffect(() => {
     if (inView) {
@@ -44,49 +58,69 @@ export default function CloudMetaballs({
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 4.5], fov: 50, near: 1, far: 1000 }}
+      camera={{ position: [0, 0, 4.5], fov: 50, near: 1, far: 100 }}
       dpr={[1, 1.5]}
+      shadows={false}
       className={className}
       eventSource={eventSource as React.RefObject<HTMLElement>}
       eventPrefix={eventSource ? "client" : "offset"}
       gl={{
-        alpha: true,
-        antialias: true,
+        alpha: false,
+        antialias: false,
+        depth: false,
         stencil: false,
-        depth: true,
         powerPreference: "high-performance",
       }}
       frameloop={inView ? "always" : "never"}
     >
       <SceneLights />
 
-      <CloudInputHandler />
+      {qualitySettings.colliderPhysicsEnabled && <CloudInputHandler />}
 
       <CloudVisualsClient
         ballConfigs={CLOUD_BALLS}
-        smoothness={0.5}
+        smoothness={0.75}
         baseColor={COLOR_LIGHT_L}
-        inView={inView}
-        position={[0, 0, 0]}
+        position={[0, 0, -50]}
       />
 
-      <Billboard position={[0, 0, -10]}>
-        <DotField position={[10, -5, -20]} color={"gray"} opacity={0.2} />
-        <DotField position={[-20, 10, -25]} color={"gray"} opacity={0.3} />
+      <group position={[0, 0, -10]}>
+        <DotField position={[-10, -1, -20]} color={"gray"} opacity={1} />
         <CubeScatter
-          position={[0, 0, -40]}
+          position={[0, -6, -10]}
           scale={1.5}
           color={"lightgray"}
-          opacity={0.25}
+          opacity={0.8}
         />
         <RadialLines
           rotation={[0, 0, Math.PI / 12]}
+          position={[3, -1, 10]}
           color={"lightgray"}
-          opacity={0.15}
+          opacity={1}
         />
-      </Billboard>
+      </group>
 
-      <CameraRig z={4.5} />
+      <CameraRig z={4.5} enabled={qualitySettings.useCameraControls} />
+
+      <EffectComposer
+        multisampling={0}
+        enableNormalPass
+        enabled={qualitySettings.usePostProcessing}
+      >
+        <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+        <TiltShift2
+          blur={0.3}
+          taper={0.75}
+          resolutionX={qualitySettings.effectRes}
+          resolutionY={qualitySettings.effectRes}
+        />
+        <ChromaticAberration
+          blendFunction={BlendFunction.NORMAL}
+          offset={[0.00075, 0.00075]}
+          resolutionX={qualitySettings.effectRes}
+          resolutionY={qualitySettings.effectRes}
+        />
+      </EffectComposer>
     </Canvas>
   );
 }
