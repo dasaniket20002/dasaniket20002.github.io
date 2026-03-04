@@ -146,7 +146,7 @@ export default function Hobby({ className }: { className?: string }) {
     <div
       ref={containerRef}
       className={cn(
-        "h-dvh w-full px-16 md:px-32 flex flex-col gap-8",
+        "h-dvh w-full px-16 md:px-32 flex flex-col gap-8 bg-dark-d",
         className,
       )}
     >
@@ -154,7 +154,7 @@ export default function Hobby({ className }: { className?: string }) {
         images={ALL_IMAGES}
         baseVelocity={3}
         gap={12}
-        className="h-full mask-t-from-95% mask-b-from-95%"
+        className="h-full mask-t-from-90% mask-b-from-90%"
       />
     </div>
   );

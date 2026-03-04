@@ -90,7 +90,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
       ref={containerRef}
       id="about"
       className={cn(
-        "relative grid gap-y-12 md:gap-y-0 py-16 h-dvh",
+        "relative grid gap-y-12 md:gap-y-0 py-16 h-dvh bg-dark-d",
         "grid-cols-[4rem_1fr_4rem] grid-rows-[auto_1fr]",
         "md:grid-cols-[8rem_1fr_1fr_1fr_8rem]",
         className,
@@ -98,7 +98,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
     >
       <div
         ref={revealHeaderRef}
-        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference text-light-l"
         style={{
           height: windowWidth >= 768 ? aboutContainerHeight : "auto",
         }}
@@ -109,7 +109,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
         >
           <m.h3
             style={{ y: titleRevealY, filter: titleRevealBlur }}
-            className="text-4xl font-width-125 font-light tracking-wide uppercase"
+            className="text-4xl font-width-125 font-extralight tracking-wide uppercase"
           >
             what i'm looking for
           </m.h3>
@@ -117,7 +117,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
       </div>
       <div
         ref={aboutContainerRef}
-        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-full max-w-5xl grid auto-rows-fr grid-cols-[auto_1fr] gap-x-8 gap-y-4"
+        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-full max-w-5xl grid auto-rows-fr grid-cols-[1fr_3fr] gap-x-8 gap-y-4"
       >
         <span className="col-span-full text-5xl font-light font-width-120 text-light-d flex gap-[0.5ch]">
           <TextEffect
@@ -136,7 +136,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
             per="char"
             speedReveal={2}
             delay={0.25}
-            className="text-light-l italic"
+            className="text-light-l italic font-normal"
           >
             fit
           </TextEffect>
@@ -189,10 +189,7 @@ function AboutNeedContent({
         per="word"
         speedReveal={2}
         delay={i * 0.1}
-        className={cn(
-          "text-sm font-light font-width-100 tracking-wide leading-snug h-full py-2 text-light-d border-b border-dark-l/25 uppercase",
-          i === 0 && "border-t",
-        )}
+        className="text-2xl font-extralight font-width-100 tracking-wide leading-snug h-full py-2 text-light-l border-b border-dark-l/25 uppercase"
       >
         {cat}
       </TextEffect>
@@ -203,10 +200,7 @@ function AboutNeedContent({
         per="line"
         speedReveal={2}
         delay={0.25 + i * 0.1}
-        className={cn(
-          "text-lg font-light font-width-100 tracking-wide leading-snug h-full py-2 border-b border-dark-l/25",
-          i === 0 && "border-t",
-        )}
+        className="font-light font-width-100 tracking-widest h-full py-2 border-b border-dark-l/25 leading-relaxed text-light-d"
       >
         {desc}
       </TextEffect>

@@ -42,9 +42,9 @@ export default function ContactContent() {
     <div
       id="contact"
       ref={containerRef}
-      className="h-[50dvh] w-full px-16 md:px-32 pt-16 flex flex-col gap-8"
+      className="h-[50dvh] w-full px-16 md:px-32 pt-16 flex flex-col gap-8 bg-dark-d"
     >
-      <div className="sticky top-16 md:relative md:top-0 z-1 flex-none mix-blend-difference">
+      <div className="sticky top-16 md:relative md:top-0 z-1 flex-none mix-blend-difference text-light-l">
         <div className="mask-b-from-80%">
           <m.h3
             style={{ y: titleRevealY, filter: titleRevealBlur }}
@@ -82,7 +82,7 @@ function Form({ className }: { className?: string }) {
         className,
       )}
     >
-      <h2 className="relative text-5xl leading-relaxed col-span-full md:col-[2/4] row-[1/2] h-min self-end">
+      <h2 className="relative text-5xl leading-relaxed col-span-full md:col-[2/4] row-[1/2] h-min self-end text-light-l">
         <span className="italic">"</span>
         Hey, my name is
         <NameRequest inputValue={name} setInputValue={setName} />

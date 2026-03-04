@@ -33,11 +33,13 @@ const Char = ({
   index,
   progress,
   isHighlighted,
+  theme,
 }: {
   children: string;
   index: number;
   progress: MotionValue<number>;
   isHighlighted: boolean;
+  theme: "light" | "dark";
 }) => {
   const opacity = useTransform(progress, [index, index + 1], [0.25, 1]);
   const blur = useTransform(progress, [index, index + 1], ["1px", "0px"]);
@@ -53,7 +55,10 @@ const Char = ({
   return (
     <m.span
       style={{ opacity, filter, fontVariationSettings }}
-      className={cn(isHighlighted && "text-light-l italic")}
+      className={cn(
+        isHighlighted &&
+          (theme === "light" ? "text-dark-d italic" : "text-light-l italic"),
+      )}
     >
       {children}
     </m.span>
@@ -64,11 +69,19 @@ export type ScrollTextPressureProps = {
   displayText: string;
   highlights?: string[];
   containerRef: React.RefObject<HTMLElement | null>;
+  theme?: "light" | "dark";
 } & HTMLMotionProps<"div">;
 
 const ScrollTextPressure = forwardRef<HTMLDivElement, ScrollTextPressureProps>(
   (
-    { displayText, highlights, containerRef, className, ...motionProps },
+    {
+      displayText,
+      highlights,
+      containerRef,
+      className,
+      theme = "light",
+      ...motionProps
+    },
     ref,
   ) => {
     const displaySplit = useMemo(() => displayText.split(""), [displayText]);
@@ -97,16 +110,22 @@ const ScrollTextPressure = forwardRef<HTMLDivElement, ScrollTextPressureProps>(
         {...motionProps}
       >
         <m.div
-          className="w-px h-full bg-dark-1 mask-t-from-0% mask-b-from-0%"
+          className="w-px h-full mask-t-from-0% mask-b-from-0%"
           style={{ height: progress }}
         />
-        <p className="relative py-32 text-5xl md:text-7xl text-light-d whitespace-pre-wrap tracking-tighter leading-snug">
+        <p
+          className={cn(
+            "relative py-32 text-5xl md:text-7xl text-dark-l whitespace-pre-wrap tracking-tighter leading-snug",
+            theme === "light" ? "text-dark-l" : "text-light-d",
+          )}
+        >
           {displaySplit.map((char, index) => (
             <Char
               key={index}
               index={index}
               progress={calculatedIndex}
               isHighlighted={highlightIndices.has(index)}
+              theme={theme}
             >
               {char}
             </Char>

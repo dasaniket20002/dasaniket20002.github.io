@@ -16,7 +16,10 @@ export default function ContactTitle({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={cn("relative h-[200dvh] py-16 px-16 md:px-32", className)}
+      className={cn(
+        "relative h-[200dvh] py-16 px-16 md:px-32 bg-dark-d",
+        className,
+      )}
     >
       <ScrollTextPressure
         displayText={DISPLAY}
@@ -26,6 +29,7 @@ export default function ContactTitle({ className }: { className?: string }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ margin: "128px" }}
         className="h-min px-0"
+        theme="dark"
       />
     </div>
   );
