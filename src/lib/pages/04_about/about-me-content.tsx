@@ -54,7 +54,7 @@ const AboutMeContent = forwardRef<HTMLDivElement, { className?: string }>(
 
         <div
           ref={aboutContentRef1}
-          className="row-[1/2] col-[1/3] md:col-[1/2] self-end flex flex-col gap-3 p-4 md:p-0 mix-blend-screen md:mix-blend-normal"
+          className="row-[1/2] col-[1/3] md:col-[1/2] self-end flex flex-col gap-3 p-4 md:p-0 text-light-l mix-blend-difference"
         >
           <TextEffect
             as="p"
@@ -96,7 +96,7 @@ const AboutMeContent = forwardRef<HTMLDivElement, { className?: string }>(
                 speedReveal={2}
                 delay={i * 0.1}
                 className={cn(
-                  "text-sm font-light font-width-100 tracking-wide leading-snug h-full py-2 text-light-d border-b border-dark-l/25 uppercase place-content-end",
+                  "text-sm font-light font-width-100 tracking-wide leading-snug h-full py-2 text-dark-l border-b border-dark-l/25 uppercase place-content-end",
                   i === 0 && "border-t",
                 )}
               >
@@ -110,7 +110,7 @@ const AboutMeContent = forwardRef<HTMLDivElement, { className?: string }>(
                 speedReveal={2}
                 delay={0.25 + i * 0.1}
                 className={cn(
-                  "text-lg font-light font-width-100 tracking-wide leading-snug h-full py-2 border-b border-dark-l/25 place-content-end",
+                  "text-lg font-light font-width-100 tracking-wide leading-snug h-full py-2 border-b border-dark-l/25 place-content-end text-light-l mix-blend-difference",
                   i === 0 && "border-t",
                 )}
               >

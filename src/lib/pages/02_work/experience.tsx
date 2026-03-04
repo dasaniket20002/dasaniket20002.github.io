@@ -70,7 +70,8 @@ export default function Experience({ className }: { className?: string }) {
       <div
         className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 mix-blend-difference text-light-l"
         style={{
-          height: windowWidth >= 768 ? experienceContainerHeight : "auto",
+          height:
+            windowWidth >= 768 ? experienceContainerHeight : "min-content",
         }}
       >
         <m.div
@@ -80,7 +81,7 @@ export default function Experience({ className }: { className?: string }) {
           <div className="mask-b-from-80%">
             <m.h3
               style={{ y: titleRevealY, filter: titleRevealBlur }}
-              className="text-4xl font-width-125 font-extralight tracking-wide uppercase"
+              className="text-4xl font-width-125 font-light tracking-wide uppercase"
             >
               what i have done
             </m.h3>
