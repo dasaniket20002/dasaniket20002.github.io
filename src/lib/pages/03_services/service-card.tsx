@@ -32,7 +32,7 @@ export default function ServiceCard({
           preset="default"
           per="char"
           speedReveal={2}
-          className="text-5xl font-extralight font-width-120 uppercase"
+          className="text-5xl font-light font-width-120 uppercase"
         >
           {title}
         </TextEffect>
@@ -60,7 +60,7 @@ export default function ServiceCard({
         preset="fade"
         per="line"
         delay={0.3}
-        className="font-light tracking-wider text-light-d text-justify"
+        className="tracking-widest text-dark-l text-justify"
       >
         {description}
       </TextEffect>

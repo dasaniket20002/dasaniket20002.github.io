@@ -24,7 +24,7 @@ export default function ExperienceCard({
           isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }
         }
         transition={{ duration: 0.4 }}
-        className="size-24 shrink-0 bg-light-d rounded-2xl p-3 grid place-items-center"
+        className="size-24 shrink-0 bg-light-d/10 rounded-2xl p-3 grid place-items-center"
       >
         <img src={experience.imgUrl} alt={experience.companyName} />
       </m.div>
@@ -37,7 +37,7 @@ export default function ExperienceCard({
           trigger={isInView}
           per="char"
           speedReveal={2}
-          className="text-4xl font-width-120 font-extralight uppercase"
+          className="text-4xl font-width-120 uppercase text-dark-d"
         >
           {experience.companyName}
         </TextEffect>
@@ -48,7 +48,7 @@ export default function ExperienceCard({
           preset="fade"
           per="word"
           delay={0.1}
-          className="text-base text-light-l/75 tracking-wider"
+          className="text-base text-dark-l tracking-wider"
         >
           {`${experience.location} · ${experience.totalDuration}`}
         </TextEffect>
@@ -60,11 +60,11 @@ export default function ExperienceCard({
               key={i}
               className={cn(
                 "relative pb-6 last:pb-0 pl-6",
-                showTimeline && "border-l-2 border-light-d/25",
+                showTimeline && "border-l-2 border-light-d/10",
               )}
             >
               {/* Timeline dot */}
-              <span className="absolute -left-2.25 top-2 size-4 rounded-full bg-light-d border-3 border-dark-d" />
+              <span className="absolute -left-2.25 top-1.75 size-4 rounded-full bg-light-l border-3 border-light-d/25" />
 
               {/* Title + type */}
               <TextEffect
@@ -73,7 +73,7 @@ export default function ExperienceCard({
                 preset="fade"
                 per="word"
                 delay={0.15 + i * 0.1}
-                className="text-2xl font-width-120 font-light tracking-wide uppercase"
+                className="text-2xl font-width-120 tracking-wide uppercase text-dark-d"
               >
                 {`${des.title} · ${des.type}`}
               </TextEffect>
@@ -85,7 +85,7 @@ export default function ExperienceCard({
                 preset="fade"
                 per="word"
                 delay={0.2 + i * 0.1}
-                className="text-base text-light-l/75 tracking-wider"
+                className="text-base text-dark-l tracking-wider"
               >
                 {`${des.startDate} - ${des.endDate} · ${des.duration}`}
               </TextEffect>
@@ -99,7 +99,7 @@ export default function ExperienceCard({
                     : "inset(0% 0% 100% 0%)",
                 }}
                 transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
-                className="mt-2 space-y-1 tracking-widest font-light text-light-d list-['-_'] pl-4"
+                className="mt-2 space-y-1 tracking-widest text-dark-l list-['-_'] pl-4"
               >
                 {des.descriptions.map((desc, j) => (
                   <li key={j}>{desc}</li>
