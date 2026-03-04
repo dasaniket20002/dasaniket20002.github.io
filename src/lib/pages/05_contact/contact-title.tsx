@@ -17,7 +17,7 @@ export default function ContactTitle({ className }: { className?: string }) {
     <div
       ref={containerRef}
       className={cn(
-        "relative h-[200dvh] py-16 px-16 md:px-32 bg-dark-d",
+        "relative h-[150dvh] py-16 px-16 md:px-32 bg-dark-d",
         className,
       )}
     >

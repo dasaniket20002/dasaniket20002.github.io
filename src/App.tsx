@@ -2,9 +2,8 @@ import { AnimatePresence } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useState } from "react";
 import NoiseOverlay from "./lib/components/noise-overlay";
-
-const Loader = lazy(() => import("./lib/pages/00_loader/loader"));
-const Header = lazy(() => import("./lib/components/header"));
+import Loader from "./lib/pages/00_loader/loader";
+import Header from "./lib/components/header";
 
 const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
 const Work = lazy(() => import("./lib/pages/02_work/work"));
@@ -36,9 +35,9 @@ function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="relative h-full"
+              className="relative h-full w-full"
             >
-              <Header className="fixed top-0" />
+              <Header className="fixed top-0 left-0 right-0" />
               <Suspense fallback={null}>
                 <Hero />
               </Suspense>

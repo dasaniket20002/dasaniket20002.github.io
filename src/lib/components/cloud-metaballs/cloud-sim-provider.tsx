@@ -34,7 +34,7 @@ export const CloudSimProvider = ({
         registerView,
       }}
     >
-      <div className="absolute -z-50 h-dvh w-dvh opacity-0 pointer-events-none">
+      <div className="absolute -z-50 h-dvh w-dvw opacity-0 pointer-events-none">
         <Suspense fallback={null}>
           <CloudMetaballsPhysicsHost />
         </Suspense>

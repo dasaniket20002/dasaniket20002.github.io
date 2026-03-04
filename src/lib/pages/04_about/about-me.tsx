@@ -52,7 +52,7 @@ export default function AboutMe({ className }: { className?: string }) {
 
   const { scrollYProgress: colorChangeProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end end"],
+    offset: ["start end", "start center"],
   });
 
   const color_l = useMemo(

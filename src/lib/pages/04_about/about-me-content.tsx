@@ -13,6 +13,10 @@ const ABOUT_CONTENT = [
     cat: "studies",
     desc: "B.Tech in CSE at Heritage Institute of Technology, Kolkata",
   },
+  {
+    cat: "skills",
+    desc: "React, TailwindCSS, Framer Motion, GSAP, LangChain, LangGraph, Ollama, Figma, NextJS, Typescript, Zustand, SSR, Tanstack, Vite, SQL, C#, Rust, Java, Python, Bash, GIT, SQL, ExpressJS, NestJS, Bun, Node, PostgreSQL, MongoDB, Redis, Databricks, Azure, Django",
+  },
   { cat: "of the clock", desc: "Painting, 3D Art, Gaming, Petting my dog" },
 ];
 
@@ -106,11 +110,11 @@ const AboutMeContent = forwardRef<HTMLDivElement, { className?: string }>(
                 as="p"
                 trigger={aboutContent2InView}
                 preset="default"
-                per="word"
+                per="line"
                 speedReveal={2}
                 delay={0.25 + i * 0.1}
                 className={cn(
-                  "text-lg font-light font-width-100 tracking-wide leading-snug h-full py-2 border-b border-dark-l/25 place-content-end text-light-l mix-blend-difference",
+                  "text-lg font-light font-width-100 tracking-widest leading-snug h-full py-2 border-b border-dark-l/25 place-content-end text-light-l mix-blend-difference",
                   i === 0 && "border-t",
                 )}
               >

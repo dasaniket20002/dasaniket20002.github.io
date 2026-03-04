@@ -19,7 +19,7 @@ export default function AboutTitle({ className }: { className?: string }) {
 
   const { scrollYProgress: colorChangeProgress } = useScroll({
     target: containerRef,
-    offset: ["end end", "end start"],
+    offset: ["end end", "end center"],
   });
   const color_l = useMemo(
     () => formatHex(getColorPropertyValue("light-l")),
@@ -36,7 +36,7 @@ export default function AboutTitle({ className }: { className?: string }) {
   return (
     <m.div
       ref={containerRef}
-      className={cn("relative h-[200dvh] py-16 px-16 md:px-32", className)}
+      className={cn("relative h-[150dvh] py-16 px-16 md:px-32", className)}
       style={{ backgroundColor }}
     >
       <ScrollTextPressure
@@ -46,7 +46,8 @@ export default function AboutTitle({ className }: { className?: string }) {
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ margin: "128px" }}
-        className="h-min px-0"
+        className="h-min px-0 mix-blend-difference"
+        theme="dark"
       />
     </m.div>
   );
