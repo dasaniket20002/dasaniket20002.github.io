@@ -80,7 +80,7 @@ export default function Experience({ className }: { className?: string }) {
           <div className="mask-b-from-80%">
             <m.h3
               style={{ y: titleRevealY, filter: titleRevealBlur }}
-              className="text-4xl font-width-125 font-light tracking-wide uppercase"
+              className="text-4xl font-width-125 font-extralight tracking-wide uppercase"
             >
               what i have done
             </m.h3>

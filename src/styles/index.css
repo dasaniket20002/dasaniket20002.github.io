@@ -17,6 +17,8 @@ html {
 }
 
 :root {
+  position: relative;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   font-optical-sizing: auto;

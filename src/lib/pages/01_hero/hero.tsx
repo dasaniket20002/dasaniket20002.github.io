@@ -12,7 +12,13 @@ const CloudMetaballs = lazy(
   () => import("../../components/cloud-metaballs/cloud-metaballs.tsx"),
 );
 
-export default function Hero({ className }: { className?: string }) {
+export default function Hero({
+  className,
+  id,
+}: {
+  className?: string;
+  id?: string;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
   const inView = useInView(containerRef, { margin: "-128px", initial: false });
@@ -23,8 +29,8 @@ export default function Hero({ className }: { className?: string }) {
 
   return (
     <div
+      id={id}
       ref={containerRef}
-      id="hero"
       className={cn(
         "h-dvh w-full relative",
         "grid grid-rows-[1fr_1fr_4rem]",

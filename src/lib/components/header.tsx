@@ -23,7 +23,7 @@ import AnimatedTicker from "./animated-ticker";
 import Link from "./link";
 import LogoName from "./logo-name";
 
-type HeaderProps = { className?: string };
+type HeaderProps = { className?: string; isLoading: boolean };
 
 const LINK_VARIANTS: Variants = {
   hidden: { x: 24, opacity: 0 },
@@ -87,87 +87,91 @@ const ScrollProgressViewer = ({ className }: { className?: string }) => {
   );
 };
 
-const Header = forwardRef<HTMLElement, HeaderProps>(({ className }, ref) => {
-  const headerRef = useRef<HTMLElement>(null);
-  const [hidden, setHidden] = useState(true);
+const Header = forwardRef<HTMLElement, HeaderProps>(
+  ({ className, isLoading }, ref) => {
+    const headerRef = useRef<HTMLElement>(null);
+    const [hidden, setHidden] = useState(true);
 
-  const { lockSnap, unlockSnap } = useStickySnap();
-  const lenis = useLenis();
+    const { lockSnap, unlockSnap } = useStickySnap();
+    const lenis = useLenis();
 
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    if (latest - previous > 10) setHidden(true);
-    if (previous - latest > 5) setHidden(false);
-  });
+    const { scrollY } = useScroll();
+    useMotionValueEvent(scrollY, "change", (latest) => {
+      const previous = scrollY.getPrevious() ?? 0;
+      if (latest - previous > 10) setHidden(true);
+      if (previous - latest > 5) setHidden(false);
+    });
 
-  useEffect(() => {
-    const t = setTimeout(() => setHidden(false), HEADER_INITIAL_DELAY);
+    useEffect(() => {
+      if (isLoading) return;
 
-    return () => {
-      if (t) clearTimeout(t);
-    };
-  }, []);
+      const t = setTimeout(() => setHidden(false), HEADER_INITIAL_DELAY);
 
-  useImperativeHandle(ref, () => headerRef.current!);
+      return () => {
+        if (t) clearTimeout(t);
+      };
+    }, [isLoading]);
 
-  return (
-    <header
-      ref={headerRef}
-      className={cn(
-        "relative px-16 md:px-32 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-98 mix-blend-difference",
-        className,
-      )}
-      onMouseOver={() => setHidden(false)}
-    >
-      <AnimatePresence mode="popLayout">
-        {!hidden && (
-          <LogoName
-            className="text-xl cursor-pointer transition-colors z-98 py-2 text-light-l"
-            initial={{ x: -24, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -24, opacity: 0 }}
-            transition={{
-              duration: REVEAL_TRANSITION_DURATION,
-              ease: "easeInOut",
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              lockSnap();
-              lenis?.scrollTo(0, { onComplete: unlockSnap, lock: true });
-            }}
-          />
+    useImperativeHandle(ref, () => headerRef.current!);
+
+    return (
+      <header
+        ref={headerRef}
+        className={cn(
+          "relative px-16 md:px-32 py-3 w-full flex gap-4 md:gap-8 justify-between items-start z-97 mix-blend-difference",
+          className,
         )}
-      </AnimatePresence>
+        onMouseOver={() => setHidden(false)}
+      >
+        <AnimatePresence mode="popLayout">
+          {!hidden && (
+            <LogoName
+              className="text-xl cursor-pointer transition-colors z-98 py-2 text-light-l"
+              initial={{ x: -24, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -24, opacity: 0 }}
+              transition={{
+                duration: REVEAL_TRANSITION_DURATION,
+                ease: "easeInOut",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                lockSnap();
+                lenis?.scrollTo(0, { onComplete: unlockSnap, lock: true });
+              }}
+            />
+          )}
+        </AnimatePresence>
 
-      <AnimatePresence mode="popLayout">
-        {!hidden && (
-          <m.nav
-            variants={CONTAINER_VARIANTS}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors text-light-l"
-          >
-            {NAV_LINKS.map((l, i) => (
-              <m.section
-                key={i}
-                variants={LINK_VARIANTS}
-                transition={{
-                  duration: REVEAL_TRANSITION_DURATION,
-                  ease: "easeInOut",
-                }}
-              >
-                <Link href={l.href} children={l.name} showBG={false} />
-              </m.section>
-            ))}
-          </m.nav>
-        )}
-      </AnimatePresence>
+        <AnimatePresence mode="popLayout">
+          {!hidden && (
+            <m.nav
+              variants={CONTAINER_VARIANTS}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors text-light-l"
+            >
+              {NAV_LINKS.map((l, i) => (
+                <m.section
+                  key={i}
+                  variants={LINK_VARIANTS}
+                  transition={{
+                    duration: REVEAL_TRANSITION_DURATION,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Link href={l.href} children={l.name} showBG={false} />
+                </m.section>
+              ))}
+            </m.nav>
+          )}
+        </AnimatePresence>
 
-      <ScrollProgressViewer className="absolute top-4 right-0 md:right-16 w-12 h-76" />
-    </header>
-  );
-});
+        <ScrollProgressViewer className="absolute top-4 right-0 md:right-16 w-12 h-76" />
+      </header>
+    );
+  },
+);
 
 export default Header;

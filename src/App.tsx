@@ -1,9 +1,9 @@
 import { AnimatePresence } from "motion/react";
-import * as m from "motion/react-m";
 import { lazy, Suspense, useState } from "react";
+import Header from "./lib/components/header";
 import NoiseOverlay from "./lib/components/noise-overlay";
 import Loader from "./lib/pages/00_loader/loader";
-import Header from "./lib/components/header";
+// import Hero from "./lib/pages/01_hero/hero";
 
 const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
 const Work = lazy(() => import("./lib/pages/02_work/work"));
@@ -23,45 +23,38 @@ function App() {
       {RENDER_SOLO ? (
         <></>
       ) : (
-        <AnimatePresence mode="wait">
-          {isLoading ? (
-            <Suspense fallback={null}>
+        <main id="top" className="relative h-full w-full">
+          <AnimatePresence mode="wait">
+            {isLoading && (
               <Loader key="loader" onComplete={() => setIsLoading(false)} />
-            </Suspense>
-          ) : (
-            <m.main
-              id="top"
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-              className="relative h-full w-full"
-            >
-              <Header className="fixed top-0 left-0 right-0" />
-              <Suspense fallback={null}>
-                <Hero />
-              </Suspense>
-              <Suspense fallback={null}>
-                <Work />
-              </Suspense>
-              <Suspense fallback={null}>
-                <Services />
-              </Suspense>
-              <Suspense fallback={null}>
-                <About />
-              </Suspense>
-              <Suspense fallback={null}>
-                <Contact />
-              </Suspense>
-              <Suspense fallback={null}>
-                <Footer />
-              </Suspense>
-              <Suspense fallback={null}>
-                <Hero />
-              </Suspense>
-            </m.main>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
+          <Header
+            className="fixed top-0 left-0 right-0"
+            isLoading={isLoading}
+          />
+          <Suspense fallback={null}>
+            <Hero id="hero" />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Work />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Services />
+          </Suspense>
+          <Suspense fallback={null}>
+            <About />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Contact />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
+          <Suspense fallback={null}>
+            <Hero />
+          </Suspense>
+        </main>
       )}
     </>
   );

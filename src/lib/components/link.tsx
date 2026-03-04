@@ -43,14 +43,14 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         e.preventDefault();
         if (!href) return;
 
-        if (href.startsWith("http")) {
-          window.open(href, "_blank");
-        } else {
+        if (href.startsWith("#")) {
           lockSnap();
           lenis?.scrollTo(href, {
             onComplete: unlockSnap,
             lock: true,
           });
+        } else {
+          window.open(href, "_blank");
         }
       },
       [href, lenis, lockSnap, unlockSnap],

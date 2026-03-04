@@ -45,7 +45,7 @@ const DropdownOption = memo(function DropdownOption({
       }}
       onClick={() => onSelect(option)}
       className={cn(
-        "relative w-full text-start cursor-pointer px-[0.5ch] py-3 text-4xl",
+        "relative w-full text-start cursor-pointer px-[0.5ch] py-3 text-4xl text-light-l",
         "before:absolute before:inset-1 before:rounded-md before:transition-colors before:duration-250 hover:before:bg-light-d/25 before:-z-1",
         index === 0 && "rounded-t-md",
         index === totalCount - 1 && "rounded-b-md",

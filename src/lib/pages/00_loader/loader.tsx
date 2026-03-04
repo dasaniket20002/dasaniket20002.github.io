@@ -53,7 +53,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
           initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{ clipPath: "inset(100% 0% 0% 0%)" }}
           transition={{ duration: 1, ease: "anticipate", delay: 0.5 }}
-          className="absolute z-97 w-dvw h-dvh top-0 left-0 bg-dark-d"
+          className="absolute z-98 w-dvw h-dvh top-0 left-0 bg-dark-d"
         ></m.div>
         <m.div
           ref={ref}

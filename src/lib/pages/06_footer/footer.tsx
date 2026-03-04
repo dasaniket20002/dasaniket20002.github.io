@@ -4,11 +4,11 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { lazy, Suspense, useEffect, useRef } from "react";
 import * as m from "motion/react-m";
+import { useEffect, useRef } from "react";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
-
-const GlassScene = lazy(() => import("../../components/glass/glass-scene"));
+import FooterContent from "./footer-content";
+import FooterGraphic from "./footer-graphic";
 
 export default function MaskSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,13 +20,11 @@ export default function MaskSection() {
 
   const inView = useInView(containerRef, { amount: "some", initial: false });
 
-  // Track scroll relative to this section
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "start -0.75"],
   });
 
-  // Animate ellipse size (in vh)
   const _maskSize = useTransform(
     scrollYProgress,
     [0, 1],
@@ -40,7 +38,6 @@ export default function MaskSection() {
       ref={containerRef}
       className="relative h-dvh w-full flex flex-col gap-8 bg-light-l overflow-hidden"
     >
-      {/* Mask layer */}
       <m.div
         style={{
           WebkitMaskImage: maskImage,
@@ -49,13 +46,8 @@ export default function MaskSection() {
         className="absolute inset-0 bg-dark-d pointer-events-none z-1"
       />
 
-      {/* Content */}
-      <div className="relative h-1/2 w-full mask-b-from-90%">
-        <Suspense fallback={null}>
-          <GlassScene inView={inView} />
-        </Suspense>
-        <div className="absolute inset-0 px-16 md:px-32 pointer-events-none"></div>
-      </div>
+      <FooterGraphic inView={inView} className="h-1/2 w-full mask-b-from-90%" />
+      <FooterContent className="h-1/2 w-full" />
     </div>
   );
 }

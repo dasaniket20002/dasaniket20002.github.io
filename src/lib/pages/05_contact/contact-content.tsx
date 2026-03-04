@@ -48,7 +48,7 @@ export default function ContactContent() {
         <div className="mask-b-from-80%">
           <m.h3
             style={{ y: titleRevealY, filter: titleRevealBlur }}
-            className="text-4xl font-width-125 font-light tracking-wide uppercase"
+            className="text-4xl font-width-125 font-extralight tracking-wide uppercase"
           >
             CONNECT WITH ME
           </m.h3>
@@ -58,7 +58,7 @@ export default function ContactContent() {
             style={{ y: titleRevealY, filter: titleRevealBlur }}
             className="text-xl font-width-120 font-extralight tracking-wide uppercase"
           >
-            Fill the form below
+            Ready for the change?
           </m.p>
         </div>
       </div>

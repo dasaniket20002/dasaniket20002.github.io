@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { Color } from "three";
 
 export const PRIMARY_EMAIL = "dasaniketconnects@gmail.com";
+export const PRIMARY_TEL = "+91-91238-00536";
 export const EPSILON = 1e-4;
 
 export const colorPalettes: Hsv[][] = [
