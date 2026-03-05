@@ -22,12 +22,9 @@ import { Group } from "three";
 import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useQualitySettings } from "../../hooks/use-quality-settings";
-import { getColorPropertyRGB } from "../../utils";
 import CameraRig from "../r3f-common/camera-rig";
 import { CubeScatter, DotField, RadialLines } from "../r3f-common/hud";
-
-const COLOR_DARK = getColorPropertyRGB("dark-d");
-const COLOR_LIGHT = getColorPropertyRGB("light-l");
+import { COLOR_DARK_D, COLOR_LIGHT_L } from "../../utils";
 
 export default function GlassScene({
   eventSource,
@@ -98,7 +95,7 @@ function Scene({
     <>
       <color
         attach="background"
-        args={[COLOR_LIGHT.clone().multiplyScalar(2)]}
+        args={[COLOR_LIGHT_L.clone().multiplyScalar(2)]}
       />
 
       <Center ref={textRef} position={[1, -1, -10]}>
@@ -106,7 +103,7 @@ function Scene({
           fontSize={8}
           letterSpacing={-0.025}
           fontWeight={800}
-          color={COLOR_DARK.clone().multiplyScalar(0.25)}
+          color={COLOR_DARK_D.clone().multiplyScalar(0.25)}
           scale={[1.75, 1, 1]}
           castShadow
         >

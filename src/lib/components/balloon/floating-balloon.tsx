@@ -17,10 +17,8 @@ import {
   useSphericalJoint,
   type Vector3Tuple,
 } from "@react-three/rapier";
-import { formatHex } from "culori";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import { Suspense, useCallback, useMemo, useRef, type RefObject } from "react";
-import { getColorPropertyValue } from "../../utils";
 import {
   CatmullRomCurve3,
   Color,
@@ -30,6 +28,7 @@ import {
   Vector2,
   Vector3,
 } from "three";
+import { COLOR_LIGHT_D, COLOR_LIGHT_L } from "../../utils";
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -40,15 +39,11 @@ declare module "@react-three/fiber" {
   }
 }
 
-const DisableRender = () => useFrame(() => null, 1000);
-
 const DEBUG = false;
 const GRAVITY: Vector3Tuple = [0, 4, 0];
 
-const BALLOON_COLOR = formatHex(getColorPropertyValue("light-l"));
-
 const BALLOON_MATERIAL = new MeshPhysicalMaterial({
-  color: BALLOON_COLOR,
+  color: COLOR_LIGHT_L,
   transparent: true,
   opacity: 0.5,
   roughness: 0.14,
@@ -62,7 +57,7 @@ const BALLOON_MATERIAL = new MeshPhysicalMaterial({
 });
 
 const BALLOON_HOLDER_MATERIAL = new MeshPhysicalMaterial({
-  color: BALLOON_COLOR,
+  color: COLOR_LIGHT_L,
   roughness: 0.14,
   metalness: 0.74,
   reflectivity: 0.83,
@@ -89,23 +84,22 @@ export default function FloatingBalloon({
         stencil: false,
         depth: false,
         antialias: true,
-        // powerPreference: "high-performance",
+        powerPreference: "high-performance",
       }}
       camera={{ position: [0, 0, 10], fov: 24, near: 1, far: 100 }}
       onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
       className={className}
       eventSource={eventSource as RefObject<HTMLElement>}
       eventPrefix={eventSource ? "client" : "offset"}
-      frameloop="demand"
+      frameloop={inView === false ? "never" : "always"}
     >
-      {!inView && <DisableRender />}
       <Suspense fallback={null}>
         <Physics paused={!inView} debug={DEBUG} gravity={GRAVITY}>
           <FloatingBalloonComponent />
         </Physics>
       </Suspense>
 
-      {inView && <FloatingBalloonLightsAndEffects />}
+      <FloatingBalloonLightsAndEffects />
     </Canvas>
   );
 }
@@ -115,7 +109,11 @@ function FloatingBalloonLightsAndEffects() {
     <>
       <ambientLight intensity={1} />
       <directionalLight position={[0, 5, -4]} intensity={4} />
-      <directionalLight position={[0, -15, -0]} intensity={1} color={"beige"} />
+      <directionalLight
+        position={[0, -15, -0]}
+        intensity={1}
+        color={COLOR_LIGHT_D}
+      />
       <spotLight
         position={[20, 5, 10]}
         rotation={[0, 0, 0]}
@@ -131,13 +129,6 @@ function FloatingBalloonLightsAndEffects() {
           samples={11}
           radius={0.15}
           intensity={20}
-          luminanceInfluence={0.6}
-          color={new Color(1, 1, 1)}
-        />
-        <SSAO
-          samples={21}
-          radius={0.03}
-          intensity={15}
           luminanceInfluence={0.6}
           color={new Color(1, 1, 1)}
         />

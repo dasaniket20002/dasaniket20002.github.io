@@ -115,7 +115,7 @@ export default function ExperienceCard({
                   initial={{ opacity: 0 }}
                   animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
-                  className="flex items-center gap-2 mt-2 text-light-l/75 text-lg"
+                  className="flex items-center gap-2 mt-2 text-light-d/75 text-lg tracking-wider"
                 >
                   <IconPencil className="size-5 stroke-1 shrink-0" />
                   {des.skills.join(", ")}

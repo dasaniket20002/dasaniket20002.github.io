@@ -1,7 +1,10 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import ScrollTextPressure from "../../components/scroll-text-pressure";
 import { cn } from "../../utils";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
+import { useInView } from "motion/react";
+
+const PortalBox = lazy(() => import("../../components/portal-box/PortalBox"));
 
 const DISPLAY = "/ GREAT DESIGN\n STARTS WITH,\n GREAT COLLABORATION. /";
 const HIGHLIGHTS = ["DESIGN", "COLLABORATION"];
@@ -12,6 +15,8 @@ export default function ContactTitle({ className }: { className?: string }) {
   useEffect(() => {
     registerSection(containerRef);
   }, [registerSection]);
+
+  const inView = useInView(containerRef, { margin: "-128px" });
 
   return (
     <div
@@ -31,6 +36,11 @@ export default function ContactTitle({ className }: { className?: string }) {
         className="h-min px-0"
         theme="dark"
       />
+      <div className="sticky bottom-0 left-full w-full md:w-1/2 aspect-square">
+        <Suspense fallback={null}>
+          <PortalBox inView={inView} theme="dark" />
+        </Suspense>
+      </div>
     </div>
   );
 }
