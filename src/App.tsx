@@ -2,9 +2,9 @@ import { AnimatePresence } from "motion/react";
 import { lazy, Suspense, useEffect, useState } from "react";
 import Header from "./lib/components/ui/header";
 import NoiseOverlay from "./lib/components/ui/noise-overlay";
+import { useStickySnap } from "./lib/contexts/use-sticky-snap";
 import Loader from "./lib/pages/00_loader/loader";
 import Hero from "./lib/pages/01_hero/hero";
-import { useStickySnap } from "./lib/contexts/use-sticky-snap";
 
 // const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
 const Work = lazy(() => import("./lib/pages/02_work/work"));
@@ -36,7 +36,7 @@ function App() {
           )}
         </AnimatePresence>
         <Header className="fixed top-0 left-0 right-0" isLoading={isLoading} />
-        {!isLoading && <Hero id="hero" />}
+        <Hero id="hero" isLoading={isLoading} />
 
         <Suspense fallback={null}>
           <Work />
@@ -54,7 +54,7 @@ function App() {
           <Footer />
         </Suspense>
 
-        <Hero />
+        <Hero isLoading={isLoading} />
       </main>
     </>
   );

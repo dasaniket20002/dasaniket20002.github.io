@@ -15,9 +15,11 @@ const CloudMetaballs = lazy(
 export default function Hero({
   className,
   id,
+  isLoading,
 }: {
   className?: string;
   id?: string;
+  isLoading: boolean;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { registerSection } = useStickySnap();
@@ -39,16 +41,18 @@ export default function Hero({
         className,
       )}
     >
-      <m.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.25 }}
-        className="size-full row-span-full col-span-full mask-t-from-90% mask-b-from-90%"
-      >
-        <Suspense fallback={null}>
-          <CloudMetaballs inView={inView} eventSource={containerRef} />
-        </Suspense>
-      </m.div>
+      {!isLoading && (
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.25 }}
+          className="size-full row-span-full col-span-full mask-t-from-90% mask-b-from-90%"
+        >
+          <Suspense fallback={null}>
+            <CloudMetaballs inView={inView} eventSource={containerRef} />
+          </Suspense>
+        </m.div>
+      )}
       <div className="size-full row-span-full col-[2/-2] pt-32 z-1 grid grid-rows-subgrid grid-cols-subgrid gap-y-16">
         <div className="col-span-full row-[1/2] size-full flex flex-col gap-4 justify-end">
           <m.div
