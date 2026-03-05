@@ -13,6 +13,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "../../utils";
 import {
   MorphingDialog,
+  MorphingDialogClose,
   MorphingDialogContainer,
   MorphingDialogContent,
   MorphingDialogImage,
@@ -307,6 +308,7 @@ function ImageBlock({
             <IconBrandBlender className="size-5" />
             <span className="trim-text-caps">Made in Blender</span>
           </m.section>
+          <MorphingDialogClose className="absolute top-12 right-12 [&>svg]:size-12! [&>svg]:stroke-light-l" />
         </AnimatePresence>
       </MorphingDialogContainer>
     </MorphingDialog>

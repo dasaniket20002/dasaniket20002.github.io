@@ -60,7 +60,7 @@ const AboutMeContent = forwardRef<HTMLDivElement, { className?: string }>(
 
         <div
           ref={aboutContentRef1}
-          className="row-[1/2] col-[1/3] md:col-[1/2] self-end flex flex-col gap-3 p-4 md:p-0 text-dark-d"
+          className="row-[1/2] col-[1/3] md:col-[1/2] self-end flex flex-col gap-3 p-4 md:p-0 text-light-l md:text-dark-d"
         >
           <TextEffect
             as="p"
