@@ -5,9 +5,6 @@ import { createContext, useContext } from "react";
 export const SPRING_STIFFNESS = 8.0;
 export const SPRING_DAMPING = 3.0;
 
-export const MAX_BALLS = 32;
-export const MAX_LIGHTS = 8;
-
 export interface CloudBallsData {
   x: number;
   y: number;

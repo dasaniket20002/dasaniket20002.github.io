@@ -47,10 +47,10 @@ export default function PortalBox({
       }}
       frameloop={inView === false ? "never" : "always"}
     >
-      <TrackballControls noZoom />
+      <TrackballControls noZoom enabled={qualitySettings.useCameraControls} />
       <BakeShadows />
-      <Float speed={2} rotationIntensity={2.5} scale={1.5}>
-        <mesh castShadow receiveShadow>
+      <Float speed={1} rotationIntensity={2} scale={1.5}>
+        <mesh>
           <boxGeometry args={[2, 2, 2]} />
           <Edges color={theme === "light" ? COLOR_LIGHT_L : COLOR_DARK_D} />
 
@@ -118,7 +118,7 @@ function Side({
     <MeshPortalMaterial
       attach={`material-${index}`}
       transparent
-      resolution={512}
+      resolution={qualitySettings.effectRes}
       blur={3}
     >
       {/** Everything in here is inside the portal and isolated from the canvas */}
@@ -126,12 +126,12 @@ function Side({
       <directionalLight
         position={[-10, 20, -10]}
         intensity={2}
-        shadow-mapSize={512}
+        shadow-mapSize={qualitySettings.shadowMapRes}
       />
       <directionalLight
         position={[10, -20, 10]}
         intensity={1}
-        shadow-mapSize={512}
+        shadow-mapSize={qualitySettings.shadowMapRes}
       />
 
       {/** A box with baked AO */}

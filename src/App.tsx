@@ -1,9 +1,10 @@
 import { AnimatePresence } from "motion/react";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Header from "./lib/components/ui/header";
 import NoiseOverlay from "./lib/components/ui/noise-overlay";
 import Loader from "./lib/pages/00_loader/loader";
 import Hero from "./lib/pages/01_hero/hero";
+import { useStickySnap } from "./lib/contexts/use-sticky-snap";
 
 // const Hero = lazy(() => import("./lib/pages/01_hero/hero"));
 const Work = lazy(() => import("./lib/pages/02_work/work"));
@@ -14,6 +15,10 @@ const Footer = lazy(() => import("./lib/pages/06_footer/footer"));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const { lockScroll, unlockScroll } = useStickySnap();
+  useEffect(() => {
+    lockScroll();
+  }, [lockScroll]);
 
   return (
     <>
@@ -21,11 +26,17 @@ function App() {
       <main id="top" className="relative h-full w-full">
         <AnimatePresence mode="wait">
           {isLoading && (
-            <Loader key="loader" onComplete={() => setIsLoading(false)} />
+            <Loader
+              key="loader"
+              onComplete={() => {
+                setIsLoading(false);
+                unlockScroll();
+              }}
+            />
           )}
         </AnimatePresence>
         <Header className="fixed top-0 left-0 right-0" isLoading={isLoading} />
-        <Hero id="hero" />
+        {!isLoading && <Hero id="hero" />}
 
         <Suspense fallback={null}>
           <Work />

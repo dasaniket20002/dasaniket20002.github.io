@@ -60,7 +60,7 @@ const Loader = forwardRef<HTMLDivElement, LoaderProps>(
           initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{ clipPath: "inset(100% 0% 0% 0%)" }}
           transition={{ duration: 0.8, ease: "anticipate", delay: 0.25 }}
-          className="relative h-dvh z-98 grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[4rem_1fr_auto_4rem] bg-light-l"
+          className="absolute h-dvh w-dvw z-98 grid grid-cols-[4rem_1fr_1fr_4rem] grid-rows-[4rem_1fr_auto_4rem] bg-light-l"
         >
           <div className="row-[2/3] col-[2/4] md:col-[2/3] size-full flex flex-col gap-16">
             <LogoName
