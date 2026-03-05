@@ -7,9 +7,9 @@ import {
 } from "@react-three/postprocessing";
 import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { useEffect } from "react";
-import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
-import { useQualitySettings } from "../../hooks/use-quality-settings";
-import { COLOR_LIGHT_D, COLOR_LIGHT_L } from "../../utils";
+import { usePerformanceMetrics } from "../../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../../hooks/use-quality-settings";
+import { COLOR_LIGHT_D, COLOR_LIGHT_L } from "../../../utils";
 import CameraRig from "../r3f-common/camera-rig";
 import { CubeScatter, DotField, RadialLines } from "../r3f-common/hud";
 import { CloudInputHandler } from "./cloud-scene-logic";

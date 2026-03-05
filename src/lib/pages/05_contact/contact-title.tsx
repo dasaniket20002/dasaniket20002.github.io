@@ -1,10 +1,12 @@
 import { lazy, Suspense, useEffect, useRef } from "react";
-import ScrollTextPressure from "../../components/scroll-text-pressure";
+import ScrollTextPressure from "../../components/ui/scroll-text-pressure";
 import { cn } from "../../utils";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useInView } from "motion/react";
 
-const PortalBox = lazy(() => import("../../components/portal-box/PortalBox"));
+const PortalBox = lazy(
+  () => import("../../components/r3f/portal-box/PortalBox"),
+);
 
 const DISPLAY = "/ GREAT DESIGN\n STARTS WITH,\n GREAT COLLABORATION. /";
 const HIGHLIGHTS = ["DESIGN", "COLLABORATION"];

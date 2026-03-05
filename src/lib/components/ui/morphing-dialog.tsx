@@ -17,10 +17,10 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { createPortal } from "react-dom";
-import { cn } from "../utils";
-import { useStickySnap } from "../contexts/use-sticky-snap";
-import { useClickOutside } from "../hooks/use-click-outside";
-import IconX from "./svg/icon-x";
+import { cn } from "../../utils";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
+import { useClickOutside } from "../../hooks/use-click-outside";
+import IconX from "../svg/icon-x";
 
 export type MorphingDialogContextType = {
   isOpen: boolean;

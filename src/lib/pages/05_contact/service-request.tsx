@@ -4,7 +4,7 @@ import { cn } from "../../utils";
 import * as m from "motion/react-m";
 import { useElementSize } from "../../hooks/use-element-size";
 import IconChevronDown from "../../components/svg/icon-chevron-down";
-import Popover from "../../components/popover";
+import Popover from "../../components/ui/popover";
 
 const SERVICE_REQUEST_OPTIONS = [
   "UI/UX Design",

@@ -11,7 +11,7 @@ import {
   type ToastOptions,
   type ToastType,
 } from "./use-toast";
-import Portal from "../components/portal";
+import { createPortal } from "react-dom";
 
 const MAX_TOASTS = 5;
 let counter = 0;
@@ -125,8 +125,7 @@ export default function ToastProvider({
   return (
     <ToastContext.Provider value={value}>
       {children}
-
-      <Portal>
+      {createPortal(
         <ol
           aria-label="Notifications"
           className="fixed inset-6 z-50 flex flex-col gap-2 pointer-events-none place-content-end place-items-end"
@@ -136,8 +135,9 @@ export default function ToastProvider({
               <ToastItem key={t.id} data={t} onDismiss={dismiss} />
             ))}
           </AnimatePresence>
-        </ol>
-      </Portal>
+        </ol>,
+        document.body,
+      )}
     </ToastContext.Provider>
   );
 }

@@ -1,5 +1,5 @@
 import { Fragment } from "react/jsx-runtime";
-import { TextEffect } from "../../components/text-effect";
+import { TextEffect } from "../../components/ui/text-effect";
 import { cn } from "../../utils";
 import { forwardRef, useRef } from "react";
 import { useInView } from "motion/react";

@@ -7,7 +7,7 @@ import type {
 } from "motion/react";
 import * as m from "motion/react-m";
 import React, { useMemo } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 export type PresetType =
   | "blur"

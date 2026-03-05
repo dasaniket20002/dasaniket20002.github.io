@@ -1,11 +1,11 @@
 import * as m from "motion/react-m";
 import { forwardRef, lazy, useEffect } from "react";
-import LogoName from "../../components/logo-name";
 import { preloadWithProgress } from "../../utils";
 import Counter from "./counter";
 import Message from "./message";
 import MetricsDisplay from "./metrics-display";
 import { useGLTF } from "@react-three/drei";
+import LogoName from "../../components/ui/logo-name";
 
 const LoaderCanvas = lazy(() => import("./loader-canvas"));
 

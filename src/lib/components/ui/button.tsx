@@ -5,7 +5,7 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useState } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 import TextRoll from "./text-roll";
 
 type ButtonProps = {

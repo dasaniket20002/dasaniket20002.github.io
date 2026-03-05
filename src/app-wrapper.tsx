@@ -1,11 +1,11 @@
 import ReactLenis, { type LenisRef } from "lenis/react";
 import { cancelFrame, frame, LazyMotion, type FrameData } from "motion/react";
 import { useEffect, useRef } from "react";
-import App from "./App.tsx";
-import { CloudSimProvider } from "./lib/components/cloud-metaballs/cloud-sim-provider.tsx";
+import { CloudSimProvider } from "./lib/components/r3f/cloud-metaballs/cloud-sim-provider.tsx";
 import { PerformanceMetricsProvider } from "./lib/contexts/performance-metrics-provider.tsx";
 import { StickySnapProvider } from "./lib/contexts/sticky-snap-provider.tsx";
 import ToastProvider from "./lib/contexts/toast-provider.tsx";
+import App from "./App.tsx";
 
 const loadFeatures = () => import("./lib/features").then((res) => res.default);
 

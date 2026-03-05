@@ -1,8 +1,8 @@
-import Link from "../../components/link";
+import Link from "../../components/ui/link";
 import IconExternalLink from "../../components/svg/icon-external-link";
 import { useEffect, useState } from "react";
 import * as m from "motion/react-m";
-import AnimatedTicker from "../../components/animated-ticker";
+import AnimatedTicker from "../../components/ui/animated-ticker";
 import { cn, getISTParts, PRIMARY_EMAIL, PRIMARY_TEL } from "../../utils";
 import IconBrandInstagram from "../../components/svg/icon-brand-instagram";
 import IconBrandGithub from "../../components/svg/icon-brand-github";

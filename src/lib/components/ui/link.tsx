@@ -2,8 +2,8 @@ import { useLenis } from "lenis/react";
 import { AnimatePresence, type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useCallback, useState } from "react";
-import { useStickySnap } from "../contexts/use-sticky-snap";
-import { cn } from "../utils";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
+import { cn } from "../../utils";
 import TextRoll from "./text-roll";
 
 type LinkProps = {

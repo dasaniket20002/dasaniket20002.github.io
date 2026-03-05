@@ -16,9 +16,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { useStickySnap } from "../contexts/use-sticky-snap";
-import { useWindowSize } from "../hooks/use-window-size";
-import { cn } from "../utils";
+import { useStickySnap } from "../../contexts/use-sticky-snap";
+import { useWindowSize } from "../../hooks/use-window-size";
+import { cn } from "../../utils";
 import AnimatedTicker from "./animated-ticker";
 import Link from "./link";
 import LogoName from "./logo-name";

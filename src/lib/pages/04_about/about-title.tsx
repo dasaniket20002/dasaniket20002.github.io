@@ -1,10 +1,12 @@
 import { useInView } from "motion/react";
 import { lazy, Suspense, useEffect, useRef } from "react";
-import ScrollTextPressure from "../../components/scroll-text-pressure";
+import ScrollTextPressure from "../../components/ui/scroll-text-pressure";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
 
-const PortalBox = lazy(() => import("../../components/portal-box/PortalBox"));
+const PortalBox = lazy(
+  () => import("../../components/r3f/portal-box/PortalBox"),
+);
 
 const DISPLAY =
   "/ DESIGN IS NOT\nJUST DECORATION,\nBUT A TOOL FOR EMOTION\nAND INFLUENCE. /";

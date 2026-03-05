@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import {
   ScrollVelocityMasonry,
   type MasonryImage,
-} from "../../components/scroll-velocity-masonry";
+} from "../../components/ui/scroll-velocity-masonry";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn, getColorPropertyValue } from "../../utils";
 import * as m from "motion/react-m";

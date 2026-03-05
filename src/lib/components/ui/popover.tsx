@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import Portal from "./portal";
+import { createPortal } from "react-dom";
 
 type Placement = "above" | "below";
 
@@ -89,20 +89,19 @@ export default function Popover({
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open, onClose, anchorRef]);
 
-  return (
-    <Portal>
-      <div
-        ref={popoverRef}
-        style={{
-          position: "fixed",
-          ...positionStyles,
-          transform: "translateX(-50%)",
-          zIndex: 50,
-          pointerEvents: open ? "auto" : "none",
-        }}
-      >
-        {children}
-      </div>
-    </Portal>
+  return createPortal(
+    <div
+      ref={popoverRef}
+      style={{
+        position: "fixed",
+        ...positionStyles,
+        transform: "translateX(-50%)",
+        zIndex: 50,
+        pointerEvents: open ? "auto" : "none",
+      }}
+    >
+      {children}
+    </div>,
+    document.body,
   );
 }

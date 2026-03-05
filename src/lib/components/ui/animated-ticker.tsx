@@ -7,7 +7,7 @@ import {
 import * as m from "motion/react-m";
 import { useEffect, useRef, useState } from "react";
 import type { MotionValue } from "motion/react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 export default function AnimatedTicker({
   value,

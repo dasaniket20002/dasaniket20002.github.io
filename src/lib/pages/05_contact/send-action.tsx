@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import Button from "../../components/button";
+import Button from "../../components/ui/button";
 import IconMailFast from "../../components/svg/icon-mail-fast";
 import { useToast } from "../../contexts/use-toast";
 import { cn, PRIMARY_EMAIL } from "../../utils";

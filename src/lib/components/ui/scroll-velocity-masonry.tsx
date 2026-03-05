@@ -10,7 +10,7 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 import {
   MorphingDialog,
   MorphingDialogContainer,
@@ -18,7 +18,7 @@ import {
   MorphingDialogImage,
   MorphingDialogTrigger,
 } from "./morphing-dialog";
-import IconBrandBlender from "./svg/icon-brand-blender";
+import IconBrandBlender from "../svg/icon-brand-blender";
 
 /* ================================================================== */
 /*  Helpers                                                           */

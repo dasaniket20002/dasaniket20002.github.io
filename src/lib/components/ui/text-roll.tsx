@@ -1,7 +1,7 @@
 import { useAnimationControls, type HTMLMotionProps } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useCallback, useEffect, useRef } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 type TextRollProps = {
   children?: string;

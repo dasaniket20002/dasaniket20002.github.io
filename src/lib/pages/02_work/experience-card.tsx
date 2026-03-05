@@ -1,7 +1,7 @@
 import { useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { useRef } from "react";
-import { TextEffect } from "../../components/text-effect";
+import { TextEffect } from "../../components/ui/text-effect";
 import { cn } from "../../utils";
 import type { Experience } from "./experience-list";
 import IconPencil from "../../components/svg/icon-pencil";

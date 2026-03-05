@@ -1,5 +1,5 @@
 import type { HTMLMotionProps } from "motion/react";
-import Link from "../../components/link";
+import Link from "../../components/ui/link";
 import { cn } from "../../utils";
 import * as m from "motion/react-m";
 

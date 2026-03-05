@@ -1,4 +1,4 @@
-import { TextEffect } from "../../components/text-effect";
+import { TextEffect } from "../../components/ui/text-effect";
 import { cn } from "../../utils";
 
 export default function HeroTagLine({ className }: { className?: string }) {

@@ -6,7 +6,7 @@ import { useElementSize } from "../../hooks/use-element-size";
 import IconChevronDown from "../../components/svg/icon-chevron-down";
 import IconChevronLeft from "../../components/svg/icon-chevron-left";
 import IconChevronRight from "../../components/svg/icon-chevron-right";
-import Popover from "../../components/popover";
+import Popover from "../../components/ui/popover";
 
 const MONTHS = [
   "January",

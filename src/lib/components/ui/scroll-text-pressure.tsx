@@ -8,7 +8,7 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { forwardRef, useMemo } from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 const getHighlightIndices = (text: string, words?: string[]) => {
   const indices = new Set<number>();

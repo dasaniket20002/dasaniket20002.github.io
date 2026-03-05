@@ -6,7 +6,7 @@ import {
 } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useMemo, useRef } from "react";
-import { TextEffect } from "../../components/text-effect";
+import { TextEffect } from "../../components/ui/text-effect";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useElementSize } from "../../hooks/use-element-size";
 import { useWindowSize } from "../../hooks/use-window-size";

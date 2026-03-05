@@ -8,8 +8,8 @@ import {
 } from "@react-three/rapier";
 import { useCloudSimContext, type CloudBallsData } from "./cloud-sim-context";
 import { Plane, Raycaster, Vector2, Vector3 } from "three";
-import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
-import { useQualitySettings } from "../../hooks/use-quality-settings";
+import { usePerformanceMetrics } from "../../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../../hooks/use-quality-settings";
 
 const SPRING_STIFFNESS = 8.0;
 const SPRING_DAMPING = 3.0;

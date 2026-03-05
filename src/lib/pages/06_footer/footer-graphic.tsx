@@ -3,7 +3,7 @@ import IconBrandThreeJS from "../../components/svg/icon-brand-threejs";
 import IconGridDots from "../../components/svg/icon-grid-dots";
 import { cn } from "../../utils";
 
-const GlassScene = lazy(() => import("../../components/glass/glass-scene"));
+const GlassScene = lazy(() => import("../../components/r3f/glass/glass-scene"));
 
 function RandomString({
   className,

@@ -1,5 +1,5 @@
 import { useLenis } from "lenis/react";
-import Button from "../../components/button";
+import Button from "../../components/ui/button";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn, PRIMARY_EMAIL } from "../../utils";
 import type { HTMLMotionProps } from "motion/react";

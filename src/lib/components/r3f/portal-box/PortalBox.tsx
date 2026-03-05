@@ -15,9 +15,9 @@ import {
 } from "@react-three/postprocessing";
 import { BlendFunction, ToneMappingMode } from "postprocessing";
 import type { MeshStandardMaterial } from "three";
-import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
-import { useQualitySettings } from "../../hooks/use-quality-settings";
-import { COLOR_DARK_D, COLOR_DARK_L, COLOR_LIGHT_L } from "../../utils";
+import { usePerformanceMetrics } from "../../../contexts/use-performance-metrics";
+import { useQualitySettings } from "../../../hooks/use-quality-settings";
+import { COLOR_DARK_D, COLOR_DARK_L, COLOR_LIGHT_L } from "../../../utils";
 
 export default function PortalBox({
   eventSource,

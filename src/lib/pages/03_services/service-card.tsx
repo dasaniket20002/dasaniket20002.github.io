@@ -1,5 +1,5 @@
 import { useInView } from "motion/react";
-import { TextEffect } from "../../components/text-effect";
+import { TextEffect } from "../../components/ui/text-effect";
 import { useRef } from "react";
 import { cn } from "../../utils";
 

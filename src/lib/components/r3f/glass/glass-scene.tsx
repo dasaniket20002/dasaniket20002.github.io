@@ -19,12 +19,12 @@ import { easeInOut, MotionValue, useScroll, useTransform } from "motion/react";
 import { BlendFunction, ToneMappingMode } from "postprocessing";
 import { useCallback, useRef, useState } from "react";
 import { Group } from "three";
-import { usePerformanceMetrics } from "../../contexts/use-performance-metrics";
-import { useStickySnap } from "../../contexts/use-sticky-snap";
-import { useQualitySettings } from "../../hooks/use-quality-settings";
+import { usePerformanceMetrics } from "../../../contexts/use-performance-metrics";
+import { useStickySnap } from "../../../contexts/use-sticky-snap";
+import { useQualitySettings } from "../../../hooks/use-quality-settings";
 import CameraRig from "../r3f-common/camera-rig";
 import { CubeScatter, DotField, RadialLines } from "../r3f-common/hud";
-import { COLOR_DARK_D, COLOR_LIGHT_L } from "../../utils";
+import { COLOR_DARK_D, COLOR_LIGHT_L } from "../../../utils";
 
 export default function GlassScene({
   eventSource,

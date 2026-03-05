@@ -1,7 +1,7 @@
 import { useInView } from "motion/react";
 import * as m from "motion/react-m";
 import { lazy, Suspense, useEffect, useRef } from "react";
-import Link from "../../components/link";
+import Link from "../../components/ui/link";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { cn } from "../../utils";
 import HeroCTA from "./hero-cta";
@@ -9,7 +9,7 @@ import HeroSkillsList from "./hero-skills-list";
 import HeroTagLine from "./hero-tag-line";
 
 const CloudMetaballs = lazy(
-  () => import("../../components/cloud-metaballs/cloud-metaballs.tsx"),
+  () => import("../../components/r3f/cloud-metaballs/cloud-metaballs.tsx"),
 );
 
 export default function Hero({
