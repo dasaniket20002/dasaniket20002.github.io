@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   ScrollVelocityMasonry,
   type MasonryImage,
 } from "../../components/scroll-velocity-masonry";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
-import { cn } from "../../utils";
+import { cn, getColorPropertyValue } from "../../utils";
+import * as m from "motion/react-m";
+import { useScroll, useTransform } from "motion/react";
+import { formatHex } from "culori";
 
 const ALL_IMAGES: MasonryImage[] = [
   {
@@ -142,13 +145,31 @@ export default function Hobby({ className }: { className?: string }) {
     registerSection(containerRef);
   }, [registerSection]);
 
+  const { scrollYProgress: colorChangeProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "start start"],
+  });
+
+  const color_l = useMemo(
+    () => formatHex(getColorPropertyValue("light-l")),
+    [],
+  );
+  const color_d = useMemo(() => formatHex(getColorPropertyValue("dark-d")), []);
+
+  const backgroundColor = useTransform(
+    colorChangeProgress,
+    [0, 1],
+    [color_l, color_d],
+  );
+
   return (
-    <div
+    <m.div
       ref={containerRef}
       className={cn(
-        "h-dvh w-full px-16 md:px-32 flex flex-col gap-8 bg-dark-d",
+        "h-dvh w-full px-16 md:px-32 flex flex-col gap-8",
         className,
       )}
+      style={{ backgroundColor }}
     >
       <ScrollVelocityMasonry
         images={ALL_IMAGES}
@@ -156,6 +177,6 @@ export default function Hobby({ className }: { className?: string }) {
         gap={12}
         className="h-full mask-t-from-90% mask-b-from-90%"
       />
-    </div>
+    </m.div>
   );
 }

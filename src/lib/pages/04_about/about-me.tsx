@@ -1,12 +1,11 @@
 import { useMotionTemplate, useScroll, useTransform } from "motion/react";
 import * as m from "motion/react-m";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useElementSize } from "../../hooks/use-element-size";
 import { useWindowSize } from "../../hooks/use-window-size";
-import { cn, getColorPropertyValue } from "../../utils";
+import { cn } from "../../utils";
 import AboutMeContent from "./about-me-content";
-import { formatHex } from "culori";
 
 export default function AboutMe({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,25 +49,8 @@ export default function AboutMe({ className }: { className?: string }) {
     registerSection(containerRef);
   }, [registerSection]);
 
-  const { scrollYProgress: colorChangeProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "start center"],
-  });
-
-  const color_l = useMemo(
-    () => formatHex(getColorPropertyValue("light-l")),
-    [],
-  );
-  const color_d = useMemo(() => formatHex(getColorPropertyValue("dark-d")), []);
-
-  const backgroundColor = useTransform(
-    colorChangeProgress,
-    [0, 1],
-    [color_l, color_d],
-  );
-
   return (
-    <m.div
+    <div
       ref={containerRef}
       id="about"
       className={cn(
@@ -77,11 +59,10 @@ export default function AboutMe({ className }: { className?: string }) {
         "md:grid-cols-[8rem_1fr_1fr_1fr_8rem]",
         className,
       )}
-      style={{ backgroundColor }}
     >
       <div
         ref={revealHeaderRef}
-        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 text-light-l"
+        className="sticky top-16 md:relative md:top-0 row-[1/2] md:row-[1/3] col-[2/-2] md:col-[2/3] w-full z-1 text-light-l mix-blend-difference"
         style={{
           height: windowWidth >= 768 ? aboutContainerHeight : "auto",
         }}
@@ -112,6 +93,6 @@ export default function AboutMe({ className }: { className?: string }) {
         ref={aboutContainerRef}
         className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-full"
       />
-    </m.div>
+    </div>
   );
 }

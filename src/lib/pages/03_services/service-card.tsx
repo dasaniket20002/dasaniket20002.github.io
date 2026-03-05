@@ -16,7 +16,7 @@ export default function ServiceCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, {
-    // once: true,
+    once: true,
     margin: "128px 0px -128px 0px",
   });
 

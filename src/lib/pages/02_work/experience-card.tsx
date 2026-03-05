@@ -12,7 +12,10 @@ export default function ExperienceCard({
   experience: Experience;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "128px 0px -128px 0px" });
+  const isInView = useInView(ref, {
+    margin: "128px 0px -128px 0px",
+    once: true,
+  });
   const showTimeline = experience.designations.length > 1;
 
   return (

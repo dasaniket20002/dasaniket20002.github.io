@@ -9,15 +9,11 @@ export default function HeroTagLine({ className }: { className?: string }) {
         as="h1"
         delay={1}
         speedReveal={2}
-        className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px"
+        className="text-3xl leading-relaxed font-light py-px"
         tokenStyles={[
           {
-            match: "hi! I'm",
-            className: "text-2xl",
-          },
-          {
             match: "Aniket Das",
-            className: "text-3xl",
+            className: "text-4xl",
           },
         ]}
       >
@@ -29,19 +25,19 @@ export default function HeroTagLine({ className }: { className?: string }) {
         as="h1"
         delay={1}
         speedReveal={2}
-        className="text-4xl tracking-tight leading-relaxed font-normal font-width-125 py-px"
+        className="text-5xl leading-relaxed font-light py-px"
         tokenStyles={[
           {
             match: "digital experiences",
-            className: "text-5xl font-semibold italic",
+            className: "text-6xl font-extralight font-width-110",
           },
           {
             match: "motion",
-            className: "text-5xl font-semibold italic",
+            className: "text-6xl font-extralight font-width-110",
           },
           {
             match: "graphics",
-            className: "text-5xl font-semibold italic",
+            className: "text-6xl font-extralight font-width-110",
           },
         ]}
       >

@@ -1,10 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ScrollTextPressure from "../../components/scroll-text-pressure";
-import { cn, getColorPropertyValue } from "../../utils";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
-import { useScroll, useTransform } from "motion/react";
-import { formatHex } from "culori";
-import * as m from "motion/react-m";
+import { cn } from "../../utils";
 
 const DISPLAY =
   "/ DESIGN IS NOT\nJUST DECORATION,\nBUT A TOOL FOR EMOTION\nAND INFLUENCE. /";
@@ -17,27 +14,10 @@ export default function AboutTitle({ className }: { className?: string }) {
     registerSection(containerRef);
   }, [registerSection]);
 
-  const { scrollYProgress: colorChangeProgress } = useScroll({
-    target: containerRef,
-    offset: ["end end", "end center"],
-  });
-  const color_l = useMemo(
-    () => formatHex(getColorPropertyValue("light-l")),
-    [],
-  );
-  const color_d = useMemo(() => formatHex(getColorPropertyValue("dark-d")), []);
-
-  const backgroundColor = useTransform(
-    colorChangeProgress,
-    [0, 1],
-    [color_l, color_d],
-  );
-
   return (
-    <m.div
+    <div
       ref={containerRef}
       className={cn("relative h-[150dvh] py-16 px-16 md:px-32", className)}
-      style={{ backgroundColor }}
     >
       <ScrollTextPressure
         displayText={DISPLAY}
@@ -49,6 +29,6 @@ export default function AboutTitle({ className }: { className?: string }) {
         className="h-min px-0 mix-blend-difference"
         theme="dark"
       />
-    </m.div>
+    </div>
   );
 }

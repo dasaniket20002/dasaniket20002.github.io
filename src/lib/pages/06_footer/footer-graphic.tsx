@@ -72,7 +72,7 @@ export default function FooterGraphic({
       <div className="absolute inset-0 py-16 px-16 md:px-32 pointer-events-none text-light-d grid grid-rows-2 grid-cols-2">
         <div className="row-[1/2] col-[1/2] flex gap-3 items-center h-min">
           <IconBrandThreeJS className="stroke-1" />
-          <p className="text-lg">R3F + Vite</p>
+          <p className="text-lg">R3F + Rapier + Vite</p>
         </div>
         <div className="row-[2/3] col-[1/2] flex items-end gap-3">
           {/* <IconBorderCornerSquare className="-rotate-90" /> */}

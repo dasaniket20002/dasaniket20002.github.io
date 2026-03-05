@@ -9,7 +9,7 @@ export default function HeroSkillsList({
 }: { className?: string } & HTMLMotionProps<"div">) {
   return (
     <m.div
-      className={cn("uppercase text-3xl space-y-2", className)}
+      className={cn("uppercase text-3xl space-y-2 font-light", className)}
       {...motionProps}
     >
       <Link
@@ -18,7 +18,7 @@ export default function HeroSkillsList({
         underlineThickness={1}
         theme="light"
       >
-        UI/UX Design
+        [ UI/UX Design ]
       </Link>
       <Link
         href={"#services"}
@@ -26,7 +26,7 @@ export default function HeroSkillsList({
         underlineThickness={1}
         theme="light"
       >
-        Web Design
+        [ Web Development ]
       </Link>
       <Link
         href={"#services"}
@@ -34,15 +34,7 @@ export default function HeroSkillsList({
         underlineThickness={1}
         theme="light"
       >
-        Development
-      </Link>
-      <Link
-        href={"#services"}
-        className="-ml-1 w-min"
-        underlineThickness={1}
-        theme="light"
-      >
-        Creative Design
+        [ Creative Design ]
       </Link>
     </m.div>
   );

@@ -5,12 +5,13 @@ import {
   useTransform,
 } from "motion/react";
 import * as m from "motion/react-m";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { TextEffect } from "../../components/text-effect";
 import { useStickySnap } from "../../contexts/use-sticky-snap";
 import { useElementSize } from "../../hooks/use-element-size";
 import { useWindowSize } from "../../hooks/use-window-size";
-import { cn } from "../../utils";
+import { cn, getColorPropertyValue } from "../../utils";
+import { formatHex } from "culori";
 
 const ABOUT_NEEDS_CONTENT = [
   {
@@ -49,6 +50,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
 
   const aboutContentInView = useInView(aboutContainerRef, {
     margin: "-128px",
+    once: true,
   });
 
   const { scrollYProgress: revealProgress } = useScroll({
@@ -85,16 +87,33 @@ export default function AboutNeeds({ className }: { className?: string }) {
     registerSection(containerRef);
   }, [registerSection]);
 
+  const { scrollYProgress: colorChangeProgress } = useScroll({
+    target: containerRef,
+    offset: ["end end", "end start"],
+  });
+  const color_l = useMemo(
+    () => formatHex(getColorPropertyValue("light-l")),
+    [],
+  );
+  const color_d = useMemo(() => formatHex(getColorPropertyValue("dark-d")), []);
+
+  const backgroundColor = useTransform(
+    colorChangeProgress,
+    [0, 1],
+    [color_l, color_d],
+  );
+
   return (
-    <div
+    <m.div
       ref={containerRef}
       id="about"
       className={cn(
-        "relative grid gap-y-12 md:gap-y-0 py-16 h-dvh bg-dark-d",
+        "relative grid gap-y-12 md:gap-y-0 py-16 h-dvh",
         "grid-cols-[4rem_1fr_4rem] grid-rows-[auto_1fr]",
         "md:grid-cols-[8rem_1fr_1fr_1fr_8rem]",
         className,
       )}
+      style={{ backgroundColor }}
     >
       <div
         ref={revealHeaderRef}
@@ -117,7 +136,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
       </div>
       <div
         ref={aboutContainerRef}
-        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-full max-w-5xl grid auto-rows-fr grid-cols-[1fr_3fr] gap-x-8 gap-y-4"
+        className="row-[2/3] md:row-[1/3] col-[2/-2] md:col-[3/5] h-full max-w-5xl grid auto-rows-fr grid-cols-[1fr_3fr] gap-x-8 gap-y-4 mix-blend-difference"
       >
         <span className="col-span-full text-5xl font-light font-width-120 text-light-d flex gap-[0.5ch]">
           <TextEffect
@@ -160,7 +179,7 @@ export default function AboutNeeds({ className }: { className?: string }) {
           />
         ))}
       </div>
-    </div>
+    </m.div>
   );
 }
 
@@ -176,7 +195,7 @@ function AboutNeedContent({
   i: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { margin: "-128px" });
+  const isInView = useInView(containerRef, { margin: "-128px", once: true });
   return (
     <div
       ref={containerRef}

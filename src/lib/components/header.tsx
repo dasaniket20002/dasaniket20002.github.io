@@ -150,7 +150,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className="flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-light transition-colors text-light-l"
+              className="flex flex-col gap-1.5 items-end tracking-wide font-width-110 font-extralight transition-colors text-light-l"
             >
               {NAV_LINKS.map((l, i) => (
                 <m.section

@@ -11,6 +11,7 @@ import React, {
 import {
   AnimatePresence,
   MotionConfig,
+  type HTMLMotionProps,
   type Transition,
   type Variant,
 } from "motion/react";
@@ -94,7 +95,8 @@ function MorphingDialogTrigger({
   style,
   triggerRef,
   disableLayoutAnimation,
-}: MorphingDialogTriggerProps) {
+  ...props
+}: MorphingDialogTriggerProps & HTMLMotionProps<"button">) {
   const { setIsOpen, isOpen, uniqueId } = useMorphingDialog();
 
   const handleClick = useCallback(() => {
@@ -124,6 +126,7 @@ function MorphingDialogTrigger({
       aria-controls={`motion-ui-morphing-dialog-content-${uniqueId}`}
       aria-label={`Open dialog ${uniqueId}`}
       type="button"
+      {...props}
     >
       {children}
     </m.button>
@@ -417,6 +420,8 @@ function MorphingDialogImage({
         alt={alt}
         layoutId={`dialog-img-${uniqueId}`}
         className="size-full object-contain"
+        loading="lazy"
+        draggable={false}
       />
     </m.div>
   );

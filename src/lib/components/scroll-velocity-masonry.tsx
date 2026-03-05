@@ -1,5 +1,6 @@
 import type { MotionValue } from "motion/react";
 import {
+  AnimatePresence,
   useAnimationFrame,
   useMotionValue,
   useScroll,
@@ -10,6 +11,13 @@ import {
 import * as m from "motion/react-m";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "../utils";
+import {
+  MorphingDialog,
+  MorphingDialogContainer,
+  MorphingDialogContent,
+  MorphingDialogImage,
+  MorphingDialogTrigger,
+} from "./morphing-dialog";
 import IconBrandBlender from "./svg/icon-brand-blender";
 
 /* ================================================================== */
@@ -249,34 +257,58 @@ function ImageBlock({
   alt,
   name,
 }: { className?: string } & MasonryImage) {
-  const [hovered, setHovered] = useState(false);
   return (
-    <div
-      className={cn("relative w-full overflow-hidden rounded-lg", className)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div
-        className={cn("w-full transition duration-500", hovered && "scale-110")}
-      >
-        <img
-          src={src}
-          alt={alt ?? ""}
-          className="h-auto w-full object-cover transition duration-250"
-          loading="lazy"
-          draggable={false}
-        />
-      </div>
-      <div
+    <MorphingDialog>
+      <MorphingDialogTrigger
         className={cn(
-          "absolute -inset-0.5 bg-black/25 backdrop-blur-3xl mix-blend-screen mask-t-to-50% opacity-0 scale-95 transition duration-500",
-          "flex gap-3 items-end justify-between p-6",
-          hovered && "opacity-100 scale-100",
+          "group/trigger relative w-full overflow-hidden rounded-lg",
+          className,
         )}
       >
-        <IconBrandBlender className="size-5 stroke-dark-l" />
-        <p className="text-light-l text-2xl font-width-110">{name}</p>
-      </div>
-    </div>
+        <MorphingDialogImage
+          src={src}
+          alt={alt ?? ""}
+          className="w-full object-cover"
+        />
+        <div
+          className={cn(
+            "absolute -inset-0.5 bg-black/25 backdrop-blur-3xl mix-blend-screen mask-t-to-50% opacity-0 scale-95 transition duration-500",
+            "flex gap-3 items-end justify-between p-6",
+            "group-hover/trigger:opacity-100 group-hover/trigger:scale-100",
+          )}
+        >
+          <IconBrandBlender className="size-5 stroke-dark-l" />
+          <p className="text-light-l text-2xl font-width-110">{name}</p>
+        </div>
+      </MorphingDialogTrigger>
+      <MorphingDialogContainer>
+        <MorphingDialogContent>
+          <MorphingDialogImage
+            src={src.replace("_cmp", "")}
+            alt={alt ?? ""}
+            className="h-dvh aspect-auto object-cover"
+          />
+        </MorphingDialogContent>
+        <AnimatePresence mode="wait" propagate>
+          <m.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute top-12 left-12 text-5xl font-width-110 text-light-l"
+          >
+            {name}
+          </m.p>
+          <m.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute bottom-12 right-12 text-lg font-width-110 text-light-d flex items-center gap-3"
+          >
+            <IconBrandBlender className="size-5" />
+            <span className="trim-text-caps">Made in Blender</span>
+          </m.section>
+        </AnimatePresence>
+      </MorphingDialogContainer>
+    </MorphingDialog>
   );
 }

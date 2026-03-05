@@ -19,7 +19,7 @@ import {
 } from "../../contexts/use-performance-metrics";
 import { COLOR_LIGHT_L } from "../../utils";
 
-const COLS = 22;
+const COLS = 10;
 const STRESS_COUNT = COLS * COLS;
 const SPACING = 1;
 
